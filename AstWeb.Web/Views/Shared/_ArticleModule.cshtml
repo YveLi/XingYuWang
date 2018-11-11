@@ -1,0 +1,91 @@
+﻿@using AstWeb.Common.Models;
+@using AstWeb.Common.Infrastructure;
+@model GetPagingResponse<Articles>
+
+<ul class="news-list layui-anim layui-anim-up">
+    @if (Model.IsSuccess)
+    {
+        foreach (var item in Model.Pages.Items)
+        {
+            <li class="moudle-card">
+                <h4><a href="@Url.Action("Detail", "Astro", new { articleid = @item.Id })" target="_blank">@item.Title</a><span style="font-size: 12px;color: #f84b9c;float: right;">   <i class="czs-eye-l" title="人气" style="    font-size: 20px;position: relative;top: -3px;"></i> @item.Hits  <i class="iconfont" title="回答"></i> @item.CommentCount </span></h4>
+                <div class="in-news-list">
+                    <div class="news-img" style="    height: 110px;overflow: hidden;">
+                        <a href="@Url.Action("Detail", "Astro", new { articleid = @item.Id })" target="_blank">
+                            <img src="@item.ImgUrl.Replace('|',' ')" alt="@item.Title" style="width: 180px;" class="img">
+                        </a>
+                    </div>
+                    <div class="news-con line-limit-length" style="margin-bottom:0">
+                        <p title="@item.Brief"> @item.Brief</p>
+                        <div class="con-time">
+                            <span style="color: #f84b9c;"><i class="layui-icon"></i>@item.AddTime.ToString("yyyy年MM月dd日")</span>
+                            <span>
+                                <i class="layui-icon"></i>
+                                <a href="@Url.Action("Index","Astro",new { CategoriesId=item.ArticleCategoryId,pageIndex=1})" style="color: #f84b9c;">@item.ArticleCategorys.CategoryName-@item.ArticleCategory.CategoryName</a>
+
+                            </span>
+
+                        </div>
+                        <a href="@Url.Action("Detail", "Astro", new { articleid = @item.Id })" target="_blank" class="con-btn">[阅读全文]</a>
+                    </div>
+                </div>
+            </li>
+        }
+    }
+    else
+    {
+        <li>  <span>暂无帖子</span></li>
+    }
+</ul>
+@if (Model.IsSuccess)
+{
+    if (Model.Pages.TotalItems > 10)
+    {
+        <div id="pageHandle" style="text-align: center;"></div>
+    }
+}
+<script src="~/static/js/jquery-3.2.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        if ($(window).width() < 768) {
+            var news = document.getElementsByClassName("news-img");
+            var img = document.getElementsByClassName("img");
+            for (var n = 0; n < news.length; n++) {
+                news[n].style.width = "100%";
+                news[n].style.height = "150px";
+                news[n].style.overflow = "hidden";
+                img[n].style.width = "100%";
+            }
+        }
+
+    });
+    $(function () {
+        $.ajaxSetup({
+            async: false
+        });
+          layui.use(["laypage"], function () {
+            var laypage = layui.laypage, layer = layui.layer;
+            laypage.render({
+                elem: 'pageHandle'
+                 ,count:'@(Model.IsSuccess? Model.Pages.TotalItems : 0)'
+                 ,curr: '@(Model.IsSuccess? Model.Pages.CurrentPage:1)'
+                , first: '首页'
+                , last: '尾页'
+                , theme: "#f84b9c"
+                , prev: '上一页'
+                , next: '下一页'
+                 , jump: function (obj, first) {
+                    var curr = obj.curr;
+                    if (!first) {
+                        page(curr);
+                    }
+                }
+            });
+        })
+    })
+</script>
+
+
+
+
+

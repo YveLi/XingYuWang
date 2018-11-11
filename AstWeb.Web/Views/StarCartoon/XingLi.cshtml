@@ -1,0 +1,28 @@
+﻿@using AstWeb.Common.Models;
+@{
+    ViewBag.Title = "星漫目录";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    var cartoon = ViewBag.Cartoon as List<StarCartoon>;
+}
+
+<div id="body" style="background-image:url();background-size:cover">
+    <div class="layui-container">
+        <iframe id="iframe" width="100%" height="850px" frameborder="0" src="http://mp.weixin.qq.com/mp/homepage?__biz=MzU3NjI4OTA0MA%3D%3D&hid=1"></iframe>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            document.getElementById("footer").style.display = "none";
+
+
+
+
+                $('#iframe').ready(function () {
+
+                    $(window.frames["iframe"].document).find("#a").attr("target", "_blank");
+
+                });
+        })
+    </script>
+}

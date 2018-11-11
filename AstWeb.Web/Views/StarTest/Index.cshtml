@@ -1,0 +1,706 @@
+﻿@using AstWeb.Common.Infrastructure;
+@using AstWeb.Common.Models;
+@{
+    ViewBag.Title = "星测";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    ViewBag.KeyWords = "占卜,算命,生肖运势运程查询,星座星语,";
+    ViewBag.Description = "星座星语网为您提供专业的占卜算命，转运技巧，星座及生肖运势查询，让您天天好运！掌握每日运势就从现在开始";
+    var test = ViewBag.test as GetListsResponse<StarTest>;
+}
+<html>
+<head>
+    <link rel="stylesheet" href="/Content/sina/css/common2.css">
+    <link rel="stylesheet" href="/Content/sina/css/pagebox.css">
+    <link rel="stylesheet" href="/Content/sina/css/fortuneresult.css">
+    <link rel="stylesheet" href="/Content/sina/css/index.css">
+    <style type="text/css">
+		#force-down{
+			display: none;
+		}
+		.head-wrap{
+			z-index: 0;
+		}
+		.QRcode{
+			float: left;
+			margin-left: 6px;
+		}
+		.QRcode img{
+			float: left;
+			width: 80px;
+			height: 80px;
+		}
+		.tit-wrap{
+			margin-top: 20px;
+		    float: left;
+		    text-align: center;
+		    margin-left: 8px;
+		}
+		.tit-wrap .tit{
+			font-size: 16px;
+			font-weight: normal;
+		}
+		.tit-wrap .text{
+			font-size: 12px;
+		}
+		.button{
+			cursor: pointer;
+		}
+    </style>
+    <script>
+        var searchIndex = 0,
+            searchStr = '',
+            recommendProduct = true;
+    </script>
+
+</head>
+<body>
+    <div class="top-bar-wrap">
+        <div class="top-bar">
+            <div class="top-bar-l">
+                <a href="/home">星座星语</a>
+                &#62;
+                <a href="/StarTest">星座收费测算平台</a>
+            </div>
+            <div class="top-bar-r">
+                <a href="/home" target="_blank">星座星语网</a>
+            </div>
+        </div>
+    </div>
+    <style type="text/css">
+	.head-wrap{
+		z-index: 0;
+	}
+	.QRcode{
+		float: left;
+		margin-left: 6px;
+	}
+	.QRcode img{
+		float: left;
+		width: 80px;
+		height: 80px;
+	}
+	.tit-wrap{
+		margin-top: 20px;
+	    float: left;
+	    text-align: center;
+	    margin-left: 8px;
+	}
+	.tit-wrap .tit{
+		font-size: 16px;
+		font-weight: normal;
+	}
+	.tit-wrap .text{
+		font-size: 12px;
+	}
+	.button{
+		cursor: pointer;
+	}
+    </style>
+    <div class="main-wrap" id="body" style="padding: 20px 10px;">
+        <div class="product-wrap clearfix" style="display:none;border-radius: 10px;">
+            <div class="product clearfix">
+                <div class="product-imgs">
+                    <div id="slide">
+                    </div>
+                    <div class="slide-btn">
+                        <div id="btnPrev" onselectstart="return false;">E</div>
+                        <div id="btnNext" onselectstart="return false;">F</div>
+                    </div>
+                </div>
+                <div class="product-r clearfix">
+                    <div class="clearfix">
+                        <div class="product-log">
+                            <img src="" alt="">
+                        </div>
+                        <div class="product-summary">
+                            <span class="product-name"></span>
+                            <span class="product-developer"></span>
+                            <span class="product-times"><i>C</i></span>
+                            <span class="product-like"><i>L</i></span>
+                        </div>
+                    </div>
+                    <p class="product-intro"></p>
+                    <a href="" class="product-btn" target="_blank">现在去测</a>
+                    <div class="price-wrap">
+                        <span class="old-price">原价：<i></i></span>
+                        <span class="product-price" style="/*color:*/">促销：<i>￥268</i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-list clearfix">
+            @if (test.IsSuccess)
+            {
+                foreach (var item in test.Items)
+                {
+                    var index = test.Items.IndexOf(item);
+                    <div class="p-item-small p5 p3">
+                        <div class="circle-wrap">
+                            <a href="javascript:;" data-index="@index" class="p-circle " style="background-color:@item.BackgroundColor">
+                                <img src="@item.LogoSrc" alt="" />
+                                <span class="cover"></span>
+                            </a>
+                        </div>
+                        <span>@item.Name</span>
+                    </div>
+                }
+            }
+            <div class="p-item-small p5 p3">
+                <div class="circle-wrap">
+                    <a href="javascript:;" data-index="2" class="p-circle " style="background-color:#cc4125">
+                        <img src="/Content/sina/picture/logo.png" alt="" />
+                        <span class="cover"></span>
+                    </a>
+                </div>
+                <span>命中结婚运</span>
+            </div>
+            <div class="p-item-small p5 p2">
+                <div class="circle-wrap">
+                    <a href="javascript:;" data-index="3" class="p-circle " style="background-color:#9cac72">
+                        <img src="/Content/sina/picture/logo.png" alt="" />
+                        <span class="cover"></span>
+                    </a>
+                </div>
+                <span>五行八字命运精批</span>
+            </div>
+            <div class="p-item-small p5 p2">
+                <div class="circle-wrap">
+                    <a href="javascript:;" data-index="4" class="p-circle mpulse" style="background-color:#a61c00">
+                        <img src="/Content/sina/picture/logo.png" alt="" />
+                        <span class="cover"></span>
+                    </a>
+                </div>
+                <span>2018下半年运势</span>
+            </div>
+            <div class="p-item-small p4 p3">
+                <div class="circle-wrap">
+                    <a href="javascript:;" data-index="5" class="p-circle " style="background-color:#fa396f">
+                        <img src="/Content/sina/picture/logo.png" alt="" />
+                        <span class="cover"></span>
+                    </a>
+                </div>
+                <span>苦恋的最终结局</span>
+            </div>
+            <div class="p-item-small p4 p3">
+                <div class="circle-wrap">
+                    <a href="javascript:;" data-index="6" class="p-circle mpulse" style="background-color:#f24091">
+                        <img src="/Content/sina/picture/logo.png" alt="" />
+                        <span class="cover"></span>
+                    </a>
+                </div>
+                <span>你们会在一起吗？</span>
+            </div>
+            <div class="p-item-small p4 p3">
+                <div class="circle-wrap">
+                    <a href="javascript:;" data-index="7" class="p-circle " style="background-color:#ea9999">
+                        <img src="/Content/sina/picture/logo.png" alt="" />
+                        <span class="cover"></span>
+                    </a>
+                </div>
+                <span>2019整年运势</span>
+            </div>
+            <div class="p-item-small p4 p2">
+                <div class="circle-wrap">
+                    <a href="javascript:;" data-index="8" class="p-circle " style="background-color:#cc4125">
+                        <img src="/Content/sina/picture/logo.png" alt="" />
+                        <span class="cover"></span>
+                    </a>
+                </div>
+                <span>合八字测姻缘</span>
+            </div>
+        </div>
+        @*<div class="pagebox-wrap">
+        <span class="pagebox" id="pageBox">
+            <span class="pagebox_pre_nolink">上一页</span>
+            <span class="pagebox_num_nonce">1</span>
+            <a class="pagebox_num" href="http://product.astro.sina.com.cn/?page=2">2</a>
+            <a class="pagebox_num" href="http://product.astro.sina.com.cn/?page=3">3</a>
+            <a class="pagebox_num" href="http://product.astro.sina.com.cn/?page=4">4</a>
+            <a class="pagebox_next" href="http://product.astro.sina.com.cn/?page=2">下一页</a>
+        </span>*@
+    </div>
+    </div>
+    <div id="ssoHidden" style="display:none"></div>
+    <script src="~/Content/sina/js/sea.js"></script>
+    <script src="~/Content/sina/js/sea.config.js"></script>
+    <script src="~/Content/static/js/jquery.min.js"></script>
+    <script type="text/template" id="loggedInTemplate">
+        <div class="user-avatar">
+            <a href="/home/" target="_blank">
+                <img src="<%=res.avatar_large %>" alt="">
+            </a>
+            <a class="img-wrap" href="/home/" target="_blank"></a>
+        </div>
+        <div class="user-info">
+            <span>
+                <a href="/home/" target="_blank"><%=res.name %>&nbsp&nbsp</a>
+            </span>
+            <a href="javascript:;" id="logout">(退出)</a>
+            <br />
+            <a class="user-btn2" href="/home">查询消费记录</a>
+            <a class="user-btn1" href="/home/copy">管理个人档案</a>
+        </div>
+    </script>
+    <script type="text/javascript">
+        var rootUrl = "http://product.astro.sina.com.cn";
+        var signinUrl = "";
+        var logoutUrl = "";
+        var userInfo = '';
+        seajs.use(['network', 'underscore', 'utils', 'outlogin_layer'], function (net, und, uti) {
+            var loggedIn = document.getElementById('loggedIn'),
+                notLoggedIn = document.getElementById('notLoggedIn'),
+                loginBtn = document.getElementById('login'),
+                loginImg = document.getElementById('imgLogin');
+
+            // for sina.com.cn
+            var loginLayer = window.SINA_OUTLOGIN_LAYER;
+            var initMark = false;
+            if (loginLayer && !userInfo) {
+                var STK = loginLayer.STK;
+                STK.Ready(function () {
+                    if (!loginLayer.isLogin()) {
+                        uti.byId('notLoggedIn').style.display = '';
+                        initMark = true;
+                    }
+
+                    STK.addEvent(loginBtn, "click", function () {
+                        if (uti.isMobile()) {
+                            window.open('https://passport.sina.cn/signin/signin?entry=wapsso&vt=4&r=&revalid=1', '_self');
+                        } else {
+                            loginLayer.show();
+                        }
+                    });
+                    STK.addEvent(loginImg, "click", function () {
+                        if (uti.isMobile()) {
+                            window.open('https://passport.sina.cn/signin/signin?entry=wapsso&vt=4&r=&revalid=1', '_self');
+                        } else {
+                            loginLayer.show();
+                        }
+                    });
+                    STK.addEvent(loggedIn, 'click', function (e) {
+                        var e = e || window.event;
+                        var src = e.target || e.srcElement;
+                        if (src && src.id === 'logout') {
+                            if (e.stopPropagation) {
+                                e.stopPropagation();
+                            } else {
+                                e.cancelBubble = true;
+                            }
+                            loginLayer.logout();
+                        }
+                    });
+
+
+                    loginLayer.set('sso', {
+                        entry: 'astro'
+                    }).set('extra', {
+                        css: 'http://i.sso.sina.com.cn/css/outlogin/v1/outlogin_skin_finance.css'
+                    }).set('plugin', {
+                        parentNode: document.body,
+                        position: 'custom'
+                    }).set('styles', {
+                        top: '150px',
+                        left: '50%',
+                        marginLeft: '-240px'
+                    }).register('login_success', function () {
+                        if (!initMark) {
+                            notLoggedIn.style.display = 'none';
+                            loggedIn.style.display = '';
+                            net.getUserInfo(null, function (d) {
+                                var loggedInTemplate = _.template(document.getElementById('loggedInTemplate').innerHTML);
+                                if (d.status === 0) {
+                                    uti.emptyHtml(loggedIn).innerHTML = loggedInTemplate({ res: d.data });
+                                } else {
+                                    SINA_OUTLOGIN_LAYER.getWeiboInfo({
+                                        onSuccess: function (res) {
+                                            uti.emptyHtml(loggedIn).innerHTML = loggedInTemplate({ res: res.data });
+                                        }
+                                    });
+                                }
+                            });
+                            initMark = true;
+                        } else {
+                            setTimeout(function () {//防止ie死锁
+                                window.location.reload();
+                            }, 100);
+                        }
+                    }).register('logout_success', function () {
+                        if (!initMark) {
+                            notLoggedIn.style.display = '';
+                            loggedIn.style.display = 'none';
+                            initMark = true;
+                        } else {
+                            setTimeout(function () {//防止ie死锁
+                                window.location.reload();
+                            }, 100);
+                        }
+                    }).init();
+                });
+            }
+
+            // for sina.cn
+            if (userInfo) {
+                uti.addEvent([loginBtn, loginImg], "click", function () {
+                    window.open(signinUrl, '_self');
+                });
+                uti.addEvent(loggedIn, 'click', function (e) {
+                    var e = e || window.event;
+                    var src = e.target || e.srcElement;
+                    if (src && src.id === 'logout') {
+                        if (e.stopPropagation) {
+                            e.stopPropagation();
+                        } else {
+                            e.cancelBubble = true;
+                        }
+                        window.open(logoutUrl, '_self');
+                    }
+                });
+
+                if (userInfo === '1') {
+                    notLoggedIn.style.display = 'none';
+                    loggedIn.style.display = '';
+                    net.getUserInfo(null, function (d) {
+                        var loggedInTemplate = _.template(document.getElementById('loggedInTemplate').innerHTML);
+                        if (d.status === 0) {
+                            uti.emptyHtml(loggedIn).innerHTML = loggedInTemplate({ res: d.data });
+                        }
+                    });
+                } else {
+                    notLoggedIn.style.display = '';
+                    loggedIn.style.display = 'none';
+                }
+            }
+
+            /* search */
+            var searchHandler = uti.byClass('s-type', null, 'a')[0],
+                serchInput = uti.nextElementSibling(searchHandler),
+                searchSubmit = uti.nextElementSibling(serchInput),
+                searchList = uti.byClass('s-list', null, 'ul')[0],
+                searchShowStatus = false,
+                searchTag = typeof searchIndex === 'undefined' ? 0 : searchIndex;
+
+            //init
+            var str = uti.elementChildren(uti.elementChildren(searchList)[searchTag])[0].innerHTML;
+            searchHandler.innerHTML = str + '<i>K</i>';
+            searchHandler.setAttribute('data-post', searchTag);
+            serchInput.value = typeof searchStr === 'undefined' ? '' : searchStr;
+
+            // placeHodlder for ie8 and lower versions
+            new uti.placeHolder();
+
+            //define
+            function hideSearchList() {
+                searchList.style.display = 'none';
+                searchShowStatus = false;
+                uti.removeEvent(document, 'click', null);
+            }
+            function showSearchList() {
+                hideLinkList();
+                searchList.style.display = 'block';
+                searchShowStatus = true;
+            }
+            function searchOpen() {
+                var searchValue = serchInput.value.replace(/(^\s*)|(\s*$)/g, "");
+                searchValue = searchValue === serchInput.getAttribute('placeholder') ? '' : searchValue;
+                var openUrl = rootUrl + '/?tag=' + searchTag + '&words=' + searchValue;
+                window.open(openUrl, '_blank');
+            }
+            uti.addEvent(searchHandler, 'click', function (e) {
+                var e = e || window.event;
+                if (searchShowStatus) {
+                    hideSearchList();
+                } else {
+                    uti.addEvent(document, 'click', function () {
+                        hideSearchList();
+                    });
+                    showSearchList();
+                    if (e.stopPropagation) {
+                        e.stopPropagation();
+                    } else {
+                        e.cancelBubble = true;
+                    }
+                }
+            });
+            uti.addEvent(searchList, 'click', function (e) {
+                var e = e || window.event;
+                var src = e.target || e.srcElement;
+                if (src && src.nodeName.toUpperCase() === 'A') {
+                    var str = src.innerHTML;
+                    var index = src.getAttribute('data-index');
+
+                    searchTag = +index;
+                    searchHandler.innerHTML = str + '<i>K</i>';
+                    searchHandler.setAttribute('data-post', index);
+
+                    if (src.getAttribute('data-open') != null) {
+                        searchOpen();
+                    }
+
+                    hideSearchList();
+                }
+            });
+            uti.addEvent(searchSubmit, 'click', function () {
+                // if(serchInput.value.replace(/(^\s*)|(\s*$)/g, "")){
+                // 	searchOpen();
+                // }
+                searchOpen();
+            });
+            uti.addEvent(serchInput, 'keyup', function (e) {
+                var e = e || window.event;
+                var src = e.target || e.srcElement;
+                // if(e.keyCode === 13 && src.value.replace(/(^\s*)|(\s*$)/g, "")){
+                // 	searchOpen();
+                // }
+                if (e.keyCode === 13) {
+                    searchOpen();
+                }
+            });
+
+            //phone link
+            var linkHandler = uti.byClass('lp-span', null, 'span')[0],
+                linkList = uti.nextElementSibling(linkHandler),
+                linkShowStatus = false;
+            function hideLinkList() {
+                uti.removeClass(linkHandler, 'active');
+                linkList.style.display = 'none';
+                linkShowStatus = false;
+                uti.removeEvent(document, 'click', null);
+            }
+            function showLinkList() {
+                hideSearchList();
+                uti.addClass(linkHandler, 'active');
+                linkList.style.display = 'block';
+                linkShowStatus = true;
+            }
+            uti.addEvent(linkHandler, 'click', function (e) {
+                var e = e || window.event;
+                if (linkShowStatus) {
+                    hideLinkList();
+                } else {
+                    uti.addEvent(document, 'click', function () {
+                        hideLinkList();
+                    });
+                    showLinkList();
+                    if (e.stopPropagation) {
+                        e.stopPropagation();
+                    } else {
+                        e.cancelBubble = true;
+                    }
+                }
+            });
+
+            //debug for body width 100% in IE8
+            var isIE = uti.isIE();
+            if (isIE && isIE < 9) {
+                var db = document.body,
+                    dde = document.documentElement,
+                    bw = 1260;//main width
+                function adjustBodyWidth() {
+                    db.style.width = dde.clientWidth > bw ? "100%" : bw + 'px';
+                }
+
+                function throttle(method, context) {
+                    clearTimeout(method.tId);
+                    method.tId = setTimeout(function () {
+                        method.call(context);
+                    }, 100);
+                }
+
+                window.onresize = function () {
+                    throttle(adjustBodyWidth);
+                }
+
+                adjustBodyWidth();
+            }
+        });
+    </script>
+    <script>
+        var listData = @Html.Raw(Json.Encode(test.Items))
+        console.log(listData);
+        /*var listData2 = [
+            {
+                color: '#ffffff',
+                url: '/view/1090',
+                backgroundColor: '#a61c00',
+                logSrc: 'http://storage.product.astro.sina.com.cn/APP/15/1090/logo.png',
+                name: '真命伴侣何时出现',
+                developer: '桃桃喜',
+                times: '38290',
+                like: '75',
+                praise_per: '92.94%',
+                intro: '真命天子何时出现？透过生辰八字等大量数据，回推您的前世今生，分析你们的缘起之时。精准描绘出对方画像，所在方位、人格特质、你们之间的年龄差距等，更有你们之间相处的感情状态以及所遇到问题的根本原因，为您一一列出爱情经营秘诀来扫除困惑，只为找到命中注定的那个他/她。',
+                price: '38',
+                slideImg: 'http://storage.product.astro.sina.com.cn/APP/15/1090/desc1.png|http://storage.product.astro.sina.com.cn/APP/15/1090/desc2.png|http://storage.product.astro.sina.com.cn/APP/15/1090/desc3.png|http://storage.product.astro.sina.com.cn/APP/15/1090/desc4.png'.split("|")
+            }
+        ]*/
+        //console.log(listData2);
+    </script>
+    <script>
+        seajs.use(['utils', 'slider'], function (u) {
+            //pagebox mouse event
+            var pageBoxNode = document.getElementById('pageBox');
+            function mouseEnter() {
+                var reg = new RegExp("(^|\\s)pagebox_pre|pagebox_num|pagebox_next($|\\s)");
+                return function (e) {
+                    var e = e || window.event,
+                        src = e.target || e.srcElement,
+                        cls = src.className;
+                    if (reg.test(cls)) {
+                        src.id = 'pbHover';
+                    }
+                }
+            }
+            function mouseLeave() {
+                var reg = new RegExp("(^|\\s)pagebox_pre|pagebox_pre_nolink|pagebox_num|pagebox_next|pagebox_next_nolink($|\\s)");
+                return function (e) {
+                    var e = e || window.event,
+                        src = e.target || e.srcElement,
+                        cls = src.className;
+                    if (reg.test(cls)) {
+                        src.id = '';
+                    }
+                }
+            }
+            if (pageBoxNode) {
+                u.addEvent(pageBoxNode, 'mouseover', mouseEnter());
+                u.addEvent(pageBoxNode, 'mouseout', mouseLeave());
+            }
+
+            //绑定产品列表事件
+            var currentObj;
+            u.addEvent(u.byClass('p-list')[0], 'click touchend', function (e) {
+                var e = e || window.event;
+                var src = e.target || e.srcElement;
+                var targetNode = src && (src.nodeName.toUpperCase() === 'A' ? src : src.parentNode);
+                if (targetNode && targetNode.nodeName.toUpperCase() === 'A') {
+                    currentObj = currentObj || targetNode;
+                    u.removeClass(currentObj, 'shake');
+                    u.addClass(targetNode, 'shake');
+                    currentObj = targetNode;
+                    var index = +targetNode.getAttribute('data-index');
+                    productSwitch(index);
+                    window.scrollTo(0, 0);
+                }
+            });
+            //切换产品
+            var wrap = u.byClass('product-wrap')[0];
+            var nodeList = {
+                wrap: wrap,
+                btn: u.byClass('product-btn', wrap)[0],
+                slide: u.byId('slide', wrap),
+                log: u.elementChildren(u.byClass('product-log', wrap)[0])[0],
+                name: u.byClass('product-name', wrap)[0],
+                developer: u.byClass('product-developer', wrap)[0],
+                times: u.byClass('product-times', wrap)[0],
+                like: u.byClass('product-like', wrap)[0],
+                intro: u.byClass('product-intro', wrap, 'p')[0],
+                price: u.byClass('product-price', wrap)[0],
+                oldPrice: u.byClass('old-price', wrap)[0]
+            }
+            function productSwitch(index) {
+                var res = listData[index];
+                nodeList.wrap.style.display = 'none';
+                nodeList.wrap.style.backgroundColor = res.BackgroundColor;
+                nodeList.wrap.style.color = res.Color;
+                nodeList.btn.style.color = res.BackgroundColor;
+                nodeList.btn.href = '/StarTest/Detail/'+res.Id;
+                nodeList.log.src = res.LogoSrc;
+                nodeList.name.innerHTML = res.Name;
+                nodeList.name.style.color = res.Color;
+                nodeList.developer.innerHTML = '开发者：' + res.Developer;
+                nodeList.times.innerHTML = '<i>C</i>' + res.Times + '人已测过';
+                nodeList.like.innerHTML = '<i>L</i>' + res.PraisePer + '的人都说好';
+                nodeList.intro.innerHTML = res.Intro;
+                if (res.hasOwnProperty('oldPrice')) {
+                    nodeList.oldPrice.innerHTML = '原价：<i>￥' + res.oldPrice + '</i>';
+                    nodeList.price.innerHTML = '促销：<i>￥' + res.price + '</i>';
+                    nodeList.oldPrice.style.display = '';
+                } else {
+                    nodeList.price.innerHTML = '价格：<i>￥' + res.Price + '</i>';
+                    nodeList.oldPrice.style.display = 'none';
+                }
+                nodeList.wrap.style.display = '';
+                u.emptyHtml(nodeList.slide);
+                for (var i = 0, len = res.SlideImg.split("|").length; i < len; i++) {
+                    var imgNode = document.createElement('img');
+                    var divNode = document.createElement('div');
+                    divNode.className = 'slide-item';
+                    imgNode.src = res.SlideImg.split("|")[i];
+                    nodeList.slide.appendChild(divNode).appendChild(imgNode);
+                }
+                createSlide();
+            }
+            // 推荐默认产品
+            if (recommendProduct) {
+                productSwitch(0);
+            }
+
+            //滚动图片
+            var slide;
+            function createSlide() {
+                slide = new Slider({
+                    wrapId: 'slide',
+                    itemClass: 'slide-item',
+                    sameSize: true,
+                    startOn: 0,
+                    scrollBy: 1,
+                    speed: 3,
+                    isVertical: false,
+                    isLoop: true,
+                    autoPlay: true,
+                    autoInterval: 5,
+                    absoluteAni: true,
+                    onReady: function () {
+                        var that = this,
+                            btn_prev = document.getElementById('btnPrev'),
+                            btn_next = document.getElementById('btnNext');
+
+                        btn_prev.onclick = function () {
+                            that.prev();
+                        };
+                        btn_next.onclick = function () {
+                            that.next();
+                        };
+                    }
+                });
+            }
+
+            //手机横竖屏切换时，调整滚动图
+            if (window.screen && u.isMobile()) {
+                window.addEventListener('resize', function () {
+                    setTimeout(function () { slide.next() }, 300);
+                });
+            }
+        });
+        //平台、设备和操作系统
+        var system = {
+            win: false,
+            mac: false,
+            xll: false
+        };
+        //检测平台
+        var p = navigator.platform;
+        system.win = p.indexOf("Win") == 0;
+        system.mac = p.indexOf("Mac") == 0;
+        system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+    </script>
+
+    <noScript>
+        <div style='position:absolute;top:0;left:0;width:0;height:0;visibility:hidden'><img width=0 height=0 src='static/picture/a.gif' border='0' alt='' /></div>
+    </noScript>
+    <!-- SUDA_CODE_END DAGGER -->
+    <!-- DMP_CODE_START DAGGER -->
+    <script type="text/javascript">
+        (function (d, s, id) {
+            var n = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            s = d.createElement(s);
+            s.id = id;
+            s.setAttribute('charset', 'utf-8');
+            s.src = '//d' + Math.floor(0 + Math.random() * (8 - 0 + 1)) + '.sina.com.cn/litong/zhitou/sinaads/src/spec/sinaads_ck.js';
+            n.parentNode.insertBefore(s, n);
+        })(document, 'script', 'sinaads-ck-script');
+    </script>
+    <!-- DMP_CODE_END DAGGER -->
+</body>
+</html>

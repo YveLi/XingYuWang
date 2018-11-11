@@ -1,0 +1,287 @@
+﻿@using AstWeb.Common.Models;
+@{
+    ViewBag.Title = "星测";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    ViewBag.KeyWords = "占卜,算命,生肖运势运程查询,星座星语,";
+    ViewBag.Description = "星座星语网为您提供专业的占卜算命，转运技巧，星座及生肖运势查询，让您天天好运！掌握每日运势就从现在开始";
+    var user = ViewBag.user as W_Users;
+    var test = ViewBag.test as StarTest;
+}
+<html>
+<head>
+    <link rel="stylesheet" href="~/Content/sina/css/common2.css">
+    <link rel="stylesheet" href="~/Content/sina/css/view.css">
+    <link rel="stylesheet" href="~/Content/sina/css/sweet-alert.css">
+</head>
+<body id="body">
+    <div class="top-bar-wrap">
+        <div class="top-bar">
+            <div class="top-bar-l">
+                <a href="/home">星座星语</a>
+                &#62;
+                <a href="/StarTest">星座收费测算平台</a>
+            </div>
+            <div class="top-bar-r">
+                <a href="/home" target="_blank">星座星语网</a>
+            </div>
+        </div>
+    </div>
+    <style type="text/css">
+        .head-wrap {
+            z-index: 0;
+            margin-top:10px;
+        }
+        .QRcode {
+            float: right;
+            margin-left: 6px;
+        }
+        .QRcode img {
+            float: left;
+            width: 80px;
+            height: 80px;
+        }
+        .tit-wrap {
+            margin-top: 20px;
+            float: left;
+            text-align: center;
+            margin-left: 8px;
+        }
+        .tit-wrap .tit {
+            font-size: 16px;
+            font-weight: normal;
+        }
+
+        .tit-wrap .text {
+            font-size: 12px;
+        }
+        .button {
+            cursor: pointer;
+        }
+    </style>
+    <div class="head-wrap">
+        <div class="head clearfix moudle-card">
+            <div class="head-l">
+                <div id="loggedIn" class="clearfix">
+                </div>
+                <div id="notLoggedIn">
+                    @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+                        <div class="user-avatar">
+                            <img src="@user.HeadPortrait" alt="">
+                            <a href='javascript:;' id="imgLogin" class="img-wrap"></a>
+                        </div>
+                        <div class="user-info">
+                            <span>
+                                <a href="/user/home/@user.Id">@user.NickName &nbsp;</a>
+                            </span>
+                            <a onclick="logout()" id="logout">(退出)</a>
+                            <br>
+                            <a class="user-btn2" href="/home">查询消费记录</a>
+                            <a class="user-btn1" href="/home/copy">管理个人档案</a>
+                        </div>
+                    }
+                    else
+                    {
+                        var url = Request.Url;
+                        <div class="user-login">
+                            <div class="clearfix">
+                                <p class="login-p1">未登录</p>
+                                <p class="login-p2">立刻登录，参加免费测试！</p>
+                            </div>
+                            <div class="login-wrap clearfix">
+                                <a href="/user/login?url=@url"><div class="login" id="login">登录</div></a>
+                                <a href="/user/register" target="_blank" class="register">注册</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="QRcode" id="QRcode">
+                <img src="~/Content/static/picture/wechat_official.jpg">
+                <div class="tit-wrap">
+                    <h3 class="tit">精准运势·权威解盘</h3>
+                    <div class="text">扫描下载星座APP，随时看</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-wrap" style="background-color:#f5f5f5;padding:0 7.5px 7.5px 7.5px;">
+        <div class="product-wrap clearfix" style="border-radius:10px;">
+            <div class="product-info clearfix">
+                <div class="product-log">
+                    <img src="static/picture/logo_1.png" alt="">
+                    <div class="bg-cover"></div>
+                </div>
+                <div class="product-summary">
+                    <span class="product-name">真命伴侣何时出现</span>
+                    <span class="product-times"><i>C</i>38552人已测过</span>
+                    <span class="product-like"><i>L</i>92.95%的人都说好</span>
+                </div>
+                <div class="product-code">
+                    <img src="@test.LogoSrc" alt="">
+                </div>
+                <p class="product-intro">
+                    @test.Intro
+                </p>
+            </div>
+            <div class="product-form clearfix" id="formWrap">
+                <div class="form1 form">
+                    <p class="f-title">请输入资料</p>
+                    <!-- 昵称 begin -->
+                    <div class="form-item">
+                        <span class="label">姓名</span>
+                        <input placeholder="限输5个字&#8203" limit="10" type="text" class="form-text u-name"
+                               name="query[nickname]" value="">
+                        <a href="javascript:;" class="archives-handler">从档案馆选取资料</a>
+                        <div class="archives clearfix"></div>
+                    </div>
+                    <!-- 昵称 end -->
+                    <!-- 性别 begin -->
+                    <div class="form-item">
+                        <span class="label">性别</span>
+                        <span class="form-radio u-gender" name="query[sex]" data-post="">
+                            <a href="javascript:;" data-status="1" data-value="0" class="u-gender">b</a>男&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" data-status="0" data-value="1" class="u-gender">B</a>女
+                        </span>
+                    </div>
+                    <!-- 性别 end -->
+                    <!-- 年-月-日-时-分 begin -->
+                    <div class="form-item special-item">
+                        <span class="label">阳(公)历生日(大于7岁)</span>
+                        <span class="form-select date-select" name="query[start_time][ymd]" data-post="">
+                            <a href="javascript:;" data-index=""><i>K</i></a>
+                            <span class="select-list">
+                            </span>
+                        </span>
+                        <span class="form-select m-resize2" data-post="">
+                            <a href="javascript:;" data-index=""><i>K</i></a>
+                            <span class="select-list">
+                            </span>
+                        </span>
+                        <span class="form-select m-resize3" data-post="">
+                            <a href="javascript:;" data-index=""><i>K</i></a>
+                            <span class="select-list">
+                            </span>
+                        </span>
+                    </div>
+                    <div class="form-item">
+                        <span class="label"></span>
+                        <span class="form-select hour-select" name="query[start_time][hi]" data-post="">
+                            <a href="javascript:;" data-index="0"><i>K</i></a>
+                            <span class="select-list u-birthhour">
+                            </span>
+                        </span>
+                        <span class="form-select minute-select m-resize2" data-post="">
+                            <a href="javascript:;" data-index="0"><i>K</i></a>
+                            <span class="select-list u-birthminute">
+                            </span>
+                        </span>
+                        <a class="calendar m-resize3" href="javascript:;" onclick='javascript:window.open("http://astro.sina.com.cn/calendar1.htm","","width=490 height=520,scrollbars=no,toolbar=no,address=no")'>(阴阳历转换)</a>
+                    </div>
+                    <!-- 年-月-日-时-分 end -->
+
+                    <div class="form-btn">
+                        <span class="form-save" name="save">保存生辰</span>
+                        <span class="warning-text"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="product-post clearfix">
+                <div class="post-l" id="chargeSelect">
+                </div>
+                <div class="post-r">
+                    <span class="price-wrap">
+                        <span class="price">价格：<i id="price">￥38</i></span>
+                    </span>
+                    <input type="button" id="postOrder" class="post-btn" value="支付宝支付" />
+                    <input type="button" id="wixinOrder" class="post-btn" value="微信支付" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <link rel="stylesheet" href="static/css/pagebox_1.css">
+    <link rel="stylesheet" href="static/css/comment_1.css">
+    <link rel="stylesheet" href="static/css/sweet-alert_1.css">
+    <div class="comment-module" id="comtarget">
+        <h3 class="tit">
+            <span>
+                <i class="redline"></i>产品得分
+            </span>
+        </h3>
+        <p id="scoreLoad" class="load"><img src="static/picture/loading_1.gif"> 正在加载请稍候...</p>
+        <div id="scoreModule" style="display:none">
+            <div class="score">
+                <p class="s-l">
+                    <span class="average" id="averageScore">9.80</span>分
+                </p>
+                <div class="s-r">
+                    <span class="star-b">
+                        <em class="star-f" id="averageStar"></em>
+                    </span>
+                    <p>
+                        <span id="scoreCount">1813</span>人参与评分
+                    </p>
+                </div>
+            </div>
+            <div class="forbidden-comment" style="display:none">
+                <i>N</i><span>现在去<a>测算</a>即可参与评论！</span>
+            </div>
+            <div class="allow-comment clearfix" style="display:none">
+                <div class="ac-l">
+                    <img src="" alt="">
+                </div>
+                <div class="ac-r">
+                    <div class="star-aj">
+                        <span class="star-b" id="starArea">
+                            <em class="star-f" id="starHandler"></em>
+                        </span>
+                        <span class="star-score" id="starScore">未打分</span>
+                        <span class="comnt-warning" id="comntWarning">请评论</span>
+                    </div>
+                    <div class="comment-aj">
+                        <div class="in-textarea">
+                            <textarea id="jsComment"></textarea>
+                        </div>
+                        <div class="comment-handler">
+                            <span class="form-check" name="checkBox" data-post="">
+                                <a href="javascript:;" data-status="1">D</a>匿名评论
+                                <a href="javascript:;" data-status="1" style="margin-left:10px;">D</a>分享到微博
+                            </span>
+                            <span class="comment-submit">发布</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p id="publishLoad" class="load" style="display:none"><img src="static/picture/loading_1.gif"> 正在发布请稍候...</p>
+            <div class="has-comment clearfix" style="display:none">
+            </div>
+        </div>
+        <h3 class="tit">
+            <span>
+                <i class="redline"></i>网友热评
+            </span>
+        </h3>
+        <p id="commentLoad" class="load"><img src="static/picture/loading_1.gif"> 正在加载请稍候...</p>
+        <p id="noResult" class="no-result" style="display:none">暂无评论！</p>
+        <div class="users-comment" id="commentModule" style="display:none">
+            <p id="pageLoad" class="load" style="display:none"><img src="static/picture/loading_1.gif"> 正在加载请稍候...</p>
+            <div id="comments"></div>
+            <div id="pageWrap"></div>
+        </div>
+    </div>
+    @section scripts{
+    <script>
+        function logout() {
+            $.ajax({
+                type: "POST",
+                data: '',
+                url: "/Account/LogOut",
+                datatype: "json",
+                success: function (data) {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+        }
+</body>
+</html>

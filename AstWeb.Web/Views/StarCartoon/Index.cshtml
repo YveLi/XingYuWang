@@ -1,0 +1,130 @@
+﻿@using AstWeb.Common.Models;
+@{
+    ViewBag.Title = "星漫";
+    ViewBag.KeyWords = "12,十二,占星,星座,星语,岁时,专属,漫画,第十三星座,治愈";
+    ViewBag.Description = "星座星语网是一个综合多种内容和玩法的网站，由多个板块组成，星座的文章，十二星座运势，星盘工具，占星学院，除此之外还有很多内容：星座漫画专栏、星座社区、个人空间、占星师等等";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    var categrory = ViewBag.CartoonCategories as List<CartoonCategories>;
+}
+<style>
+    .zb-btn {
+        background-color: #333;
+    }
+
+    .page-anchor .anchor-platform {
+        background-color: #f84b9c;
+    }
+
+    .moudle-card {
+        background: rgba(255,255,255,0.8);
+    }
+
+    .layui-col-xs6 .moudle-card {
+        overflow: hidden;
+    }
+
+    .page-anchor .anchor-con .info {
+        color: #3f3f3f;
+        margin-top: 12px;
+        height: inherit;
+        line-height: inherit;
+    }
+
+    .name {
+        color: #000 !important;
+        font-size: 16px !important;
+    }
+
+    .anchor-con {
+        height: 107px;
+        overflow: hidden;
+    }
+
+    .layui-col-space22 > * {
+        padding: 5px;
+    }
+
+    .page-anchor .layui-col-lg3 {
+        margin-bottom: 0;
+    }
+</style>
+<div id="body" style="background-image:url(../../Content/img/yg.jpeg);background-size:cover">
+    <div class="page-search page-search-alone">
+        <div class="layui-container">
+            <div class="moudle-card">
+                <form class="layui-form" role="search" action="#" method="get">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <input type="text" id="search" name="keyword" placeholder="请输入星漫专辑名称" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-inline">
+                            <button class="layui-btn zb-btn">搜索漫画</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- /.page-search -->
+    @*<div class="page-title" unselectable="on" onselectstart="return false;">
+            <div class="layui-container">
+                    <div class="title">
+                        <h2>
+                            收录漫画
+                            <span class="line"></span>
+                        </h2>
+                    </div>
+                    <span class="title-eng">NEW GUILD</span>
+                </div>
+        </div>*@
+
+    <div class="page-anchor" style="margin-top:20px;">
+        <div class="layui-container">
+            <div class="layui-row layui-col-space22">
+                <div class="layui-col-xs6 layui-col-lg3 trany-10">
+                    <div class="moudle-card">
+                        <div class="anchor-platform">微信</div>
+                        <a href="https://mp.weixin.qq.com/mp/homepage?__biz=MzU3NjI4OTA0MA%3D%3D&hid=1">
+                            <div class="anchor-img">
+                                <img src="../static/img/xinghualang.png" alt="星哩" style="height:auto">
+                            </div>
+                            <div class="anchor-con">
+                                <div class="name">星画廊<span class="line"></span></div>
+                                <div class="info">借由星座的文化世界观来处理人与人的关系。</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                @if (categrory != null)
+                {
+                    foreach (var item in categrory)
+                    {
+                        <div class="layui-col-xs6 layui-col-lg3 trany-10">
+                            <div class="moudle-card">
+                                <div class="anchor-platform">已认证</div>
+                                <a href="/StarCartoon/Contents/@item.Id">
+                                    <div class="anchor-img">
+                                        <img src="@item.TopImg" alt="@item.Name" style="height:auto">
+                                    </div>
+                                    <div class="anchor-con">
+                                        <div class="name">@item.Name<span class="line"></span></div>
+                                        <div class="info">@item.Memo</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="page-laypage">
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            document.getElementById("footer").style.display = "none";
+        })
+    </script>
+}

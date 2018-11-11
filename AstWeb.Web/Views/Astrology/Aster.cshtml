@@ -1,0 +1,322 @@
+﻿@using AstWeb.Common.Models;
+@using AstWeb.Common.Infrastructure;
+@{
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    var user = ViewBag.user as W_Users;
+    var aster = ViewBag.aster as GetListsResponse<W_Users>;
+}
+@if (user != null)
+{
+    <div class="page-head-line"></div>
+    <div class="layui-container">
+        <div class="page-anchor-con">
+            <div class="anchor-line"></div>
+            <div class="anchor-img">
+                <div class="layui-carousel" id="auchor_img" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 100%;">
+                    <div carousel-item="">
+                        @if (user.AsterImg != null)
+                        {
+                            if (user.AsterImg.Contains('|'))
+                            {
+                                foreach (var item in user.AsterImg.Split('|'))
+                                {
+                                    <div><img src="@item" alt="@user.NickName"></div>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="anchor-con">
+                <h1>@user.NickName</h1>
+                <span class="line"></span>
+                <div class="engname" style="color:rgba(255, 106, 0, 0.45)">@user.Title</div>
+                <ul class="tag-list">
+                    @if (user.AsterTag != null)
+                    {
+                        if (user.AsterTag.Contains(','))
+                        {
+                            foreach (var item in user.AsterTag.Split(','))
+                            {
+                                <li><a href="javascript:viod(0);" rel="tag" style="background:#1E9FFF;border-radius:5px;">@item</a></li>
+                            }
+                        }
+                    }
+                </ul>
+                <div class="con">
+                    <div class="icon"></div>
+                    <p>@user.Sign</p>
+                </div>
+                @if (HttpContext.Current.User.Identity.IsAuthenticated && user.Id != ViewBag.CurrentUserId)
+                {
+                    <div class="link">
+                        @* <a href="https://www.yizhibo.com/member/personel/user_info?memberid=68750450" class="layui-btn zb-btn zb-btn-linear live-btn" target="_blank">进入占星师间</a>*@
+                        @if (!ViewBag.IsGZ)
+                        {
+                            <a class="layui-btn zb-btn zb-btn-linear live-btn-like" onclick="gz(1,@user.Id)">关注+</a>
+                        }
+                        else
+                        {
+                            <input type="button" class="layui-btn" value="取消关注" onclick="gz(0,@user.Id)" />
+                        }
+
+                    </div>
+                }
+            </div>
+            <div class="anchor-platform">
+                @*<p>FROM</p>
+                    <p>YIZHIBO LIVE</p>*@
+            </div>
+            <div class="anchor-num">
+                <p class="link-num like-num">@user.LikeNum</p>
+                <p>粉丝</p>
+                <p><span class="line"></span></p>
+                <p class="link-num">@user.VisitorsNum</p>
+                <p>访问</p>
+            </div>
+            <div class="anchor-bg">
+                <div class="bg-01"></div>
+                <div class="bg-02"></div>
+            </div>
+        </div><!-- /.page-anchor-con -->
+    </div>
+
+    <div class="page-title" unselectable="on" onselectstart="return false;">
+        <div class="layui-container">
+            <div class="title">
+                <h2>
+                    占星师简介
+                    <span class="line"></span>
+                </h2>
+            </div>
+            <span class="title-eng">ABOUT</span>
+        </div>
+    </div>
+    <div class="layui-container">
+        <div class="page-anchor-contect">
+            <div class="moudle-card">
+                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">简介</li>
+                        <li>报告</li>
+                        <li>课程</li>
+                        <li>新闻</li>
+                        <li>相册</li>
+                        <li>留言</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item anchor-contect-con layui-show">
+                            <ul class="layui-timeline">
+                                <li class="layui-timeline-item first"></li>
+                                <li class="layui-timeline-item">
+                                    <h4 class="left-tt">粉丝</h4>
+                                    <i class="layui-icon layui-timeline-axis"></i>
+                                    <div class="layui-timeline-content right-con">
+                                        @user.LikeNum
+                                    </div>
+                                </li>
+                                <li class="layui-timeline-item">
+                                    <h4 class="left-tt">占星小二</h4>
+                                    <i class="layui-icon layui-timeline-axis"></i>
+                                    <div class="layui-timeline-content right-con right-con-marketing">
+                                        @*<a href="http://www.zhubobook.com/marketing-consulting?marketing=JOSIE%20%E7%92%90%E5%AE%9D%E5%AE%9D">点击进行营销咨询</a>*@
+                                        <span>点击下方在线QQ咨询</span>
+                                        <p class="qq">
+                                            @if (user.QQ != null)
+                                            {
+                                                if (user.QQ.Contains('|'))
+                                                {
+                                                    var qqurl = user.QQ.Split('|');
+                                                    int i = 0;
+                                                    foreach (var item in qqurl)
+                                                    {
+                                                        i++;
+                                                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=@item&amp;site=qq&amp;menu=yes" class="layui-btn layui-btn-small zb-btn">在线占星小二 @i 号</a>
+                                                    }
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </li>
+                                <li class="layui-timeline-item">
+                                    <div class="layui-timeline-content right-con right-con-line">
+                                        <div class="line"></div>
+                                    </div>
+                                </li>
+                                <li class="layui-timeline-item">
+                                    <h4 class="left-tt">占星等级</h4>
+                                    <i class="layui-icon layui-timeline-axis"></i>
+                                    <div class="layui-timeline-content right-con">
+                                        <span class="layui-badge">@user.AsterLevel 级</span>
+                                    </div>
+                                </li>
+                                <li class="layui-timeline-item">
+                                    <h4 class="left-tt">微博</h4>
+                                    <i class="layui-icon layui-timeline-axis"></i>
+                                    <div class="layui-timeline-content right-con">
+                                        @if (user.WeiBo != null)
+                                        {
+                                            if (user.WeiBo.Contains('|'))
+                                            {
+                                                <a href="https://weibo.com/u/@user.WeiBo.Split('|')[0]" target="_blank">@user.WeiBo.Split('|')[1]</a>
+                                            }
+                                        }
+                                    </div>
+                                </li>
+                                <li class="layui-timeline-item">
+                                    <h4 class="left-tt">英文名</h4>
+                                    <div class="layui-timeline-content right-con">
+                                        - @user.EName
+                                    </div>
+                                </li>
+                                <li class="layui-timeline-item">
+                                    <h4 class="left-tt">性别</h4>
+                                    <div class="layui-timeline-content right-con">
+                                        @user.Gender
+                                    </div>
+                                </li>
+                                <li class="layui-timeline-item">
+                                    <h4 class="left-tt">地区</h4>
+                                    <div class="layui-timeline-content right-con">
+                                        @user.Place1 - @user.Place2
+                                    </div>
+                                </li>
+                                <li class="layui-timeline-item">
+                                    <h4 class="left-tt">生日</h4>
+                                    <div class="layui-timeline-content right-con">
+                                        @user.Birthday.ToString("yyyy年MM月dd日")
+                                    </div>
+                                </li>
+                                <li class="layui-timeline-item">
+                                    <h4 class="left-tt">星座</h4>
+                                    <div class="layui-timeline-content right-con">
+                                        <span class="layui-badge layui-bg-blue" id="Astro"></span>
+                                    </div>
+                                </li>
+                                <li class="layui-timeline-item">
+                                    <h4 class="left-tt">简介</h4>
+                                    <i class="layui-icon layui-timeline-axis"></i>
+                                    <div class="layui-timeline-content right-con layui-text">
+                                        <p>@user.Sign</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="layui-tab-item anchor-contect-img">
+                            <div class="page-anchor">
+                                <div class="layui-row">
+                                    <p class="add-link">暂无报告。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item anchor-contect-img">
+                            <div class="page-anchor">
+                                <div class="layui-row">
+                                    <p class="add-link">暂无课程。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item anchor-contect-news">
+                            <div class="page-news">
+                                <ul class="news-list">
+                                    <p class="add-link">暂无 @user.NickName 相关新闻, 请移步<a href="@Url.Action("Add","Astro")">新闻投稿</a>处添加, 星座星语有你更加美好.</p>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item anchor-contect-img">
+                            <div class="page-anchor">
+                                <div class="layui-row">
+                                    <p class="add-link">暂无 @user.NickName 的相册.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item anchor-contect-con">
+                            <div class="page-anchor">
+                                <div class="layui-row layui-form">
+                                    <div id="respond" class="comment-respond">
+                                        <form method="post">
+                                            <ul class="layui-timeline">
+                                                <li class="layui-timeline-item first"></li>
+                                                <li class="layui-timeline-item">
+                                                    <h4 class="left-tt">内容</h4><i class="layui-icon layui-timeline-axis"></i>
+                                                    <div class="layui-timeline-content right-con"><textarea id="comment" name="comment" rows="5" class="layui-textarea" placeholder="说点什么吧"></textarea></div>
+                                                </li>
+                                                <li class="layui-timeline-item">
+                                                    <div class="layui-timeline-content right-con name-input">
+                                                        <input name="submit" type="submit" id="submit" class="submit" value="发表评论">
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-title" unselectable="on" onselectstart="return false;">
+        <div class="layui-container">
+            <div class="title">
+                <h2>
+                    推荐占星师
+                    <span class="line"></span>
+                </h2>
+            </div>
+            <span class="title-eng">AsterTop</span>
+        </div>
+    </div>
+    <div class="page-anchor">
+        <div class="layui-container">
+            <div class="layui-row layui-col-space22">
+                @if (aster.IsSuccess)
+                {
+                    foreach (var item in aster.Items)
+                    {
+                        int index = aster.Items.IndexOf(item) + 1;
+                        <div class="layui-col-xs6 layui-col-lg3">
+                            <div class="moudle-card"   style="overflow:hidden">
+                                <div class="anchor-platform">Top @index</div>
+                                <div class="anchor-line" style="z-index:998"></div>
+                                <div class="anchor-platform-02" style="z-index:999">@item.Title</div>
+                                <div class="anchor-img">
+                                    <a href="@Url.Action("Aster","Astrology",new { userid=@item.Id})">
+                                        <img src="@item.HeadPortrait" alt="@item.NickName">
+                                    </a>
+                                </div>
+                                <div class="anchor-con">
+                                    <div class="name">@item.NickName<span class="line"></span></div>
+                                    <div class="info">@item.Sign</div>
+                                </div>
+                                <div class="anchor-link">
+                                    <a href="@Url.Action("Aster","Astrology",new { userid=@item.Id})" class="layui-btn layui-btn-small zb-btn">占星师详情</a>
+                                    @*<a href="#" class="layui-btn layui-btn-small zb-btn-gold">付费占星</a>*@
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}
+@section scripts{
+    <script>
+        $(function () {
+            var v = Astro.getAstro("@user.Birthday");
+            $("#Astro").html(v);
+        });
+        function gz(type, userid) {
+            var postdata = {
+                type: type,
+                userid: userid,
+            };
+            $.post("@Url.Action("AddOrDelLike", "Astrology")", postdata, function (t) {
+                location.reload();
+            });
+        }
+    </script>
+}

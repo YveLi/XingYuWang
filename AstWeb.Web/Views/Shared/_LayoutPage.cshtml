@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>@ViewBag.Title | 努力打造一个好玩有趣的星座交流平台-星座星语网</title>
+    <meta name="keywords" content="@ViewBag.KeyWords">
+    <meta name="description" content="@ViewBag.Description">
+    <link href="~/static/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/static/css/style.css" rel="stylesheet" />
+    <link rel='stylesheet' id='owlcss-css' href='~/Content/static/css/owl.carousel.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='style-css' href='~/Content/static/css/style.css' type='text/css' media='all' />
+    <link rel="shortcut icon" href="~/Content/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href='~/static/css/bbs_style.css'/>
+    <style type="text/css">
+        .friend-link li a:hover, .custom-carousel, .custom-carousel .owl-prev, .custom-carousel .owl-next, .site-record:hover, .post .post-title a:hover, #footer .footer-friends li a span:hover, #footer .footer-feature .footer-menu li a:hover, .widget-hotpost a:hover, .article-body a, .comments .comments-list .comment .comment-body .comment-user a, .comments .comments-list .comment .children .comment-user a, #comment-nav-below .nav-inside .current, .widget-hotpost-brief i, .archive-header .archive-header-title {
+            color: #ff1677;
+        }
+
+        .article-like .favorite, .carousel-info-meta .carousel-info-category, .tagcloud a:hover, .calendar_wrap table td a, .article-meta .article-meta-tags a, .article-support .article-support-button a, .comments #respond .form-submit input {
+            background-color: #ff1677;
+        }
+
+        .article-body h2, .article-body h3 {
+            border-left: 5px solid #ff1677;
+        }
+
+        .article-like .done {
+            border: 1px solid #ff1677;
+        }
+
+        .page-category-img:after {
+            opacity: 0.5;
+        }
+
+        .admin-login a:hover {
+            background-color: #ff1677;
+        }
+
+        .article-like .favorite {
+            box-shadow: 0 1px 10px #ff1677;
+        }
+
+        .hbox {
+            border-left: 1px solid #eee;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        header {
+            /* 我们希望 header 采用固定的高度，只占用必须的空间 */
+            /* 0 flex-grow, 0 flex-shrink, auto flex-basis */
+            flex: 0 0 auto;
+        }
+
+        #body {
+            /* 将 flex-grow 设置为1，该元素会占用全部可使用空间 
+      而其他元素该属性值为0，因此不会得到多余的空间*/
+            /* 1 flex-grow, 0 flex-shrink, auto flex-basis */
+            flex: 1 0 auto;
+        }
+
+        footer {
+            /* 和 header 一样，footer 也采用固定高度*/
+            /* 0 flex-grow, 0 flex-shrink, auto flex-basis */
+            flex: 0 0 auto;
+        }
+    </style>
+    <script>
+        var carouselSwitcher = "1";
+        var carouselOpacity = "10";
+        var carouselAnimation = "slide";
+        var carouselMouseSwitcher = "";
+        var fancyboxSwitcher = "1";
+        var isHomePage = "1";
+        var pagType = "number";
+        var layoutType = "four";
+    </script>
+</head>
+<body>
+    @{Html.RenderAction("LayoutHeader"); }
+    @*<div class="page-head" id="header">
+            <div class="layui-container">
+                <div class="logo">
+                    <a href="#">
+                        <img src="~/staticimg/logo.png" />
+                    </a>
+                </div>
+                <div class="menu-container">
+                    @{Html.RenderAction("LoadPCHeader");}
+                    <span class="layui-nav-bar" style="left: 54px; top: 65px; width: 0px; opacity: 0;"></span>
+                </div>
+                @{Html.RenderAction("LoadMHeader");}
+            </div>
+        </div>*@
+    <!--搜索栏-->
+    <div class="search-wrap transition">
+        <div class="container">
+            <div class="">
+                <form role="search" method="get" action="/Home/Seach" class="header-search">
+                    <input id="title" data-url="Q0JCQg==" type="search" name="title" title="Search" placeholder="搜索..." value="">
+                </form>
+            </div>
+        </div>
+    </div>
+    @RenderBody()
+    @{Html.RenderAction("LayoutFooter"); }
+    <div class="backdrop transition"></div>
+    <script type="text/javascript" src="~/Content/static/js/jquery.min.js"></script>
+    <script type='text/javascript' src='~/Content/static/js/owl.carousel.min.js'></script>
+    <script type='text/javascript' src='~/Content/static/js/app.js'></script>
+    <script src="~/static/layui/layui.js"></script>
+    <script src="~/static/js/main.js"></script>
+    <script src="~/static/js/jstools.js"></script>
+    <script>
+        function logout() {
+            $.ajax({
+                type: "POST",
+                data: '',
+                url: "/Account/LogOut",
+                datatype: "json",
+                success: function (data) {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

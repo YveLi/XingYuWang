@@ -1,0 +1,67 @@
+﻿@using AstWeb.Common.Models;
+@using AstWeb.Common.Infrastructure;
+@model GetPagingResponse<CartoonComment>
+
+
+<ul class="layui-timeline layui-anim layui-anim-up">
+    <li class="layui-timeline-item "></li>
+    @if (Model.IsSuccess)
+    {
+        foreach (var item in Model.Pages.Items)
+        {
+            <li class="layui-timeline-item" style="padding-bottom:10px;">
+                <h4 class="left-tt">@item.Users.NickName</h4><i class="layui-icon layui-timeline-axis"></i>
+                <div class="layui-timeline-content right-con">
+                    <a href="/user/home/@item.UserId" style="color: #000; border-bottom:0;">
+                        <div class="p-hide" style="width:30px;height:30px;border-radius:50%;overflow:hidden;display:inline-block"><img src="@item.Users.HeadPortrait" width="30px" /> </div>
+                        <span class="p-hide" style="display:inline-block;position:relative;top: -10px;">&nbsp; @item.Users.NickName</span>
+                    </a>
+                    <p>@item.Content</p>
+                    <p class="time">@item.TimeAgo</p>
+                </div>
+            </li>
+        }
+    }
+    else
+    {
+        <li class="layui-timeline-item">
+            <h4 class="left-tt">****</h4><i class="layui-icon layui-timeline-axis"></i><div class="layui-timeline-content right-con">
+                <p>暂无评论</p>
+            </div>
+        </li>
+    }
+    <li class="layui-timeline-item "></li>
+</ul>
+@if (Model.IsSuccess)
+{
+    if (Model.Pages.TotalItems > 10)
+    {
+        <div id="pageHandle" style="text-align: center"></div>
+    }
+}
+<script>
+    $(function () {
+        $.ajaxSetup({
+            async: false
+        });
+          layui.use(["laypage"], function () {
+            var laypage = layui.laypage, layer = layui.layer;
+            laypage.render({
+                elem: 'pageHandle'
+                 ,count:'@(Model.IsSuccess? Model.Pages.TotalItems : 0)'
+                 ,curr: '@(Model.IsSuccess? Model.Pages.CurrentPage:1)'
+                , first: '首页'
+                , last: '尾页'
+                , theme: "#f84b9c"
+                , prev: '上一页'
+                , next: '下一页'
+                 , jump: function (obj, first) {
+                    var curr = obj.curr;
+                    if (!first) {
+                            pagecomment(curr);
+                    }
+                }
+            });
+        })
+    })
+</script>

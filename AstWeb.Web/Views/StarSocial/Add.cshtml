@@ -1,0 +1,106 @@
+﻿@using AstWeb.Common.Models;
+@{
+    ViewBag.Title = "发表帖子";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    var categories = ViewBag.PostCategories as IList<PostCategory>;
+}
+
+<div class="page-title" unselectable="on" onselectstart="return false;">
+    <div class="layui-container">
+        <div class="title">
+            <h2>
+                发表帖子
+                <span class="line"></span>
+            </h2>
+        </div>
+        <span class="title-eng">ADD POST</span>
+    </div>
+</div>
+<div class="page-news" style="margin-bottom:20px;">
+    <div class="layui-container">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md2">
+            </div>
+            <div class="layui-col-md8">
+                <div class="moudle-card">
+                    <div class="page-form layui-text">
+                        <div class="layui-form">
+                            <form method="post" id="form">
+                                @Html.AntiForgeryToken()
+                                <div class="layui-form-item">
+                                    <input type="text" class="layui-input" placeholder="标题" name="Title" id="title" lay-verify="required" />
+                                </div>
+                                <div class="layui-form-item" style="color:#f84b9c">
+                                    <select name="PostCateogryId">
+                                        @if (categories != null && categories.Count > 0)
+                                        {
+                                            foreach (var item in categories)
+                                            {
+                                                <option value="@item.Id">@item.CategoryName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="layui-form-item">
+                                    <select name="Reward">
+                                        <option value="5">5星币</option>
+                                        <option value="20">20星币</option>
+                                        <option value="50">50星币</option>
+                                        <option value="100">100星币</option>
+                                    </select>
+                                </div>
+                                <div class="layui-form-item">
+                                    <textarea class="layui-textarea" name="content" id="content" placeholder="请输入帖子内容"></textarea>
+                                </div>
+                                <div class="layui-form-item">
+                                    <button class="layui-btn zb-btn" lay-filter="postadd" lay-submit> 发表 </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md2">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var editIndex;
+        $(function () {
+            layui.use(['form', 'layedit'], function () {
+                var layedit = layui.layedit, form = layui.form;
+                layedit.set({
+                    uploadImage: {
+                        url: '/FileUpload/FileRecive' //接口url
+                        , type: 'post' //默认post
+                    }
+                });
+                editIndex = layedit.build("content");
+                form.on('submit(postadd)', function (data) {
+                    var contents = layedit.getContent(editIndex);
+                    var title = $("#title").val();
+                    if (contents.length < 20) {
+                        layer.msg('内容不少于20个字符哦', { icon: 2 });
+                        return false;
+                    };
+                    data.field.content = contents ;
+                    $.post('@Url.Action("Add", "StarSocial")', data.field, function (res) {
+                        $('.layui-btn').attr('disabled', 'disabled');
+                        if (res.status==1) {
+                            layer.msg(res.msg, { icon: 2 });
+                        } else {
+                            layer.msg(res.msg, { icon: 1, time: 1000 });
+                            location.href="@Url.Action("Index", "StarSocial",new { CategoriesId = 0,pageIndex=1 })";
+                        }
+                    });
+                    return false;
+                });
+            });
+        });
+    </script>
+}
+
+

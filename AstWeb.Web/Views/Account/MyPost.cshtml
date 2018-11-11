@@ -1,0 +1,136 @@
+﻿@using AstWeb.Common.Models;
+@{
+    var user = ViewBag.user as W_Users;
+    ViewBag.Title = user.NickName + "的家";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+@using AstWeb.Common.Infrastructure;
+@model GetPagingResponse<Posts>
+<div id="body" class="layui-container">
+    <div class="page-news page-bbs">
+
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md2">
+                </div>
+                <div class="layui-col-md8">
+                    @*<div class="moudle-card bbs-user">
+                        <div class="page-form">
+                            <div class="user-head"><img class="avatar-lg center-block    layui-anim layui-anim-rotate layui-anim-loop" src="@user.HeadPortrait"></div>
+                            <div class="user-name">
+                                @user.NickName
+                                @if (user.Gender == Gender.Man)
+                                {
+                                    <i class="iconfont icon-nan" style="color:#5FB878"></i>
+                                }
+                                else
+                                {
+                                    <i class="iconfont icon-nv" style="color:#f84b9c"></i>
+                                }
+                                <p style="color:#FF5722;font-weight:900;"> @user.Title</p>
+                            </div>
+                            <a href="@Url.Action("Index","Account",new { userId=user.Id})" class="user-back"><i class="layui-icon"></i></a>
+                        </div>
+                    </div>*@
+                    <div class="news-list">
+                        <div class="moudle-card">
+                            @if (Model.IsSuccess)
+                            {
+                                foreach (var item in Model.Pages.Items)
+                                {
+                                    <div class="bbs-list layui-anim layui-anim-up" tid="@item.Id">
+                                        <div class="user-head">
+                                            <a href="@Url.Action("Index", "Account", new { userId = item.TUserId })" tabindex="-1">
+                                                <img src="@item.User.HeadPortrait" class="layui-anim layui-anim-scaleSpring">
+                                            </a>
+                                            @if (item.User.Gender == Gender.Man)
+                                            {
+                                                <i class="iconfont icon-nan" style="color:#5FB878"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="iconfont icon-nv" style="color:#f84b9c"></i>
+                                            }
+                                        </div>
+                                        <div class="b-title">
+                                            <h4>
+                                                <a href="@Url.Action("Detail", "StarSocial", new { postid = @item.Id })">
+                                                    @if (item.PostStatus == PostStatus.Close)
+                                                    {
+                                                        <span style="color:#f84b9c">[已解决]</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span style="color:#FF5722">[待解决]</span>
+                                                    }
+                                                    @item.Title
+                                                </a>
+                                            </h4>
+                                            <div class="s-tips">
+                                                <span><a href="@Url.Action("Index", "Account", new { userId = item.TUserId })">@item.User.NickName</a></span>
+                                                <span>在</span>
+                                                <span>@item.TimeAgo</span>
+                                                <span>发表于</span>
+                                                <span class="s-right">
+                                                    <a href="@Url.Action("Index", "StarSocial", new { CategoriesId = item.PostCategory.Id })">@item.PostCategory.CategoryName</a>
+                                                </span>
+                                                <span class="s-right" style="color:#f84b9c"><i class="layui-icon" style="color:#f84b9c">&#xe735;</i>&nbsp;@item.Reward</span>
+                                                <div class="s-times" style="top:15px">
+                                                    <span> @item.Hits</span>
+                                                    <span>阅读</span>
+                                                    <span>@item.CommentCount</span>
+                                                    <span>回复</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <span class="fly-none">还没有发表帖子</span>
+                            }
+                        </div>
+                        @if (Model.IsSuccess)
+                        {
+                            if (Model.Pages.TotalItems > 10)
+                            {
+                                <div id="pageHandle" style="text-align: center"></div>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="layui-col-md2">
+                </div>
+            </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+      layui.use(["laypage"], function () {
+            var laypage = layui.laypage, layer = layui.layer;
+            laypage.render({
+                elem: 'pageHandle'
+                , count: '@(Model.IsSuccess?Model.Pages.TotalItems : 0)
+                , curr: '@(Model.IsSuccess?Model.Pages.CurrentPage:1)'
+                , first: '首页'
+                , last: '尾页'
+                , theme: "#f84b9c"
+                , prev: '上一页'
+                , next: '下一页'
+                , jump: function (obj, first) {
+                    var curr = obj.curr;
+                    if (!first) {
+                        var pathname = location.pathname.substring(0, location.pathname.indexOf('_'));
+                        if (pathname!="") {
+                        if (location.pathname === '@Url.Action("MyPost", "Account")') {
+                            location.href = pathname + "_" + curr;
+                            }
+                        } else {
+                            location.href ="@Url.Action("MyPost", "Account", new { userid = user.Id, pageIndex = 1 })";
+                        }
+                    }
+                }
+            });
+        })
+    </script>
+}

@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "找回密码";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<div id="body" class="layui-container">
+    <div class="page-title" unselectable="on" onselectstart="return false;">
+        <div class="layui-container">
+            <div class="title">
+                <h2>
+                    找回密码
+                    <span class="line"></span>
+                </h2>
+            </div>
+            <span class="title-eng">FIND PASSWD</span>
+        </div>
+    </div>
+    <div class="page-news page-bbs">
+        <div class="layui-container">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md2">
+                </div>
+                <div class="layui-col-md8">
+                    <div class="moudle-card">
+                        <div class="page-form layui-text">
+                            <form id="form" method="post">
+                                @Html.AntiForgeryToken()
+                                <div class="layui-form bbs-user">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">E-mail</label>
+                                        <div class="layui-input-block">
+                                            <input type="email" class="layui-input" placeholder="Email" id="email" name="email" lay-verify="email">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn zb-btn" lay-filter="send" lay-submit>发送重置密码连接</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md2">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+            layui.use(['form'], function () {
+               var form = layui.form, layer = layui.layer;
+               form.on('submit(send)', function (data) {
+                   $.post('@Url.Action("ResetPassword", "Account")',data.field, function (res) {
+                       if (res.status==0) {
+                           layer.msg(res.msg, { icon: 2 });
+                       } else {
+                           layer.msg(res.msg, { icon: 1, time: 1000 }, function (index) {
+                               layer.close(index);
+                               location.href = '@Url.Action("Login", "Account")';//跳转至登录页
+                           });
+                       }
+                   });
+                   return false;
+               });
+            });
+    </script>
+}

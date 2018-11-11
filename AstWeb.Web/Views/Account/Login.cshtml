@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "用户登录";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    ViewBag.KeyWords = "官网,12,配对,十二,星盘,占星,星座,星语,社区,课程,岁时,专属,漫画,第十三星座";
+    ViewBag.Description = "星座星语网是一个综合多种内容和玩法的网站，由多个板块组成，星座的文章，十二星座运势，星盘工具，占星学院，除此之外还有很多内容：星座漫画专栏、星座社区、个人空间、占星师等等";
+    string url = ViewBag.url;
+}
+<style>
+    body {
+        padding: 0px;
+    }
+    .body {
+        background-image: url('/Content/img/ye.jpg');
+        height: 100%;
+        background-position: 50%;
+        background-size: cover;
+        justify-content: center;
+        padding: 10% 0;
+    }
+    .moudle-card {
+        background-color: rgba(255, 255, 255, 0.85);
+    }
+    .moudle-card img {
+        transform: scale(1) !important;
+    }
+</style>
+<div class="body">
+    <div class="page-title" unselectable="on" onselectstart="return false;">
+        <div class="layui-container">
+            <div class="title">
+            </div>
+            <span class="title-eng">LOGIN</span>
+        </div>
+    </div>
+    <div class="page-news page-bbs">
+        <div class="layui-container">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md3">
+                </div>
+                <div class="layui-col-md6">
+                    <div class="moudle-card">
+                        <div class="page-form layui-text">
+                            <div class="layui-form bbs-user">
+                                <form id="form" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">账号</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" class="layui-input" placeholder="邮箱/手机" id="email" name="email" lay-verify="required">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">密码</label>
+                                        <div class="layui-input-block">
+                                            <input type="password" class="layui-input" placeholder="密码" id="pass" name="pass" lay-verify="required">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item" style="text-align:center;margin-bottom:0px; ">
+                                        <button class="layui-btn zb-btn" lay-filter="formDemo" lay-submit>登录</button>
+                                        <a class="layui-btn zb-btn" href="@Url.Action("Register","Account")">注册</a>
+                                        <span id="qqLoginBtn"></span>
+                                        @*<a href="#" class="layui-btn zb-btn login-menu" target="_blank" title="QQ 登录">QQ</a>*@
+                                        @*    <a href="#" class="layui-btn zb-btn login-menu" target="_blank" title="微信 登录">微信</a>*@
+                                    </div>
+                                    @*<div class="layui-form-item">
+                                            <div class="layui-input-block small-con">
+                                                <span></span>
+                                                <span><a href="@Url.Action("ResetPwd","Account")">忘记密码</a></span>
+                                            </div>
+                                        </div>*@
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md3">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <!--QQ互联js文件-->
+    <script type="text/javascript" charset="utf-8"
+        src="~/Content/static/js/qc_jssdk.js"
+        data-appid="101520596"
+        data-redirecturi="http://www.4468.cn/user/register">
+    </script>
+    <script type="text/javascript">
+        QC.Login({
+            btnId: "qqLoginBtn",    //插入按钮的节点id
+            //showModal: true, //是否以Iframe窗口打开
+        });
+        QC.Login.getMe(function (openid, access_token) {
+            QC.api('get_user_info', {
+                oauth_consumer_key: "101520596", // appid
+                access_token: openid,
+                openid: access_token
+            }).success(function (res) {
+                QC.Login.signOut();
+                console.log(res)
+            })
+        })
+    </script>
+    <script>
+        layui.use(['form','layer'], function () {
+            var form = layui.form, layer = layui.layer;
+            //监听提交
+            var returnUrl = Astro.GetQueryString('ReturnUrl');
+            form.on('submit(formDemo)', function (data) {
+                $.post('@Url.Action("Login", "Account")', data.field, function (res) {
+                    //$('.layui-btn').attr('disabled', 'disabled');
+                     if (!res.success) {
+                        layer.msg(res.message, { icon: 2 });
+                    } else {
+                        layer.msg(res.message, { icon: 1,time:1000 }, function (index) {
+                            var user = res.data.user;
+                            layui.data('user', {
+                                key: 'user',
+                                value: {
+                                    username: user.Nickname
+                                    , uid: user.Id
+                                    , avatar: user.HeadPortrait
+                                    , experience: user.Integral
+                                    , sex: user.Gender
+                                }
+                            });
+                            layer.close(index);
+                            location.href = '@url';
+                        });
+                    }
+                });
+                return false;
+            });
+        });
+        $(function () {
+            document.getElementById("footer").style.display = "none";
+            document.getElementsByClassName("header")[0].style.display = "none";
+        });
+    </script>
+}
+
+

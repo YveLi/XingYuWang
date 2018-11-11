@@ -1,0 +1,310 @@
+﻿@using AstWeb.Common.Models;
+@using AstWeb.Common.Infrastructure;
+@{
+    ViewBag.Title = "首页";
+    ViewBag.KeyWords = "官网,12,配对,十二,星盘,占星,星座,星语,社区,课程,岁时,专属,漫画,第十三星座";
+    ViewBag.Description = "星座星语网是一个综合多种内容和玩法的网站，由多个板块组成，星座的文章，十二星座运势，星盘工具，占星学院，除此之外还有很多内容：星座漫画专栏、星座社区、个人空间、占星师等等";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    var bannerlist = ViewBag.bannerlist as IList<BannerList>;
+    var astrolist = ViewBag.astrolist as GetListsResponse<Articles>;
+    var aster = ViewBag.aster as GetListsResponse<W_Users>;
+    var postlist = ViewBag.postlist as GetListsResponse<Posts>;
+    var cartoon = ViewBag.CartoonCategories as List<CartoonCategories>;
+}
+<style>
+    .anchor-img img {
+        height: inherit;
+    }
+
+    .content-title-title {
+        font-size: 16px;
+        color: #333;
+        font-weight: 700;
+        margin-bottom: 8px;
+        line-height: 22px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        margin-right: 35px;
+    }
+
+    .content-title p {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        margin-bottom: 12px;
+    }
+
+    .scroll-container {
+        transition: 1s all ease;
+    }
+
+    .swiper-button-next {
+        width: 32px;
+        height: 66px;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+
+    .swiper-button-prev {
+        width: 32px;
+        height: 66px;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+
+    .consult-icon {
+        font-size: 25px;
+        line-height: 66px;
+        margin: 0 auto;
+        color: #f84b9c;
+    }
+
+    .layui-container {
+        margin: 0 auto 20px;
+    }
+</style>
+<div class="carousel-wrap" style="padding-top:0;">
+    <div class="container no-gutter-xs" style="width:100%;padding: 0;border-radius: 0;">
+        <div id="carousel" class="owl-carousel">
+            @if (bannerlist != null && bannerlist.Count > 0)
+            {
+                foreach (var item in bannerlist)
+                {
+                    <!-- customize carousel-->
+                    <a class="carousel-item" target="blank" href="@item.Url" title="" rel="carousel" style="border-radius:0">
+                        <img src="@item.Img" alt="@item.Memo">
+                        <div class="carousel-info vertical-middle ">
+                            <div class="carousel-info-title">
+                                @item.Memo
+                            </div>
+                        </div>
+                        <div class="carousel-overlay" style="background-image:url(@item.Img);opacity: 1 !important;background-position:center 0;background-repeat:no-repeat;"></div>
+                    </a>
+                }
+            }
+        </div>
+    </div>
+</div>
+<div id="body" class="layui-container" style="width:100% !important">
+    <div class="page-index">
+        <div class="layui-col-space20">
+            <div class="layui-container layui-row news-side">
+                <div class="in-title">
+                    <h1>星座阅读</h1>
+                    <span class="line"></span>
+                </div>
+                @if (astrolist.IsSuccess)
+                {
+                    foreach (var item in astrolist.Items)
+                    {
+                        <div class="layui-col-md6 layui-col-xs12" style="position:relative;padding:5px;background-color:transparent;margin:0">
+                            <div class="moudle-card" style="overflow:hidden;border-radius:7px;background-color:#fff;">
+                                <a href="@Url.Action("Detail", "Astro", new { articleid = @item.Id })">
+                                    <div class="content-img" style="float:left;overflow:hidden;width:100px;height:100px;margin:5px 10px;">
+                                        <img src="@item.ImgUrl.Replace('|',' ')" style="width:100px;" />
+                                    </div>
+                                    <div class="content-title" style="margin:5px 0">
+                                        <div class="content-title-title" style="color: #000;text-align: left;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">@item.Title</div>
+                                        <p>@item.Brief</p>
+                                        <label style="color:#f84b9c"># @item.Label</label>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="layui-container layui-row news-side">
+                <div class="in-title">
+                    <h1>社区热门</h1>
+                    <span class="line"></span>
+                </div>
+                @if (postlist.IsSuccess)
+                {
+                    foreach (var item in postlist.Items)
+                    {
+                        <div class="layui-col-md4" style="position:relative;padding:5px;background-color:transparent;margin:0">
+                            <a href="@Url.Action("Detail", "StarSocial", new { postid = item.Id, pageIndex = 1 })">
+                                <div class="moudle-card" style="overflow:hidden;border-radius:7px;background-color:#fff;padding:0px;height:80px;cursor:pointer;margin-bottom:0px;">
+                                    <div style="position:absolute;left: 5px;top: 5px;"><img src="@item.User.HeadPortrait" style="width:30px;height:30px;border-radius:50%;" /> <span>@item.User.NickName</span></div>
+                                    <p style="color: #000;text-align: center;line-height:80px;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">@item.Title</p>
+                                    <p style="color:#000;position:absolute;left: 35%;bottom: 5px;"><span style="color:#f84b9c">@item.CommentCount</span>人正在讨论中</p>
+                                </div>
+                            </a>
+                        </div>
+                        if (postlist.Items.IndexOf(item) == 3) { break; }
+                        <!--手机端显示不超过三条-->
+                    }
+                }
+            </div>
+            @*<div class="layui-col-xs12 layui-col-lg3">
+                    <div class="in-menu">
+                        <div class="layui-btn-group">
+                            <a href="#">
+                                占星师申请
+                                <img src="https://edu-image.nosdn.127.net/b09ee8ab-9b82-4e19-b9d4-2a7e6a53c5c3.jpg?imageView&thumbnail=833y100&quality=100"
+                                     class="layui-col-md8" style="max-width:100%;" />
+                            </a>
+                            <a href="@Url.Action("Add", "Astro")">
+                                文章投稿
+                                <img src="https://edu-image.nosdn.127.net/bec4a854-7da8-4d75-afb2-2658349e2e68.jpg?imageView&quality=100"
+                                     class="layui-col-md4" style="max-width:100%;" />
+                            </a>
+                        </div>
+                    </div>
+                </div>*@
+            <div class="layui-container layui-row news-side">
+                <div class="in-title">
+                    <h1>星座漫画</h1>
+                    <span class="line"></span>
+                </div>
+                @if (cartoon.Count > 0)
+                {
+                    <div class=" layui-col-md3 layui-col-xs6" style="position:relative;padding:5px;background-color:transparent;">
+                        <a href="https://mp.weixin.qq.com/mp/homepage?__biz=MzU3NjI4OTA0MA%3D%3D&hid=1" target="_blank">
+                            <div class="moudle-card" style="overflow:hidden;border-radius:0;border-top-left-radius:7px;border-top-right-radius:7px;background-color:transparent;padding:0px;margin:0">
+                                <img src="../static/img/xinghualang.png" />
+                                <div class="ribbon-box bg-yellow">已认证</div>
+                            </div>
+                            <div style="background-color:#fff;color:rgb(153, 153, 153);padding:0 10px;border-bottom-left-radius:7px;border-bottom-right-radius:7px;    height: 98px;
+    overflow: hidden;">
+                                <h2 class="name" style="color:#000;margin:0">星画廊<span class="line"></span></h2>
+                                <div class="info">  借由星座的文化世界观来辅助处理人与人的关系.。</div>
+                            </div>
+                        </a>
+                    </div>
+                    foreach (var item in cartoon)
+                    {
+                        int index = cartoon.IndexOf(item) + 1;
+                        <div class=" layui-col-md3 layui-col-xs6" style="position:relative;padding:5px;background-color:transparent;">
+                            <a href="/StarCartoon/Contents/@item.Id">
+                                <div class="moudle-card" style="overflow:hidden;border-radius:0;border-top-left-radius:7px;border-top-right-radius:7px;background-color:transparent;padding:0px;margin:0">
+                                    <img src="@item.TopImg" />
+                                    <div class="ribbon-box bg-yellow">已认证</div>
+                                </div>
+                                <div style="background-color:#fff;color:rgb(153, 153, 153);padding:0 10px;border-bottom-left-radius:7px;border-bottom-right-radius:7px;height: 98px;overflow: hidden;">
+                                    <h2 class="name" style="color:#000;margin:0">@item.Name<span class="line"></span></h2>
+                                    <div class="info">@item.Memo</div>
+                                </div>
+                            </a>
+                        </div>
+                        if (index == 3) { break; }
+                    }
+                }
+            </div>
+            <div class="layui-container layui-row news-side" style="margin-bottom:10px;">
+                <div class="in-title">
+                    <h1>占星课程推荐</h1>
+                    <span class="line"></span>
+                </div>
+                @if (true)
+                {
+                    for (var n = 0; n < 4; n++)
+                    {
+                        <div class=" layui-col-md3" style="position:relative;padding:5px;background-color:transparent;">
+                            <div class="moudle-card" style="overflow:hidden;border-radius:0;border-top-left-radius:7px;border-top-right-radius:7px;background-color:transparent;padding:0px;margin:0" onclick="layer.msg('敬请期待~', { icon: 2 });">
+                                <a>
+                                    <img src="https://uploadfile.bizhizu.cn/2015/1214/20151214025055678.jpg.220.146.jpg" />
+                                    <h2 style="color:#fff;position:absolute;left: 1.5rem;bottom: 0px;">2018春·星座星语入门级占星术</h2>
+                                </a>
+                                <div class="ribbon-box bg-yellow">名师</div>
+                            </div>
+                            <div style="background-color:#fff;color:rgb(153, 153, 153);padding:10px;border-bottom-left-radius:7px;border-bottom-right-radius:7px;">
+                                <div>
+                                    <p>十星占星师：JE</p><p>费用：￥300.00</p>
+                                    <p>围观人数：123</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            @*<div class="layui-col-xs12 layui-col-lg3">
+                    <div class="in-menu">
+                        <div class="layui-btn-group">
+                            <a href="#">
+                                占星师申请
+                                <img src="https://edu-image.nosdn.127.net/b09ee8ab-9b82-4e19-b9d4-2a7e6a53c5c3.jpg?imageView&thumbnail=833y100&quality=100"
+                                     class="layui-col-md8" style="max-width:100%;" />
+                            </a>
+                            <a href="@Url.Action("Add", "Astro")">
+                                文章投稿
+                                <img src="https://edu-image.nosdn.127.net/bec4a854-7da8-4d75-afb2-2658349e2e68.jpg?imageView&quality=100"
+                                     class="layui-col-md4" style="max-width:100%;" />
+                            </a>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+        @*<div class="page-anchor">
+                <div class="layui-row">
+                    <div class="in-title">
+                        <h4>占星师排名</h4>
+                        <span class="line"></span>
+                    </div>
+                    @if (aster.IsSuccess)
+                    {
+                        foreach (var item in aster.Items)
+                        {
+                            int index = aster.Items.IndexOf(item) + 1;
+                            <div class="layui-col-lg3 layui-col-xs6" style="padding:8px">
+                                <div class="moudle-card"  style="overflow:hidden">
+                                    <div class="anchor-platform">Top @index</div>
+                                    <div class="anchor-line" style="z-index:998"></div>
+                                    <div class="anchor-platform-02" style="z-index:999">@item.Title</div>
+                                    <div class="anchor-img">
+                                        <a href="@Url.Action("Aster","Astrology",new { userid=@item.Id})">
+                                            <img src="@item.HeadPortrait" alt="@item.NickName">
+                                        </a>
+                                    </div>
+                                    <div class="anchor-con">
+                                        <div class="name">@item.NickName<span class="line"></span></div>
+                                        <div class="info">@item.Sign</div>
+                                    </div>
+                                    <div class="anchor-link">
+                                        <a href="@Url.Action("Aster","Astrology",new { userid=@item.Id})" class="layui-btn layui-btn-small zb-btn">占星师详情</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>*@
+    </div>
+</div>
+<script>
+    function ArticleType(id) {
+        var type = document.getElementsByClassName("type");
+        for (var n = 0; n < type.length; n++) {
+            document.getElementsByClassName("type")[n].className = 'type';
+        }
+        document.getElementById(id).className += ' active';
+    }
+</script>
+@section scripts{
+    <script>
+        $(function () {
+            layui.use('element', function () {
+                var element = layui.element;
+                //一些事件监听
+                element.on('tab(demo)', function (data) {
+                    console.log(data);
+                });
+            });
+        });
+
+      function seach() {
+               location.href = "@Url.Action("Seach", "Home")?title="+$("#keyword").val();
+        }
+    </script>
+}

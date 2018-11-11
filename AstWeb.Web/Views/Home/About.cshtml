@@ -1,0 +1,68 @@
+﻿@using AstWeb.Common.Models;
+@using AstWeb.Common.Infrastructure;
+@{
+    var articles = ViewBag.articles as Articles;
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    ViewBag.Title = "用户协议";
+    ViewBag.KeyWords = "官网,12,配对,十二,星盘,占星,星座,星语,社区,课程,岁时,专属,搜索";
+    ViewBag.Description = "星座星语网是一个综合多种内容和玩法的网站，由多个板块组成，星座的文章，十二星座运势，星盘工具，占星学院，除此之外还有很多内容：星座漫画专栏、星座社区、个人空间、占星师等等";
+}
+<style>
+    .moudle-card:hover img {
+        transform: scale(1);
+    }
+    .page-news .news-con {
+        margin-bottom: 10px;
+    }
+</style>
+<div id="body">
+    @if (articles != null)
+    {
+        <div class="page-news">
+            <div class="layui-container">
+                <div class="layui-row layui-col-space20">
+                    <div class="layui-col-xs12 layui-col-md9">
+                        <div class="news-con">
+                            <div class="moudle-card">
+                                <h1>@articles.Title<span style="font-size: 12px;color: #f84b9c;float: right;font-weight:initial"><i class="czs-eye-l" title="人气" style="    font-size: 20px;position: relative;top: -3px;"></i> @articles.Hits <i class="iconfont" title="回答"></i> @articles.CommentCount </span></h1>
+                                <div class="panel">
+                                    <input type="hidden" value="@articles.Id" id="hidearticleid" />
+                                    <span>发布日期: <span style="color:#f84b9c">@articles.AddTime.ToString("yyyy年MM月dd日")</span></span>
+                                    @if (articles.Source != null && articles.Source.Contains('|'))
+                                    {
+                                        <span>来源: <a href="@articles.Source.Split('|')[1]" target="_blank" style="color:#f84b9c">@articles.Source.Split('|')[0]</a></span>
+                                    }
+                                </div>
+                                <div class="line"><span class="s"></span></div>
+                                <div class="con layui-text">
+                                    @Html.Raw(articles.Content)
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="layui-col-xs12 layui-col-md3">
+                        <div class="news-side">
+                            <div class="moudle-card">
+                                <!--广告位-->
+                                <div class="in-title">
+                                    <h4>微信公众号</h4>
+                                    <span class="line"></span>
+                                </div>
+                                <ul class="in-list">
+                                    <li>
+                                        <a href="#" target="_blank"><img src="/Content/static/picture/wechat_official.jpg"></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" target="_blank"><img src="/Content/static/picture/xingyu.jpg"></a>
+                                    </li>
+                                </ul>
+                                <!--广告位-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,92 @@
+﻿@using AstWeb.Common.Models;
+@{
+    var user = ViewBag.user as W_Users;
+    ViewBag.Title = user.NickName + "的家";
+    var like = ViewBag.Like as AstWeb.Common.Infrastructure.GetListsResponse<AsterLikes>;
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<div id="body" class="layui-container">
+    <div class="page-title" unselectable="on" onselectstart="return false;">
+        <div class="layui-container">
+            <div class="title">
+                <h2>
+                    我的关注
+                    <span class="line"></span>
+                </h2>
+            </div>
+            <span class="title-eng">MY SITE</span>
+        </div>
+    </div>
+    <div class="page-news page-bbs">
+
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md2">
+                </div>
+                <div class="layui-col-md8">
+                    <div class="moudle-card bbs-user">
+                        <div class="page-form">
+                            <div class="user-head"><img class="avatar-lg center-block layui-anim-loop" src="@user.HeadPortrait"></div>
+                            <div class="user-name">
+                                @user.NickName
+                                @if (user.Gender == Gender.Man)
+                                {
+                                    <i class="layui-icon" style="color:#5FB878">&#xe662;</i>
+                                }
+                                else
+                                {
+                                    <i class="layui-icon" style="color:#f84b9c">&#xe661;</i>
+                                }
+                                <p style="color:#FF5722;font-weight:900;">@user.Title</p>
+                            </div>
+                            <a href="@Url.Action("Index","Account",new { userId=user.Id})" class="user-back"><i class="layui-icon"></i></a>
+                            <div class="layui-form user-passwd" style="margin-bottom:40px;">
+                                @*<form method="post" id="form">
+            @Html.AntiForgeryToken()
+            <div class="layui-form-item">
+                <textarea type="text" class="layui-textarea" placeholder="个性签名" id="sign" lay-verify="required">@user.Sign</textarea>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn zb-btn" lay-filter="updatesign" lay-submit>更新个性签名</button>
+                </div>
+            </div>
+        </form>*@
+                                @if (like.IsSuccess)
+                                {
+                                    <ul>
+                                    @foreach (var item in like.Items)
+                                    {
+                                        <li style="margin:5px;display:inline-block">
+                                            <div class="user-head" style="border-radius:10px;width:60px;height:60px;">
+                                                <a href="@Url.Action("Index", "Account", new { userId = item.UserLike.Id})"><img class="avatar-lg center-block  layui-anim layui-anim-up" src="@item.UserLike.HeadPortrait"></a>
+                                            </div>
+                                            <div class="user-name">
+                                                <span style="display:inline-block;font-size:16px">@item.UserLike.NickName</span>
+                                                @if (user.Gender == Gender.Man)
+                                                {
+                                                    <i class="layui-icon" style="color:#5FB878">&#xe662;</i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="layui-icon" style="color:#f84b9c">&#xe661;</i>
+                                                }
+                                                <p style="color:#FF5722;font-weight:900;margin-bottom:0px;font-size:10px;">@item.UserLike.Title</p>
+                                            </div>
+                                        </li>
+                                    }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p>@like.Message</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md2">
+                </div>
+            </div>
+    </div>
+</div>

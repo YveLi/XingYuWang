@@ -1,0 +1,278 @@
+﻿@using AstWeb.Common.Models;
+@using AstWeb.Models;
+@using AstWeb.Common.Infrastructure;
+@{
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    var user = ViewBag.user as W_Users;
+    var posttype = ViewBag.posttype;
+    ViewBag.Title = posttype != null ? posttype.Title : "星盘";
+    ViewBag.KeyWords = posttype != null ? posttype.Keywords : "热门,热门帖子,评论最多,阅读最多的帖子";
+    ViewBag.Description = posttype != null ? posttype.Description : "阅读最多的帖子";
+}
+<style>
+    .layui-form-checked span, .layui-form-checked:hover span {
+        background-color: #f84b9c;
+    }
+
+    .layui-form-checked, .layui-form-checked:hover {
+        border-color: #f84b9c
+    }
+
+        .layui-form-checked i, .layui-form-checked:hover i {
+            color: #f84b9c;
+        }
+
+    .lcols {
+        width: 100%
+    }
+</style>
+<div id="body" class="layui-container layui-anim layui-anim-up">
+    <div class="page-title" unselectable="on" onselectstart="return false;">
+        <div class="layui-container">
+            <div class="title">
+                <h2>
+                    星盘绘制
+                    <span class="line"></span>
+                </h2>
+            </div>
+            <span class="title-eng">Astrolabe</span>
+        </div>
+    </div>
+    <div class="page-news page-bbs">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-lg2 layui-col-md2">
+                @if (!HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    <div class="news-side bbs-side">
+                        <div class="moudle-card">
+                            <div class="in-menu">
+                                <!-- 游客 -->
+                                <div class="layui-btn-group">
+                                    <a href="@Url.Action("Login","Account")" class="layui-btn zb-btn">用户登录</a>
+                                    <a href="@Url.Action("Register","Account")" class="layui-btn zb-btn">新用户注册</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="news-side bbs-side">
+                    <div class="moudle-card" style="margin-bottom:0px;">
+                        <div class="in-title">
+                            <h4>星盘类型</h4>
+                            <span class="line"></span>
+                        </div>
+                        <ul class="in-list">
+                            <li>
+                                <a href=""><i class="layui-icon"></i>单盘</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="layui-icon"></i>比较盘</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="layui-icon"></i>行运盘</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="layui-icon"></i>二次限盘</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="layui-icon"></i>太阳弧盘</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="layui-icon"></i>太阳返照盘</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="layui-icon"></i>月亮返照盘</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-lg7 layui-col-md7">
+                <div class="news-list">
+                    <div class="moudle-card layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">常用信息</label>
+                            <div class="layui-input-inline">
+                                <select id="userid">
+                                    @*<option value="1">小张</option>
+                                        <option value="2">蕊希</option>*@
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"><span style="color:#f84b9c">*</span>&nbsp;姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" lay-verify="required" placeholder="姓名" class="layui-input">
+                            </div>
+                            <label class="layui-form-label"><span style="color:#f84b9c">*</span>&nbsp;性别</label>
+                            <div class="layui-input-inline">
+                                <input type="radio" name="sex" value="0" title="男" checked />
+                                <input type="radio" name="sex" value="1" title="女" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"><span style="color:#f84b9c">*</span>&nbsp;出生日期</label>
+                            <div class="layui-input-inline">
+                                <input class="layui-input LayDate" id="birthday">
+                            </div>
+                            <label class="layui-form-label"><span style="color:#f84b9c">*</span>&nbsp;夏令时</label>
+                            <div class="layui-input-inline">
+                                <input type="checkbox" ud="isxl" title="是否夏令时" style="background-color: #f84b9c;" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"><span style="color:#f84b9c">*</span>&nbsp;出生地点</label>
+                            <div class="layui-input-inline">
+                                <select id="place1" name="place1" lay-filter="place1" lay-search></select>
+                            </div>
+                            <label class="layui-form-label"><span style="color:#f84b9c">*</span>&nbsp;出生县</label>
+                            <div class="layui-input-inline">
+                                <select id="place2" name="place2" lay-filter="place2" lay-search></select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-inline">
+                                <button class="layui-btn zb-btn" onclick="seach(0)" style="width:100%">开始查询</button>
+                            </div>
+                            <div class="layui-input-inline">
+                                <button class="layui-btn zb-btn" onclick="save()" style="width:100%">保存档案</button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="layui-form lcols">
+                        <canvas id="canvas" width="350" height="350"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-lg3 layui-col-md3">
+                @*<div class="news-side bbs-side">
+                        <div class="moudle-card">
+                            <div class="in-title">
+                                <h4>星盘搜索</h4>
+                                <span class="line"></span>
+                            </div>
+                            <div class="in-list">
+                                <div class="layui-input-inline" style="width:60%">
+                                    <input type="text" class="layui-input" placeholder="关键词" id="keyword">
+                                </div>
+                                <button class="layui-btn zb-btn" onclick="seach()" style="float:right;width:30%">搜索 </button>
+                            </div>
+                        </div>
+                    </div>*@
+                @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    <div class="news-side bbs-side">
+                        <div class="moudle-card left-author">
+                            <div class="author-img">
+                                <a class="nav-link" href="@Url.Action("Index", "Account", new { userId = user.Id })" tabindex="-1">
+                                    <img class="avatar-xs layui-anim layui-anim-loop" src="@user.HeadPortrait">
+                                </a>
+                            </div>
+                            <div class="author-name author-name-u">
+                                <a class="nav-link" href="@Url.Action("Index", "Account", new { userId = user.Id })">
+                                    @user.NickName
+                                    @if (user.Gender == Gender.Man)
+                                    {
+                                        <i class="iconfont icon-nan" style="color:#5FB878"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="iconfont icon-nv" style="color:#f84b9c"></i>
+                                    }
+                                </a>
+                                <p style="color:#FF5722;font-weight:900;margin-bottom:0px;">@user.Title</p>
+                            </div>
+                            <div class="author-name author-name-u">
+                                <a class="nav-link" href="">@user.Sign</a>
+                            </div>
+                            <div class="author-name author-name-u" style="text-align:center">
+                                <a class="layui-btn zb-btn" href="@Url.Action("Index", "Account", new { userId = user.Id })">个人中心</a>
+                                <a class="layui-btn zb-btn-black" href="@Url.Action("LogOut","Account")">退出</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="news-side bbs-side">
+                    <div class="moudle-card">
+                        <!--广告位-->
+                        <div class="in-title">
+                            <h4>微信公众号</h4>
+                            <span class="line"></span>
+                        </div>
+                        <ul class="in-list">
+                            <li>
+                                <a href="#" target="_blank"><img src="/Content/static/picture/wechat_official.jpg"></a>
+                            </li>
+                        </ul>
+                        <!--广告位-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/static/js/canvasjs/util.js"></script>
+    <script src="~/static/js/canvasjs/utilCanvas.js"></script>
+    <script src="~/static/js/canvasjs/dealNatalData.js"></script>
+    <script src="~/static/js/canvasjs/drawCanvas.js"></script>
+    <script src="~/static/js/canvasjs/FontFaceObserver.js"></script>
+    <script src="~/static/js/canvasjs/index.js"></script>
+    <script src="~/static/js/stepcity.js"></script>
+    <script>
+        $(function () {
+            Astro.LayDate();
+            Astro.bandplace('place1', 'place2');
+            var place = $("#place1").val();
+            if (place == "云南省") {
+                bandplaceevent.two("云南省", "place2");
+            }
+        });
+        //单盘 type:1
+        function seach(type) {
+            var userid = $("#users").val();
+            var name = $("#name").val();
+            var sex = $("input[name='sex']:checked").val();
+            var birthday = $("#birthday").val();
+            var isxl = $("#isxl[type='checkbox']").is(':checked');
+            var place = $("#place2").val();
+            var date = new Date(birthday);
+            var postdata = {
+                action: 'xingPan',
+                userid: userid,
+                name: name,
+                sex: sex,
+                isxl: isxl,
+                year: date.getFullYear(),
+                month: date.getMonth() + 1,
+                day: date.getDate(),
+                hour: date.getHours(),
+                min: date.getMinutes(),
+                second: date.getSeconds(),
+                longitude: place.split('|')[0] || '99.10E',
+                latitude: place.split('|')[1] || '25.10N',
+            };
+            layui.use(['form', 'layer'], function () {
+                var layer = layui.layer;
+                switch (type) {
+                    case 0://单盘
+                        Astro.ThreeApi("/api/threeapi/GetAstrolabeData", postdata, function (data) {
+                            if (data.Status == 1) {
+                                panParam.data1 = data.Result.Result;
+                                panParam.type = type;
+                                drawXingPan(panParam);
+                                let iconFontLoad = new FontFaceObserver('iconfont');
+                                iconFontLoad.load().then(function () {
+                                    drawXingPan(panParam);
+                                })
+                            }
+                        });
+                        break;
+                }
+            });
+        }
+    </script>
+
+}

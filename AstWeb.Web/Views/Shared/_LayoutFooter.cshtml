@@ -1,0 +1,85 @@
+﻿@using AstWeb.Common.Infrastructure;
+@model GetListsResponse<AstWeb.Common.Models.Links>
+<footer id="footer">
+    <div class="container" style="position: relative; margin-top: 22px;" data-position="5a3cd125c8ba25bc">
+        <div class="footer-theme hidden-xs">
+            <strong class="d-inline-block">星座星语网<span class="hidden-xs">：</span></strong>
+            <span>努力打造一个好玩有趣的星座交流平台！</span>
+        </div>
+        <div class="footer-theme hidden-xs">
+            <strong class="d-inline-block">版权所有<span class="hidden-xs">：</span></strong>
+            <span> 本站资源来源于互联网，其中原创板块内容转载时请注明出处！</span>
+        </div>
+        <div class="footer-feature">
+            <strong class="pull-left d-inline-block">功能菜单<span class="hidden-xs">：</span></strong>
+            <ul class="footer-menu">
+                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/home/about">用户协议</a></li>
+                @*<li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="">归档</a></li>*@
+                @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    @*<li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/PersonalCenter/Index">个人中心</a></li>*@
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/Account/LogOut">退出</a></li>
+                }
+                else
+                {
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/user/Register">注册</a></li>
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/Account/login">登录</a></li>
+                }
+            </ul>
+        </div>
+        <div class="footer-feature">
+            <strong class="pull-left d-inline-block">友情链接<span class="hidden-xs">：</span></strong>
+            <ul class="footer-menu">
+                @if (Model.IsSuccess)
+                {
+                    foreach (var item in Model.Items)
+                    {
+                        <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="@item.Url" target="_blank">@item.Name</a></li>
+                    }
+                }
+            </ul>
+        </div>
+        <ul class="footer-follow">
+            <li class="follow-wechat">
+                <a>
+                    <i class="czs-weixin"></i>
+                </a>
+                <div class="follow-wechat-popup">
+                    <img src="~/Content/static/picture/wechat_official.jpg" alt="wechat">
+                </div>
+            </li>
+            <li class="follow-weibo">
+                <a target="blank" href="https://weibo.com/ddv1986">
+                    <i class="czs-weibo"></i>
+                </a>
+            </li>
+            <li class="follow-qq">
+                <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1143477896" target=" ">
+                    <i class="czs-qq"></i>
+                </a>
+            </li>
+            <li class="follow-rss">
+                <a href="/home" target=" ">
+                    <i class="czs-rss"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="container">
+    </div>
+    <div class="copyright">
+        <div class="container">
+            <p>
+                Copyright © 2017-2018
+                星座星语 V 1.0
+                <span style="margin-right: 12px;" class="hidden-xs">
+                    <a class="site-record" target=" " href="" style="color: #818181;">
+                        闽ICP备1000000号-01
+                    </a>
+                </span>
+                <script>
+                </script>
+            </p>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,317 @@
+﻿@using AstWeb.Common.Models;
+@{
+    ViewBag.Title = "星座";
+    ViewBag.KeyWords = "官网,12,配对,十二,星盘,占星,星座,星语,社区,课程,岁时,专属,漫画,第十三星座";
+    ViewBag.Description = "星座星语网是一个综合多种内容和玩法的网站，由多个板块组成，星座的文章，十二星座运势，星盘工具，占星学院，除此之外还有很多内容：星座漫画专栏、星座社区、个人空间、占星师等等";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    var astro = ViewBag.astro as IList<TwelveAstro>;
+    var articletype = ViewBag.ArticleType as IList<ArticleCategory>;
+    var bannerlist = ViewBag.bannerlist as IList<BannerList>;
+    var articletypes = ViewBag.ArticleTypes as IList<ArticleCategory>;
+}
+<style>
+    p {
+        position: relative;
+        padding: 0px 5px 0px 5px;
+        line-height: 23px;
+        max-height: 95px;
+        overflow: hidden;
+    }
+
+        p::after {
+            content: "...";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding-left: 40px;
+        }
+</style>
+<div class="page-news page-index" id="body" style="margin-top:30px">
+    <div class="layui-container astro-container" style="padding:0 7.5px;">
+        <div class="layui-row layui-col-space15">
+            <div class="" style="padding:0">
+                <ul class="layui-tab-title m-scroll" style="height: 190px;background-color: transparent;">
+                    @if (astro != null && astro.Count > 0)
+                    {
+                        foreach (var item in astro)
+                        {
+                            <a href="/astro/@item.AstroName-@item.Id?id=@item.Id&title=@item.AstroName">
+                                <li class="layui-col-md1" style="padding:5px;background-color:transparent">
+                                    @switch (item.AstroAttr)
+                                    {
+                                        case "火":
+                                            <div class="moudle-card" style="padding:3.5px;">
+                                                <div style="border:1px solid #f22020;border-radius:5px;margin-bottom:2px;">
+                                                    <img src="@item.AstroImg.Split('|')[0]" alt="@item.AstroName" style="width:85px;height:85px" />
+                                                </div>
+                                                <div style="border:1px solid #f22020;border-radius:5px;">
+                                                    <span class="layui-badge" style="margin:0px 5px 0px -8px;border-radius:20px;background-color:#f22020">@item.AstroAttr</span>
+                                                    <span style="color:#f22020"> @item.AstroName</span>
+                                                    <div style="border-top:1px solid #f22020">
+                                                        <span class="layui-badge" style="background-color:#f22020;left:0px;border-radius:5px;">@item.AstroMonthDay</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            break;
+                                        case "土":
+                                            <div class="moudle-card" style="padding:3.5px;">
+                                                <div style="border:1px solid #c39708;border-radius:5px;margin-bottom:2px;">
+                                                    <img src="@item.AstroImg.Split('|')[0]" alt="@item.AstroName" style="width:85px;height:85px" />
+                                                </div>
+                                                <div style="border:1px solid #c39708;border-radius:5px;">
+                                                    <span class="layui-badge" style="margin:0px 5px 0px -8px;border-radius:20px;background-color:#c39708">@item.AstroAttr</span>
+                                                    <span style="color:#c39708"> @item.AstroName</span>
+                                                    <div style="border-top:1px solid #c39708">
+                                                        <span class="layui-badge" style="background-color:#c39708;left:0px;border-radius:5px;">@item.AstroMonthDay</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            break;
+                                        case "风":
+                                            <div class="moudle-card" style="padding:3.5px;">
+                                                <div style="border:1px solid #08c434;border-radius:5px;margin-bottom:2px;">
+                                                    <img src="@item.AstroImg.Split('|')[0]" alt="@item.AstroName" style="width:85px;height:85px" />
+                                                </div>
+                                                <div style="border:1px solid #08c434;border-radius:5px;">
+                                                    <span class="layui-badge" style="margin:0px 5px 0px -8px;border-radius:20px;background-color:#08c434">@item.AstroAttr</span>
+                                                    <span style="color:#08c434"> @item.AstroName</span>
+                                                    <div style="border-top:1px solid #08c434">
+                                                        <span class="layui-badge" style="background-color:#08c434;left:0px;border-radius:5px;">@item.AstroMonthDay</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            break;
+                                        case "水":
+                                            <div class="moudle-card" style="padding:3.5px;">
+                                                <div style="border:1px solid #23a5f1;border-radius:5px;margin-bottom:2px;">
+                                                    <img src="@item.AstroImg.Split('|')[0]" alt="@item.AstroName" style="width:85px;height:85px" />
+                                                </div>
+                                                <div style="border:1px solid #23a5f1;border-radius:5px;">
+                                                    <span class="layui-badge" style="margin:0px 5px 0px -8px;border-radius:20px;background-color:#23a5f1">@item.AstroAttr</span>
+                                                    <span style="color:#23a5f1">@item.AstroName</span>
+                                                    <div style="border-top:1px solid #23a5f1">
+                                                        <span class="layui-badge" style="background-color:#23a5f1;left:0px;border-radius:5px;">@item.AstroMonthDay</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            break;
+                                    }
+                                </li>
+                            </a>
+                        }
+                    }
+                </ul>
+            </div>
+            <div class="layui-col-xs12 layui-col-md2 m-hide">
+                <div class="news-side">
+                    <div class="moudle-card " id="m-mb-0">
+                        <div class="in-title">
+                            <h4>文章分类</h4>
+                            <span class="line"></span>
+                        </div>
+                        <div class="menu-container">
+                            <ul id="menu-bb" class="in-list">
+                                @if (articletype != null && articletype.Count > 0)
+                                {
+                                    foreach (var item in articletype)
+                                    {
+                                        <li class="line">
+                                            <a href="javascript:void(0);" onclick="show(@item.Id)"><i class="layui-icon"></i>@item.CategoryName </a>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                            <input type="hidden" id="hidecategoryid" value="0" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-md2"  id="category-show"  style="display:none;position:fixed;right:60px;width:170px;z-index:999;bottom: 20px;" onclick="document.getElementById('category-show').style.display='none'">
+                <div class="news-side">
+                    <div class="moudle-card " id="m-mb-0" style="box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);">
+                        <div class="in-title">
+                            <h4>文章分类</h4>
+                            <span class="line"></span>
+                        </div>
+                        <div class="menu-container">
+                            <ul id="menu-bb" class="in-list">
+                                @if (articletype != null && articletype.Count > 0)
+                                {
+                                    foreach (var item in articletype)
+                                    {
+                                        <li class="line">
+                                            <a href="javascript:void(0);" onclick="show(@item.Id)"><i class="layui-icon"></i>@item.CategoryName </a>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                            <input type="hidden" id="hidecategoryid" value="0" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--右下角导航按钮-->
+            <div class="fixed-nav">
+                <ul>
+                    <!--文章编辑-->
+                    <li><a href="@Url.Action("Add", "Astro")"><i class="layui-icon">&#xe642;</i></a></li>
+                    <!--文章分类-->
+                    <li onclick="if (document.getElementById('category-show').style.display == 'none') { document.getElementById('category-show').style.display = 'initial' } else document.getElementById('category-show').style.display = 'none'"><i class="layui-icon">&#xe668;</i></li>
+                </ul>
+            </div>
+            <!--右下角按钮-->
+            <div class="layui-col-xs12 layui-col-md7">
+                <div class="in-tag" style="margin:0;">
+                    <div class="layui-tab layui-tab-brief" lay-filter="demo" style="margin:0">
+                        <ul class="layui-tab-title moudle-card " id="articletypelist" style="padding-left: 7px;background-color:#fff">
+                            @if (articletypes != null && articletypes.Count > 0)
+                            {
+                                foreach (var item in articletypes)
+                                {
+                                    int index = articletypes.IndexOf(item);
+                                    <li id="@item.Id" onclick="shuaxin(@item.Id)">@item.CategoryName</li>
+                                }
+                            }
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div id="articlelist" class="layui-tab-item layui-show">
+                                @{Html.RenderAction("LoadArticle");}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-md3">
+                <div class="news-side m-hide">
+                    <div class="moudle-card">
+                        <div class="in-menu in-menu-one" style="margin-bottom:0">
+                            <a href="@Url.Action("Add", "Astro")" class="layui-btn zb-btn b-btn" style="width:100%">文章投稿</a>
+                        </div>
+                    </div>
+                </div>
+                @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    <div class="news-side">
+                        <div class="moudle-card">
+                            <div class="in-title">
+                                <h4>文章搜索</h4>
+                                <span class="line"></span>
+                            </div>
+                            <div class="in-menu in-menu-one" style="margin-bottom:0">
+                                <div class="in-list">
+                                    <div class="layui-input-inline" style="width:60%">
+                                        <input type="text" class="layui-input" placeholder="关键词" id="keyword">
+                                    </div>
+                                    <button class="layui-btn zb-btn" onclick="seach()" style="float:right;width:30%">搜索 </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="news-side">
+                    @{Html.RenderAction("LoadHot", "Home");}
+                </div>
+                <div class="news-side">
+                    <div class="moudle-card">
+                        <!--广告位-->
+                        <div class="in-title">
+                            <h4>微信公众号</h4>
+                            <span class="line"></span>
+                        </div>
+                        <ul class="in-list">
+                            <li>
+                                <a href="#" target="_blank"><img src="/Content/static/picture/wechat_official.jpg"></a>
+                            </li>
+                        </ul>
+                        <!--广告位-->
+                    </div>
+                    <div class="moudle-card">
+                        <!--广告位-->
+                        <div class="in-title">
+                            <h4>小游戏公众号</h4>
+                            <span class="line"></span>
+                        </div>
+                        <ul class="in-list">
+                            <li>
+                                <a href="#" target="_blank"><img src="/Content/static/picture/xingyu.jpg"></a>
+                            </li>
+                        </ul>
+                        <!--广告位-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            if ($(window).width() < 768) {
+                document.getElementById("m-mb-0").style.marginBottom = "0";
+            }
+        });
+        $(function () {
+            layui.use('carousel', function () {
+                var carousel = layui.carousel;
+                //建造实例
+                carousel.set({
+                    elem: '#news_banner'
+                    , width: '100%' //设置容器宽度
+                    , arrow: 'hover' //始终显示箭头
+                    , interval: 6000
+                    , indicator: 'none'
+                    , anim: 'fade'
+                });
+            });
+        });
+        function show(id) {
+            $("#articletypelist").empty();
+            var postdata = {
+                CategoriesId: id
+            };
+            $.post("@Url.Action("GetArticleTypeList", "Astro")", postdata, function (res) {
+                 if (res.IsSuccess) {
+                     var html = "";
+                     var ids = 0;
+                     $.each(res.Items, function (x, y) {
+                         if (x == 0) {
+                             ids = y.Id;
+                             html += ' <li class="layui-this" id="' + y.Id + '" onclick="shuaxin(' + y.Id + ')">' + y.CategoryName + '</li>';
+                         } else {
+                             html += ' <li id="' + y.Id + '" onclick="shuaxin(' + y.Id + ')">' + y.CategoryName + '</li>';
+                         }
+                     });
+                     $("#articletypelist").html(html);
+                     shuaxin(ids);
+                 }
+            });
+        }
+            function shuaxin(id) {
+            $("#hidecategoryid").val(id);
+            var postdata = {
+                CategoriesId: id,
+                pageIndex:1
+            };
+            $("#articlelist").empty();
+            $.post("@Url.Action("LoadArticle", "Astro")", postdata, function (res) {
+                $("#articlelist").html(res);
+                scrollTo(0,0);
+            });
+        }
+         function page(index) {
+            var postdata = {
+                CategoriesId: $("#hidecategoryid").val(),
+                pageIndex:index
+            };
+            $("#articlelist").empty();
+            $.post("@Url.Action("LoadArticle", "Astro")", postdata, function (res) {
+                $("#articlelist").html(res);
+                location.href = "#articletypelist";
+            });
+        }
+         function seach() {
+             location.href = "@Url.Action("Seach", "Home")?title=" + $("#keyword").val();
+        }
+    </script>
+}

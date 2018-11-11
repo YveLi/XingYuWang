@@ -1,0 +1,64 @@
+﻿@using AstWeb.Common.Models;
+@using AstWeb.Common.Infrastructure;
+@model GetListsResponse<Articles>
+<style>
+    #funnyarticle p {
+        position: relative;
+        line-height: 23px;
+        max-height: 95px;
+        padding: 0px 5px 0px 5px;
+        overflow: hidden;
+    }
+    #funnyarticle p::after {
+        content: "...";
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding-left: 40px;
+    }
+    hr {
+        border: 0.5px solid #eee;
+    }
+    .moudle:hover img{
+        transform:scale(1.1);
+    }
+</style>
+<div class="news-con" id="funnyarticle" style="padding-bottom:10px;">
+    <div class="moudle-card">
+        <h4 class="like-title">您可能感兴趣的文章</h4>
+        <div class="line"><span class="s"></span></div>
+        <div class="other-news">
+            <ul class="news-list">
+                @if (Model.IsSuccess)
+                {
+                    foreach (var item in Model.Items)
+                    {
+                        <li class="moudle" style="padding-left: 0px;margin-right:20px">
+                            <div class="moudle-card">
+                                <h4><a href="@Url.Action("Detail", "Astro", new { articleid = @item.Id })">@item.Title</a><span style="font-size: 12px;color: #f84b9c;float: right;">@item.Hits 阅读 @item.CommentCount 回复</span></h4>
+                                <div class="in-news-list">
+                                    <div class="news-img" style="height:120px;overflow:hidden">
+                                        <a href="@Url.Action("Detail", "Astro", new { articleid = @item.Id })">
+                                        <img src="@item.ImgUrl" alt="@item.Title" style="width: 180px;"></a>
+                                    </div>
+                                    <div class="news-con">
+                                        <p title="@item.Brief">@item.Brief</p>
+                                        <div class="con-time">
+                                            <span><i class="layui-icon"></i>@item.TimeAgo</span>
+                                            <span>
+                                                <i class="layui-icon"></i>
+                                                <a href="@Url.Action("Index","Astro",new { CategoriesId=item.ArticleCategoryId,pageIndex=1})">@item.ArticleCategorys.CategoryName-@item.ArticleCategory.CategoryName</a>
+                                            </span>
+                                        </div>
+                                        <a href="@Url.Action("Detail", "Astro", new { articleid = @item.Id })" class="con-btn">[阅读全文]</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <hr />
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>

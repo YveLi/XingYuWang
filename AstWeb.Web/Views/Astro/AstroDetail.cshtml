@@ -1,0 +1,520 @@
+﻿@using AstWeb.Common.Models;
+@{
+    ViewBag.Title = "十二星座";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    var astro = ViewBag.astro as IList<TwelveAstro>;
+    int queryId = ViewBag.queryId;
+}
+<style>
+    .layui-tab-card > .layui-tab-title .layui-this:after {
+        height: 95px;
+    }
+
+    #astrolist ul {
+        padding: 5px 0;
+        overflow: hidden;
+        margin-left: 40px
+    }
+
+        #astrolist ul li {
+            float: left;
+            font-size: 14px;
+            height: 28px;
+            line-height: 28px;
+            width: 120px;
+            overflow: hidden;
+            color: #393D49;
+        }
+
+    .clear {
+        clear: both;
+    }
+
+        .clear span {
+            line-height: 28px;
+            display: block;
+        }
+
+    .layui-colla-title {
+        color: #f84b9c;
+        background-color: #ffffff;
+    }
+    #articlelist p {
+        position: relative;
+        padding: 0px 5px 0px 5px;
+        line-height: 23px;
+        max-height: 95px;
+        overflow: hidden;
+    }
+
+        #articlelist p::after {
+            content: "...";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding-left: 40px;
+        }
+</style>
+<div class="page-news">
+    <div class="layui-container">
+        <div class="layui-row layui-col-space20">
+            <div class="layui-col-xs12 layui-col-md12">
+                <div class="news-con">
+                    <div class="layui-tab-card layui-tab" lay-filter="tab" style="margin:0">
+                        <div>
+                            <ul class="layui-tab-title m-scroll" style="height: 200px;background-color: transparent;">
+                                @if (astro != null && astro.Count > 0)
+                                {
+                                    foreach (var item in astro)
+                                    {
+                                        <li class="layui-col-md1" style="padding:5px;background-color:transparent">
+                                            @switch (item.AstroAttr)
+                                            {
+                                                case "火":
+                                                    <div class="moudle-card" style="padding:3.5px;">
+                                                        <div style="border:1px solid #f22020;border-radius:5px;margin-bottom:2px;">
+                                                            <img src="@item.AstroImg.Split('|')[0]" alt="@item.AstroName" style="width:85px;height:85px" />
+                                                        </div>
+                                                        <div style="border:1px solid #f22020;border-radius:5px;">
+                                                            <span class="layui-badge" style="margin:0px 5px 0px -8px;border-radius:20px;background-color:#f22020">@item.AstroAttr</span>
+                                                            <span style="color:#f22020"> @item.AstroName</span>
+                                                            <div style="border-top:1px solid #f22020">
+                                                                <span class="layui-badge" style="background-color:#f22020;left:0px;border-radius:5px;">@item.AstroMonthDay</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    break;
+                                                case "土":
+                                                    <div class="moudle-card" style="padding:3.5px;">
+                                                        <div style="border:1px solid #c39708;border-radius:5px;margin-bottom:2px;">
+                                                            <img src="@item.AstroImg.Split('|')[0]" alt="@item.AstroName" style="width:85px;height:85px" />
+                                                        </div>
+                                                        <div style="border:1px solid #c39708;border-radius:5px;">
+                                                            <span class="layui-badge" style="margin:0px 5px 0px -8px;border-radius:20px;background-color:#c39708">@item.AstroAttr</span>
+                                                            <span style="color:#c39708"> @item.AstroName</span>
+                                                            <div style="border-top:1px solid #c39708">
+                                                                <span class="layui-badge" style="background-color:#c39708;left:0px;border-radius:5px;">@item.AstroMonthDay</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    break;
+                                                case "风":
+                                                    <div class="moudle-card" style="padding:3.5px;">
+                                                        <div style="border:1px solid #08c434;border-radius:5px;margin-bottom:2px;">
+                                                            <img src="@item.AstroImg.Split('|')[0]" alt="@item.AstroName" style="width:85px;height:85px" />
+                                                        </div>
+                                                        <div style="border:1px solid #08c434;border-radius:5px;">
+                                                            <span class="layui-badge" style="margin:0px 5px 0px -8px;border-radius:20px;background-color:#08c434">@item.AstroAttr</span>
+                                                            <span style="color:#08c434"> @item.AstroName</span>
+                                                            <div style="border-top:1px solid #08c434">
+                                                                <span class="layui-badge" style="background-color:#08c434;left:0px;border-radius:5px;">@item.AstroMonthDay</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    break;
+                                                case "水":
+                                                    <div class="moudle-card" style="padding:3.5px;">
+                                                        <div style="border:1px solid #23a5f1;border-radius:5px;margin-bottom:2px;">
+                                                            <img src="@item.AstroImg.Split('|')[0]" alt="@item.AstroName" style="width:85px;height:85px" />
+                                                        </div>
+                                                        <div style="border:1px solid #23a5f1;border-radius:5px;">
+                                                            <span class="layui-badge" style="margin:0px 5px 0px -8px;border-radius:20px;background-color:#23a5f1">@item.AstroAttr</span>
+                                                            <span style="color:#23a5f1">@item.AstroName</span>
+                                                            <div style="border-top:1px solid #23a5f1">
+                                                                <span class="layui-badge" style="background-color:#23a5f1;left:0px;border-radius:5px;">@item.AstroMonthDay</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    break;
+                                            }
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                        <div class="layui-tab-content" style="padding:0px;">
+                            @if (astro != null && astro.Count > 0)
+                            {
+                                foreach (var item in astro)
+                                {
+                                    var index = astro.IndexOf(item);
+                                    if (index == queryId - 1)
+                                    {
+                                        <div class="layui-tab-item layui-show">
+                                            <div class="layui-col-md9" id="astrolist" style="padding:3.5px;">
+                                                <div class=" moudle-card" style="background-color:#fff;">
+                                                    <hr />
+                                                    <ul>
+                                                        <li>特点：@item.Traits</li>
+                                                        <li>掌管宫位：@item.PlacePosition</li>
+                                                        <li>阴阳性：@item.YinYang</li>
+                                                        <li>最大特征：@item.MaxTraits</li>
+                                                        <li>主管星：@item.MainPosition</li>
+                                                        <li>颜色：@item.Color</li>
+                                                        <li>珠宝：@item.Gem</li>
+                                                        <li>幸运号码：@item.LuckyNum</li>
+                                                        <li>金属：@item.Metal</li>
+                                                    </ul>
+                                                    <hr />
+                                                    <div>
+                                                        <p style="text-indent:40px;line-height:25px;">@item.Memo</p>
+                                                    </div>
+                                                    <hr />
+                                                    <div class="layui-collapse" lay-filter="fortune" lay-accordion>
+                                                        <div class="layui-colla-item">
+                                                            <h2 class="layui-colla-title today|@item.AstroName">@item.AstroName 今日运势</h2>
+                                                            <div class="layui-colla-content layui-show">
+                                                                综合指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="all" lay-showPercent="true" style="">
+                                                                    <div class="layui-progress-bar layui-bg-blue" lay-percent="0%"></div>
+                                                                </div>
+                                                                健康指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="health" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar" lay-percent="0%" style="background-color:red"></div>
+                                                                </div>
+                                                                爱情指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="love" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar" lay-percent="0%" style="background-color:#f84b9c"></div>
+                                                                </div>
+                                                                财富指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="money" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar layui-bg-orange" lay-percent="0%"></div>
+                                                                </div>
+                                                                事业指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="work" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="layui-colla-item">
+                                                            <h2 class="layui-colla-title tomorrow|@item.AstroName">@item.AstroName 明日运势</h2>
+                                                            <div class="layui-colla-content">
+                                                                综合指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="all" lay-showPercent="true" style="">
+                                                                    <div class="layui-progress-bar layui-bg-blue" lay-percent="0%"></div>
+                                                                </div>
+                                                                健康指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="health" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar" lay-percent="0%" style="background-color:red"></div>
+                                                                </div>
+                                                                爱情指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="love" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar" lay-percent="0%" style="background-color:#f84b9c"></div>
+                                                                </div>
+                                                                财富指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="money" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar layui-bg-orange" lay-percent="0%"></div>
+                                                                </div>
+                                                                事业指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="work" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <div class="layui-col-md3" style="padding:3.5px;">
+                                                <div class="moudle-card" style="height: 540px;">
+                                                    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                                                        <ul class="layui-tab-title">
+                                                            <li class="layui-this">@item.AstroName.Replace("座", "")男</li>
+                                                            <li>@item.AstroName.Replace("座", "")女</li>
+                                                        </ul>
+                                                        <div class="layui-tab-content">
+                                                            <div class="layui-tab-item layui-show">
+                                                                <p class="clear">
+                                                                    <span>
+                                                                        <strong>特点：</strong>@item.MaleTraits
+                                                                    </span>
+                                                                    <span><strong>弱点：</strong>@item.MaleWeakness</span>
+                                                                    <span><strong>爱情：</strong>@item.MaleLove</span>
+                                                                    <span>@item.MaleMemo</span>
+                                                                </p>
+                                                            </div>
+                                                            <div class="layui-tab-item">
+                                                                <p class="clear">
+                                                                    <span>
+                                                                        <strong>特点：</strong>@item.FemaleTraits
+                                                                    </span>
+                                                                    <span><strong>弱点：</strong>@item.FemaleWeakness</span>
+                                                                    <span><strong>爱情：</strong>@item.FemaleLove</span>
+                                                                    <span>@item.FemaleMemo</span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="layui-tab-item">
+                                            <div class="layui-col-md9" id="astrolist" style="padding:3.5px;">
+                                                <div class=" moudle-card" style="background-color:#fff;">
+                                                    <hr />
+                                                    <ul>
+                                                        <li>特点：@item.Traits</li>
+                                                        <li>掌管宫位：@item.PlacePosition</li>
+                                                        <li>阴阳性：@item.YinYang</li>
+                                                        <li>最大特征：@item.MaxTraits</li>
+                                                        <li>主管星：@item.MainPosition</li>
+                                                        <li>颜色：@item.Color</li>
+                                                        <li>珠宝：@item.Gem</li>
+                                                        <li>幸运号码：@item.LuckyNum</li>
+                                                        <li>金属：@item.Metal</li>
+                                                    </ul>
+                                                    <hr />
+                                                    <div>
+                                                        <p style="text-indent:40px;line-height:25px;">@item.Memo</p>
+                                                    </div>
+                                                    <hr />
+                                                    <div class="layui-collapse" lay-filter="fortune" lay-accordion>
+                                                        <div class="layui-colla-item">
+                                                            <h2 class="layui-colla-title today|@item.AstroName">@item.AstroName 今日运势</h2>
+                                                            <div class="layui-colla-content layui-show">
+                                                                综合指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="all" lay-showPercent="true" style="">
+                                                                    <div class="layui-progress-bar layui-bg-blue" lay-percent="0%"></div>
+                                                                </div>
+                                                                健康指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="health" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar" lay-percent="0%" style="background-color:red"></div>
+                                                                </div>
+                                                                爱情指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="love" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar" lay-percent="0%" style="background-color:#f84b9c"></div>
+                                                                </div>
+                                                                财富指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="money" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar layui-bg-orange" lay-percent="0%"></div>
+                                                                </div>
+                                                                事业指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="work" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="layui-colla-item">
+                                                            <h2 class="layui-colla-title tomorrow|@item.AstroName">@item.AstroName 明日运势</h2>
+                                                            <div class="layui-colla-content">
+                                                                综合指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="all" lay-showPercent="true" style="">
+                                                                    <div class="layui-progress-bar layui-bg-blue" lay-percent="0%"></div>
+                                                                </div>
+                                                                健康指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="health" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar" lay-percent="0%" style="background-color:red"></div>
+                                                                </div>
+                                                                爱情指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="love" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar" lay-percent="0%" style="background-color:#f84b9c"></div>
+                                                                </div>
+                                                                财富指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="money" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar layui-bg-orange" lay-percent="0%"></div>
+                                                                </div>
+                                                                事业指数：
+                                                                <div class="layui-progress layui-progress-big" lay-filter="work" lay-showPercent="true">
+                                                                    <div class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <div class="layui-col-md3" style="padding:3.5px;">
+                                                <div class="moudle-card" style="height: 540px;">
+                                                    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                                                        <ul class="layui-tab-title">
+                                                            <li class="layui-this">@item.AstroName.Replace("座", "")男</li>
+                                                            <li>@item.AstroName.Replace("座", "")女</li>
+                                                        </ul>
+                                                        <div class="layui-tab-content">
+                                                            <div class="layui-tab-item layui-show">
+                                                                <p class="clear">
+                                                                    <span>
+                                                                        <strong>特点：</strong>@item.MaleTraits
+                                                                    </span>
+                                                                    <span><strong>弱点：</strong>@item.MaleWeakness</span>
+                                                                    <span><strong>爱情：</strong>@item.MaleLove</span>
+                                                                    <span>@item.MaleMemo</span>
+                                                                </p>
+                                                            </div>
+                                                            <div class="layui-tab-item">
+                                                                <p class="clear">
+                                                                    <span>
+                                                                        <strong>特点：</strong>@item.FemaleTraits
+                                                                    </span>
+                                                                    <span><strong>弱点：</strong>@item.FemaleWeakness</span>
+                                                                    <span><strong>爱情：</strong>@item.FemaleLove</span>
+                                                                    <span>@item.FemaleMemo</span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row layui-col-space20" style="margin-bottom:10px;">
+            <div class="layui-col-lg9 layui-col-md8 bbs-forum">
+                <div class="news-list">
+                    <div class="">
+                        <div id="articlelist">
+                            @{Html.RenderAction("LoadArticle", "Astro");}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-lg3 layui-col-md3">
+                <div class="news-side bbs-side">
+                    <div class="moudle-card">
+                        <!--广告位-->
+                        <div class="in-title">
+                            <h4>微信公众号</h4>
+                            <span class="line"></span>
+                        </div>
+                        <ul class="in-list">
+                            <li>
+                                <a href="#" target="_blank"><img src="/Content/static/picture/wechat_official.jpg"></a>
+                            </li>
+                        </ul>
+                        <!--广告位-->
+                    </div>
+                    <div class="moudle-card">
+                        <!--广告位-->
+                        <div class="in-title">
+                            <h4>微信小游戏</h4>
+                            <span class="line"></span>
+                        </div>
+                        <ul class="in-list">
+                            <li>
+                                <a href="#" target="_blank"><img src="/Content/static/picture/xingyu.jpg"></a>
+                            </li>
+                        </ul>
+                        <!--广告位-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+@section scripts{
+<script>
+    $(document).ready(function () {
+        
+    });
+
+$(function myfunction() {
+    var url = location.search; //获取url中"?"符后的字串
+    if (url.indexOf("?") != -1) {    //判断是否有参数
+        var str = url.substr(1); //从第一个字符开始 因为第0个是?号 获取所有除问号的所有符串
+        strs = str.split("=");   //用等号进行分隔 （因为知道只有一个参数 所以直接用等号进分隔 如果有多个参数 要用&号分隔 再用等号进行分隔）
+        goapi("today", parseInt(strs[1])-1);
+    }
+
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('collapse(fortune)', function (t) {
+            element.progress('all', '0%');
+            element.progress('love', '0%');
+            element.progress('health', '0%');
+            element.progress('work', '0%');
+            element.progress('money', '0%');
+            if (t.show) {
+                var title = t.title[0].className.replace('layui-colla-title ', '').split('|');
+                api(title[0], title[1]);
+            }
+        });
+        element.on('tab(tab)', function (t) {
+            goapi('today', t.index);
+        });
+    });
+});
+//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+function goapi(t, d) {
+    var str = "";
+    console.log("1111111111111");
+    console.log("D的值是"+d);
+    console.log(d == 5);
+    switch (d) {
+        case 0:
+            str = "白羊座";
+            break;
+        case 1:
+            str = "金牛座";
+            break;
+        case 2:
+            str = "双子座";
+            break;
+        case 3:
+            str = "巨蟹座";
+            break;
+        case 4:
+            str = "狮子座";
+            break;
+        case 5:
+            str = "处女座";
+            break;
+        case 6:
+            str = "天秤座";
+            break;
+        case 7:
+            str = "天蝎座";
+            break;
+        case 8:
+            str = "射手座";
+            break;
+        case 9:
+            str = "摩羯座";
+            break;
+        case 10:
+            str = "水瓶座";
+            break;
+        case 11:
+            str = "双鱼座";
+            break;
+    }
+    api(t, str);
+}
+function api(curys, astroname) {
+    var postdata = {
+        astroname: astroname,
+        type: curys
+    }
+    Astro.ThreeApi("/api/threeapi/GetAstroFortuneToOne", postdata, function (data) {
+        var postdata = {
+            title: astroname,
+            CategoriesId: 0,
+            pageIndex: 1
+        };
+        $.post("@Url.Action("LoadArticle", "Astro")", postdata, function (res) {
+                $("#articlelist").html(res);
+            $("#pageHandle").hide();
+            });
+        if (data.Status == 1) {
+            //console.log(data.Result.result1);
+            layui.use('element', function () {
+                var element1 = layui.element;
+                element1.progress('all', data.Result.result1.all);
+                element1.progress('love', data.Result.result1.love);
+                element1.progress('health', data.Result.result1.health);
+                element1.progress('work', data.Result.result1.work);
+                element1.progress('money', data.Result.result1.money);
+            });
+        }
+    });
+}
+</script>
+}

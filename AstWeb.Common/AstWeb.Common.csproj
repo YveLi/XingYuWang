@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AE921BAE-9F6C-419C-B8B4-DBCB798FB7E1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AstWeb.Common</RootNamespace>
+    <AssemblyName>AstWeb.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NPoco, Version=3.9.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPoco.3.9.4\lib\net45\NPoco.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Authentication\AspFormsAuthentication.cs" />
+    <Compile Include="Authentication\IFormsAuthentication.cs" />
+    <Compile Include="Configuration\CommFun.cs" />
+    <Compile Include="Configuration\DataConversion.cs" />
+    <Compile Include="Configuration\SMSHelper.cs" />
+    <Compile Include="Configuration\SysConfig.cs" />
+    <Compile Include="Configuration\WebConfigApplicationSettings.cs" />
+    <Compile Include="Email\EmailAccount.cs" />
+    <Compile Include="Email\EmailServiceFactory.cs" />
+    <Compile Include="Email\IEmailService.cs" />
+    <Compile Include="Email\SmtpService.cs" />
+    <Compile Include="Extension\QueryExt.cs" />
+    <Compile Include="Extension\StrExt.cs" />
+    <Compile Include="Helper\DataConversion.cs" />
+    <Compile Include="Helper\DataHelper.cs" />
+    <Compile Include="Helper\DateHelper.cs" />
+    <Compile Include="Helper\EnumHelper.cs" />
+    <Compile Include="Helper\FileHelper.cs" />
+    <Compile Include="Helper\WebHelper.cs" />
+    <Compile Include="Infrastructure\BaseEntity.cs" />
+    <Compile Include="Infrastructure\BaseService.cs" />
+    <Compile Include="Infrastructure\BusinessRule.cs" />
+    <Compile Include="Infrastructure\GetListsResponse.cs" />
+    <Compile Include="Infrastructure\GetPagingResponse.cs" />
+    <Compile Include="Infrastructure\RequestBaseOfPaging.cs" />
+    <Compile Include="Infrastructure\Response.cs" />
+    <Compile Include="Infrastructure\ResponseBase.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\Log4NetAdapter.cs" />
+    <Compile Include="Logging\LoggingFactory.cs" />
+    <Compile Include="Models\ActivityBannerList.cs" />
+    <Compile Include="Models\ActivityUser.cs" />
+    <Compile Include="Models\ActivtyList.cs" />
+    <Compile Include="Models\ActivtyVoteList.cs" />
+    <Compile Include="Models\AdminPost.cs" />
+    <Compile Include="Models\ArticleCategory.cs" />
+    <Compile Include="Models\CartoonComment.cs" />
+    <Compile Include="Models\ArticleComment.cs" />
+    <Compile Include="Models\ArticleContribution.cs" />
+    <Compile Include="Models\Articles.cs" />
+    <Compile Include="Models\AsterLikes.cs" />
+    <Compile Include="Models\BannerList.cs" />
+    <Compile Include="Models\CartoonCategories.cs" />
+    <Compile Include="Models\SMS.cs" />
+    <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\Contribution.cs" />
+    <Compile Include="Models\Enum.cs" />
+    <Compile Include="Models\FileInfo.cs" />
+    <Compile Include="Models\ArticleLikes.cs" />
+    <Compile Include="Models\Links.cs" />
+    <Compile Include="Models\LuckyDrawList.cs" />
+    <Compile Include="Models\LuckyUserList.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\PostContribution.cs" />
+    <Compile Include="Models\Posts.cs" />
+    <Compile Include="Models\PostCategory.cs" />
+    <Compile Include="Models\StarCartoon.cs" />
+    <Compile Include="Models\StarTest.cs" />
+    <Compile Include="Models\TwelveAstro.cs" />
+    <Compile Include="Models\TwelveZodiac.cs" />
+    <Compile Include="Models\UploadConfigModel.cs" />
+    <Compile Include="Models\Users.cs" />
+    <Compile Include="Models\Visitor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ActivityBannerListService.cs" />
+    <Compile Include="Services\ActivtyListService.cs" />
+    <Compile Include="Services\ActivityUserService.cs" />
+    <Compile Include="Services\ActivtyVoteListService.cs" />
+    <Compile Include="Services\ArticleCategoryService.cs" />
+    <Compile Include="Services\CartoonCommentService.cs" />
+    <Compile Include="Services\ArticleCommentService.cs" />
+    <Compile Include="Services\ArticleContributionService.cs" />
+    <Compile Include="Services\ArticlesService.cs" />
+    <Compile Include="Services\BannerService.cs" />
+    <Compile Include="Services\CartoonCategoriesService.cs" />
+    <Compile Include="Services\CommentService.cs" />
+    <Compile Include="Services\ContributionService.cs" />
+    <Compile Include="Services\AsterLikesService.cs" />
+    <Compile Include="Services\ArticleLikesService.cs" />
+    <Compile Include="Services\LinksService.cs" />
+    <Compile Include="Services\LuckyDrawListService.cs" />
+    <Compile Include="Services\LuckyUserListService.cs" />
+    <Compile Include="Services\MessageService.cs" />
+    <Compile Include="Services\Messaging\GetPageMessagesRequest.cs" />
+    <Compile Include="Services\Messaging\GetPagePostsRequest.cs" />
+    <Compile Include="Services\PostCategoryService.cs" />
+    <Compile Include="Services\PostContributionService.cs" />
+    <Compile Include="Services\PostService.cs" />
+    <Compile Include="Services\SMSService.cs" />
+    <Compile Include="Services\StarCartoonService.cs" />
+    <Compile Include="Services\StarTestService.cs" />
+    <Compile Include="Services\TwelveAstroService.cs" />
+    <Compile Include="Services\TwelveZodiacService.cs" />
+    <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\VisitorService.cs" />
+    <Compile Include="Util\ConfigHandle.cs" />
+    <Compile Include="Util\FileUtil.cs" />
+    <Compile Include="Util\Thumbnail.cs" />
+    <Compile Include="Util\Utils.cs" />
+    <Compile Include="Util\WaterMark.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

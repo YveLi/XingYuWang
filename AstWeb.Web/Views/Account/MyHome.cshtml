@@ -1,0 +1,212 @@
+﻿@using AstWeb.Common.Models;
+@{
+    var user = ViewBag.user as W_Users;
+    ViewBag.Title = user.NickName + "的个人资料";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<style>
+    .mask {
+        position: fixed;
+        left: 0;
+        z-index: 999;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        display: none;
+    }
+    .mask-content {
+        width: 250px;
+        height: 250px;
+        border-radius: 10px;
+        vertical-align: middle;
+        overflow: hidden;
+        color:#fff;
+        margin:0 auto;
+        position:relative;
+        top:40%;
+        transform:translateY(-50%);
+    }
+</style>
+<div class="mask" onclick="document.getElementsByClassName('mask')[0].style.display='none'">
+    <div class="mask-content">
+        点击授权绑定
+        <span id="qqLoginBtn"></span>
+    </div>
+</div>
+<div id="body" class="layui-container layui-anim layui-anim-up">
+    <div class="page-title" unselectable="on" onselectstart="return false;">
+        <div class="layui-container">
+            <div class="title">
+                <h2>
+                    个人资料
+                    <span class="line"></span>
+                </h2>
+            </div>
+            <span class="title-eng">MY SITE</span>
+        </div>
+    </div>
+    <div class="page-news page-bbs">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md2">
+                </div>
+                <div class="layui-col-md8">
+                    <div class="moudle-card bbs-user">
+                        <div class="page-form">
+                            <div class="user-head"><img class="avatar-lg center-block   layui-anim layui-anim-loop" src="@user.HeadPortrait"></div>
+                            <div class="user-name">
+                                @user.NickName
+                                @if (user.Gender == Gender.Man)
+                                {
+                                    <i class="layui-icon" style="color:#5FB878">&#xe662;</i>
+                                }
+                                else
+                                {
+                                    <i class="layui-icon" style="color:#f84b9c">&#xe661;</i>
+                                }
+                                <p style="color:#FF5722;font-weight:900;">@user.Title</p>
+                            </div>
+                            <a href="@Url.Action("Index","Account",new { userId=user.Id})" class="user-back"><i class="layui-icon"></i></a>
+
+                            <div class="layui-form">
+                                <form method="post" id="form">
+                                    @Html.AntiForgeryToken()
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">QQ账号</label>
+                                        <div class="layui-input-block" style="line-height:36px">
+                                            @if (user.AccessToken != "" && user.AccessToken != null)
+                                            {
+                                                <i class="czs-qq" style="font-size:20px;color:#498ad5"></i><span>已绑定</span>
+                                            }
+                                            else
+                                            {
+                                                <i class="czs-qq" style="font-size:20px;" onclick="document.getElementsByClassName('mask')[0].style.display='block'"><span style="font-size:16px">未绑定</span></i>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">用户名</label>
+                                        <div class="layui-input-block">
+                                            <span style="line-height:36px;">@user.NickName</span>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">生日</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" class="layui-input" placeholder="@user.Birthday.ToString("yyyy-MM-dd")" id="BirthDay" name="Birthday" value="@user.Birthday.ToString("yyyy-MM-dd")">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">性别</label>
+                                        <div class="layui-input-block">
+                                            @if (user.Gender == Gender.Man)
+                                            {
+                                                <input type="radio" name="Gender" value="1" title="男" checked=""><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon layui-anim-scaleSpring"></i><div>男</div></div>
+                                                <input type="radio" name="Gender" value="0" title="女"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>女</div></div>
+                                            }
+                                            else
+                                            {
+                                                <input type="radio" name="Gender" value="1" title="男"><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon layui-anim-scaleSpring"></i><div>男</div></div>
+                                                <input type="radio" name="Gender" value="0" title="女" checked=""><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>女</div></div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">签名</label>
+                                        <div class="layui-input-block">
+                                            <textarea type="text" class="layui-textarea" id="sign" name="Sign">@user.Sign</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn zb-btn" lay-filter="update" lay-submit> 提交 </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md2">
+                </div>
+            </div>
+    </div>
+</div>
+@section scripts{
+    <!--QQ互联js文件-->
+    <script type="text/javascript" charset="utf-8"
+        src="http://connect.qq.com/qc_jssdk.js"
+        data-appid="101520596"
+        data-redirecturi="http://www.4468.cn/user/register">
+    </script>
+    <script type="text/javascript">
+        QC.Login({
+            btnId: "qqLoginBtn",    //插入按钮的节点id
+            //showModal: true, //是否以Iframe窗口打开
+        });
+        QC.Login.getMe(function (openid, access_token) {
+            QC.api('get_user_info', {
+                oauth_consumer_key: "101520596", // appid
+                access_token: openid,
+                openid: access_token
+            }).success(function (res) {
+                QC.Login.signOut();
+                console.log(res);
+                $.ajax({
+                    type: "POST",
+                    url: "/Account/UpdateToken",
+                    dataType:"json",
+                    data: {
+                        AccessToken: access_token,
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            layer.msg("绑定成功", { icon: 1, time: 2000 }, function (index) {
+                                layer.close(index);
+                            });
+                        } else {
+                            layer.msg("绑定失败，QQ账号已被使用", { icon: 0, time: 2000 });
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+    <script>
+        $(function () {
+            layui.use(['form'], function () {
+                var form = layui.form;
+                form.on('submit(update)', function (data) {
+                    var bd = $("#BirthDay").val();
+                    if (bd > Date.now()) {
+                        layer.msg('填正确生日', { icon: 2 });
+                        return false;
+                    };
+                    $.post('@Url.Action("UpdateInfo", "Account")', data.field, function (res) {
+                        $('.layui-btn').attr('disabled', 'disabled');
+                        if (res.status == 1) {
+                            layer.msg(res.msg, { icon: 1, time: 1000 }, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.msg(res.msg, { icon: 2, time: 1000 }, function () {
+                                location.reload();
+                            });
+                        }
+                    });
+                    return false;
+                });
+            });
+        });
+
+
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            //常规用法
+            laydate.render({
+                elem: '#BirthDay'
+            });
+        });
+    </script>
+    
+    }
+

@@ -1,0 +1,12 @@
+D:\Project\AstroWeb\AstWeb.Common\bin\Debug\AstWeb.Common.dll
+D:\Project\AstroWeb\AstWeb.Common\bin\Debug\AstWeb.Common.pdb
+D:\Project\AstroWeb\AstWeb.Common\bin\Debug\log4net.dll
+D:\Project\AstroWeb\AstWeb.Common\bin\Debug\Newtonsoft.Json.dll
+D:\Project\AstroWeb\AstWeb.Common\bin\Debug\NPoco.dll
+D:\Project\AstroWeb\AstWeb.Common\bin\Debug\log4net.xml
+D:\Project\AstroWeb\AstWeb.Common\bin\Debug\Newtonsoft.Json.xml
+D:\Project\AstroWeb\AstWeb.Common\obj\Debug\AstWeb.Common.csprojAssemblyReference.cache
+D:\Project\AstroWeb\AstWeb.Common\obj\Debug\AstWeb.Common.csproj.CoreCompileInputs.cache
+D:\Project\AstroWeb\AstWeb.Common\obj\Debug\AstWeb.Common.csproj.CopyComplete
+D:\Project\AstroWeb\AstWeb.Common\obj\Debug\AstWeb.Common.dll
+D:\Project\AstroWeb\AstWeb.Common\obj\Debug\AstWeb.Common.pdb

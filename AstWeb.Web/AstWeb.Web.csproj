@@ -1,0 +1,505 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.9.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.9.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9F50EF10-4B18-4BE4-A4F6-0475DBC76796}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AstWeb.Social</RootNamespace>
+    <AssemblyName>AstWeb.Social</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+    <TypeScriptToolsVersion>2.8</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NPoco, Version=3.9.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPoco.3.9.4\lib\net45\NPoco.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.6\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AstroController.cs" />
+    <Compile Include="Controllers\AstrolabeController.cs" />
+    <Compile Include="Controllers\AstrologyController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\FileUploadController.cs" />
+    <Compile Include="Controllers\FortuneController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SalonController.cs" />
+    <Compile Include="Controllers\StarCartoonController.cs" />
+    <Compile Include="Controllers\StarSocialController.cs" />
+    <Compile Include="Controllers\StarTestController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GeetestConfig.cs" />
+    <Compile Include="Models\LikeModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\PostModel.cs" />
+    <Compile Include="Models\PostSetModel.cs" />
+    <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\RepassModel.cs" />
+    <Compile Include="Models\ReplyModel.cs" />
+    <Compile Include="Models\SetModel.cs" />
+    <Compile Include="Models\SocialCount.cs" />
+    <Compile Include="Models\UploadConfigModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\img\favicon.ico" />
+    <Content Include="Content\img\img.jpg" />
+    <Content Include="Content\img\mu.jpg" />
+    <Content Include="Content\img\ye.jpg" />
+    <Content Include="Content\img\yg.jpeg" />
+    <Content Include="Content\sina\css\common2.css" />
+    <Content Include="Content\sina\css\fortuneresult.css" />
+    <Content Include="Content\sina\css\index.css" />
+    <Content Include="Content\sina\css\pagebox.css" />
+    <Content Include="Content\sina\css\sweet-alert.css" />
+    <Content Include="Content\sina\css\view.css" />
+    <Content Include="Content\sina\fonts\whnfont.svg" />
+    <Content Include="Content\sina\images\avatar-40.png" />
+    <Content Include="Content\sina\images\avatar-60.png" />
+    <Content Include="Content\sina\images\avatar-80.png" />
+    <Content Include="Content\sina\images\circle-100.png" />
+    <Content Include="Content\sina\images\circle-120.png" />
+    <Content Include="Content\sina\images\circle-150.png" />
+    <Content Include="Content\sina\js\fortuneresult.js" />
+    <Content Include="Content\sina\js\jquery-1.9.1.min.js" />
+    <Content Include="Content\sina\js\sea.config.js" />
+    <Content Include="Content\sina\js\sea.js" />
+    <Content Include="Content\sina\js\suda_s_v851c.js" />
+    <Content Include="Content\sina\picture\a.gif" />
+    <Content Include="Content\sina\picture\arrow.png" />
+    <Content Include="Content\sina\picture\avatar-default.png" />
+    <Content Include="Content\sina\picture\icon.png" />
+    <Content Include="Content\sina\picture\logo.png" />
+    <Content Include="Content\sina\picture\qrcode.png" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\static\css\slider.css" />
+    <Content Include="Content\static\css\owl.carousel.min.css" />
+    <Content Include="Content\static\css\style.css" />
+    <Content Include="Content\static\fonts\strawberryicon.svg" />
+    <Content Include="Content\static\js\app.js" />
+    <Content Include="Content\static\js\gt.js" />
+    <Content Include="Content\static\js\jquery.min.js" />
+    <Content Include="Content\static\js\owl.carousel.min.js" />
+    <Content Include="Content\static\js\qc_jssdk.js" />
+    <Content Include="Content\static\picture\041be7ed84b849a6b396ea9d8c11b68f.gif" />
+    <Content Include="Content\static\picture\1891e2a5e97444e99e427f2616166238.gif" />
+    <Content Include="Content\static\picture\32d0170bf8a04d988fe891ffe513bd43.gif" />
+    <Content Include="Content\static\picture\36cd4527ddb44d2690cec0c78c9bab09.gif" />
+    <Content Include="Content\static\picture\414908425.jpeg" />
+    <Content Include="Content\static\picture\4f97484f77a94cb8acf281d3a6020b4d.gif" />
+    <Content Include="Content\static\picture\649a9937f34d411f8d682923df11fef9.gif" />
+    <Content Include="Content\static\picture\84378c16c8624751ad8443b70313ea0f.gif" />
+    <Content Include="Content\static\picture\avatar_user_1_1500356034-96x96.png" />
+    <Content Include="Content\static\picture\d3c611d63c594d4c9722a21860f38ec9.gif" />
+    <Content Include="Content\static\picture\d64a160b0971454b9ebe1070d7b5d6c6.gif" />
+    <Content Include="Content\static\picture\f68843c5657c41039e99e4d84123f21b.gif" />
+    <Content Include="Content\static\picture\logo.png" />
+    <Content Include="Content\static\picture\logo_mobile.png" />
+    <Content Include="Content\static\picture\mbe.png" />
+    <Content Include="Content\static\picture\meteor.png" />
+    <Content Include="Content\img\ok.png" />
+    <Content Include="Content\static\picture\wechat_official.jpg" />
+    <Content Include="Content\static\picture\xingyu.jpg" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\sina\fonts\whnfont.eot" />
+    <Content Include="Content\sina\fonts\whnfont.ttf" />
+    <Content Include="Content\sina\fonts\whnfont.woff" />
+    <Content Include="Content\sina\fonts\whnfont.woff2" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="static\img\12sign.png" />
+    <Content Include="static\img\heijinglogo.png" />
+    <Content Include="static\css\bbs_style.css" />
+    <Content Include="static\css\style.css" />
+    <Content Include="static\img\DefaultHeadPortraits\1.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\10.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\100.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\100.png" />
+    <Content Include="static\img\DefaultHeadPortraits\1001.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\1002.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\1010.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\1020.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\104.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\10b0.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\10e0.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\10f0.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\10fds0.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\10fs0.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\10fsd0.png" />
+    <Content Include="static\img\DefaultHeadPortraits\10gfg0.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\10gv0.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\10hgh0.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\10r0.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\10sfd0.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\11.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\12300.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\1300.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\1400.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\424.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\1a00.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\1g00.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\1g00.png" />
+    <Content Include="static\img\DefaultHeadPortraits\1gf00.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\1s00.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\1v00.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\2.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\532.png" />
+    <Content Include="static\img\DefaultHeadPortraits\422.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\23.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\234.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\5.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\6.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\24.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\7.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\8.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\535.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\9.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\32.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\df.jpg" />
+    <Content Include="static\img\DefaultHeadPortraits\img.jpg" />
+    <Content Include="static\img\logo.png" />
+    <Content Include="static\img\m-logo.png" />
+    <Content Include="static\img\signStar-1.png" />
+    <Content Include="static\img\signStar-10.png" />
+    <Content Include="static\img\signStar-11.png" />
+    <Content Include="static\img\signStar-12.png" />
+    <Content Include="static\img\signStar-2.png" />
+    <Content Include="static\img\signStar-3.png" />
+    <Content Include="static\img\signStar-4.png" />
+    <Content Include="static\img\signStar-5.png" />
+    <Content Include="static\img\signStar-6.png" />
+    <Content Include="static\img\signStar-7.png" />
+    <Content Include="static\img\signStar-8.png" />
+    <Content Include="static\img\signStar-9.png" />
+    <Content Include="static\img\xinghualang.png" />
+    <Content Include="static\js\canvasjs\canvas-astrolabe.js" />
+    <Content Include="static\js\canvasjs\dealNatalData.js" />
+    <Content Include="static\js\canvasjs\drawCanvas.js" />
+    <Content Include="static\js\canvasjs\FontFaceObserver.js" />
+    <Content Include="static\js\canvasjs\index.js" />
+    <Content Include="static\js\canvasjs\util.js" />
+    <Content Include="static\js\canvasjs\utilCanvas.js" />
+    <Content Include="static\js\jstools.js" />
+    <Content Include="static\js\main.js" />
+    <Content Include="static\js\stepcity.js" />
+    <Content Include="static\layui\css\layui.css" />
+    <Content Include="static\layui\css\layui.mobile.css" />
+    <Content Include="static\layui\css\modules\code.css" />
+    <Content Include="static\layui\css\modules\laydate\default\laydate.css" />
+    <Content Include="static\layui\css\modules\layer\default\icon-ext.png" />
+    <Content Include="static\layui\css\modules\layer\default\icon.png" />
+    <Content Include="static\layui\css\modules\layer\default\layer.css" />
+    <Content Include="static\layui\css\modules\layer\default\loading-0.gif" />
+    <Content Include="static\layui\css\modules\layer\default\loading-1.gif" />
+    <Content Include="static\layui\css\modules\layer\default\loading-2.gif" />
+    <Content Include="static\layui\font\iconfont.svg" />
+    <Content Include="static\layui\images\face\0.gif" />
+    <Content Include="static\layui\images\face\1.gif" />
+    <Content Include="static\layui\images\face\10.gif" />
+    <Content Include="static\layui\images\face\11.gif" />
+    <Content Include="static\layui\images\face\12.gif" />
+    <Content Include="static\layui\images\face\13.gif" />
+    <Content Include="static\layui\images\face\14.gif" />
+    <Content Include="static\layui\images\face\15.gif" />
+    <Content Include="static\layui\images\face\16.gif" />
+    <Content Include="static\layui\images\face\17.gif" />
+    <Content Include="static\layui\images\face\18.gif" />
+    <Content Include="static\layui\images\face\19.gif" />
+    <Content Include="static\layui\images\face\2.gif" />
+    <Content Include="static\layui\images\face\20.gif" />
+    <Content Include="static\layui\images\face\21.gif" />
+    <Content Include="static\layui\images\face\22.gif" />
+    <Content Include="static\layui\images\face\23.gif" />
+    <Content Include="static\layui\images\face\24.gif" />
+    <Content Include="static\layui\images\face\25.gif" />
+    <Content Include="static\layui\images\face\26.gif" />
+    <Content Include="static\layui\images\face\27.gif" />
+    <Content Include="static\layui\images\face\28.gif" />
+    <Content Include="static\layui\images\face\29.gif" />
+    <Content Include="static\layui\images\face\3.gif" />
+    <Content Include="static\layui\images\face\30.gif" />
+    <Content Include="static\layui\images\face\31.gif" />
+    <Content Include="static\layui\images\face\32.gif" />
+    <Content Include="static\layui\images\face\33.gif" />
+    <Content Include="static\layui\images\face\34.gif" />
+    <Content Include="static\layui\images\face\35.gif" />
+    <Content Include="static\layui\images\face\36.gif" />
+    <Content Include="static\layui\images\face\37.gif" />
+    <Content Include="static\layui\images\face\38.gif" />
+    <Content Include="static\layui\images\face\39.gif" />
+    <Content Include="static\layui\images\face\4.gif" />
+    <Content Include="static\layui\images\face\40.gif" />
+    <Content Include="static\layui\images\face\41.gif" />
+    <Content Include="static\layui\images\face\42.gif" />
+    <Content Include="static\layui\images\face\43.gif" />
+    <Content Include="static\layui\images\face\44.gif" />
+    <Content Include="static\layui\images\face\45.gif" />
+    <Content Include="static\layui\images\face\46.gif" />
+    <Content Include="static\layui\images\face\47.gif" />
+    <Content Include="static\layui\images\face\48.gif" />
+    <Content Include="static\layui\images\face\49.gif" />
+    <Content Include="static\layui\images\face\5.gif" />
+    <Content Include="static\layui\images\face\50.gif" />
+    <Content Include="static\layui\images\face\51.gif" />
+    <Content Include="static\layui\images\face\52.gif" />
+    <Content Include="static\layui\images\face\53.gif" />
+    <Content Include="static\layui\images\face\54.gif" />
+    <Content Include="static\layui\images\face\55.gif" />
+    <Content Include="static\layui\images\face\56.gif" />
+    <Content Include="static\layui\images\face\57.gif" />
+    <Content Include="static\layui\images\face\58.gif" />
+    <Content Include="static\layui\images\face\59.gif" />
+    <Content Include="static\layui\images\face\6.gif" />
+    <Content Include="static\layui\images\face\60.gif" />
+    <Content Include="static\layui\images\face\61.gif" />
+    <Content Include="static\layui\images\face\62.gif" />
+    <Content Include="static\layui\images\face\63.gif" />
+    <Content Include="static\layui\images\face\64.gif" />
+    <Content Include="static\layui\images\face\65.gif" />
+    <Content Include="static\layui\images\face\66.gif" />
+    <Content Include="static\layui\images\face\67.gif" />
+    <Content Include="static\layui\images\face\68.gif" />
+    <Content Include="static\layui\images\face\69.gif" />
+    <Content Include="static\layui\images\face\7.gif" />
+    <Content Include="static\layui\images\face\70.gif" />
+    <Content Include="static\layui\images\face\71.gif" />
+    <Content Include="static\layui\images\face\8.gif" />
+    <Content Include="static\layui\images\face\9.gif" />
+    <Content Include="static\layui\layui.all.js" />
+    <Content Include="static\layui\layui.js" />
+    <Content Include="static\layui\lay\modules\carousel.js" />
+    <Content Include="static\layui\lay\modules\code.js" />
+    <Content Include="static\layui\lay\modules\element.js" />
+    <Content Include="static\layui\lay\modules\flow.js" />
+    <Content Include="static\layui\lay\modules\form.js" />
+    <Content Include="static\layui\lay\modules\jquery.js" />
+    <Content Include="static\layui\lay\modules\laydate.js" />
+    <Content Include="static\layui\lay\modules\layedit.js" />
+    <Content Include="static\layui\lay\modules\layer.js" />
+    <Content Include="static\layui\lay\modules\laypage.js" />
+    <Content Include="static\layui\lay\modules\laytpl.js" />
+    <Content Include="static\layui\lay\modules\mobile.js" />
+    <Content Include="static\layui\lay\modules\table.js" />
+    <Content Include="static\layui\lay\modules\tree.js" />
+    <Content Include="static\layui\lay\modules\upload.js" />
+    <Content Include="static\layui\lay\modules\util.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\StarCartoon\Contents.cshtml" />
+    <Content Include="Views\StarCartoon\Detail.cshtml" />
+    <Content Include="Views\StarCartoon\XingLi.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Shared\_CartoonComment.cshtml" />
+    <Content Include="Views\Shared\_LayoutFooter.cshtml" />
+    <Content Include="Views\StarTest\Detail.cshtml" />
+    <Content Include="Views\StarSocial\AddAdmin.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\static\fonts\strawberryicon.eot" />
+    <Content Include="Content\static\fonts\strawberryicon.ttf" />
+    <Content Include="Content\static\fonts\strawberryicon.woff" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Views\Astro\Index.cshtml" />
+    <Content Include="Views\Astrolabe\Index.cshtml" />
+    <Content Include="Views\Astrology\Index.cshtml" />
+    <Content Include="Views\Fortune\Index.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\LifePavilion\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutPage.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\StarCartoon\Index.cshtml" />
+    <Content Include="Views\StarSocial\Index.cshtml" />
+    <Content Include="Views\StarTest\Index.cshtml" />
+    <Content Include="static\layui\font\iconfont.eot" />
+    <Content Include="static\layui\font\iconfont.ttf" />
+    <Content Include="static\layui\font\iconfont.woff" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\StarSocial\Add.cshtml" />
+    <Content Include="Views\StarSocial\Edit.cshtml" />
+    <Content Include="Views\StarSocial\Detail.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\Account\MyHome.cshtml" />
+    <Content Include="Views\Account\MyPass.cshtml" />
+    <Content Include="Views\Account\MyAvatar.cshtml" />
+    <Content Include="Views\Account\MySign.cshtml" />
+    <Content Include="Views\Account\MyPost.cshtml" />
+    <Content Include="Views\Account\MyMsg.cshtml" />
+    <Content Include="Views\Shared\_ArticleModule.cshtml" />
+    <Content Include="Views\StarSocial\Seach.cshtml" />
+    <Content Include="Views\Account\ResetPwd.cshtml" />
+    <Content Include="Views\Shared\_HotArticle.cshtml" />
+    <Content Include="Views\Astro\Detail.cshtml" />
+    <Content Include="Views\Shared\_ArticleComment.cshtml" />
+    <Content Include="Views\Shared\_ArticleFunny.cshtml" />
+    <Content Include="Views\Astro\Add.cshtml" />
+    <Content Include="Views\Home\Seach.cshtml" />
+    <Content Include="Views\Astrology\Aster.cshtml" />
+    <Content Include="Views\Shared\_PCHeader.cshtml" />
+    <Content Include="Views\Shared\_MHeader.cshtml" />
+    <Content Include="Views\Astro\AstroDetail.cshtml" />
+    <Content Include="Views\Shared\_LayoutHeader.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Account\MyFans.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AstWeb.Common\AstWeb.Common.csproj">
+      <Project>{ae921bae-9f6c-419c-b8b4-dbcb798fb7e1}</Project>
+      <Name>AstWeb.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>57338</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:62812/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.9.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.9.0\build\Microsoft.Net.Compilers.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

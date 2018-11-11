@@ -1,0 +1,19 @@
+﻿@using AstWeb.Common.Models;
+@using AstWeb.Common.Infrastructure;
+@model  GetListsResponse<Articles>
+
+<div class="moudle-card">
+    <div class="in-title">
+        <h4>人气文章</h4>
+        <span class="line"></span>
+    </div>
+    <ul class="in-list" style="padding-left: 15px;">
+        @if (Model.IsSuccess)
+        {
+            foreach (var item in Model.Items)
+            {
+                <li class="line-overflow" title="@item.Title"><a href="@Url.Action("Detail", "Astro", new { articleid = @item.Id })">@item.Title</a></li>
+            }
+        }
+    </ul>
+</div>

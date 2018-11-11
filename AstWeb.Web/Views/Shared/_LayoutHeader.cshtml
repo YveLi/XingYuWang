@@ -1,0 +1,128 @@
+﻿@model AstWeb.Common.Models.W_Users
+<header class="header">
+    <nav class="container">
+        <div class="logo hidden-sm">
+            <a href="/" class="d-block">
+                <img src="~/static/img/logo.png" alt="">
+            </a>
+        </div>
+        <div class="mobile-logo show-sm">
+            <a href="/" class="d-inline-block">
+                <img src="~/static/img/m-logo.png" alt="">
+            </a>
+        </div>
+        <ul id="" class="header-menu">
+            <li id="" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="/home">首页</a></li>
+            <li id="" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="/astro"><i class="czs-star-l"></i>星座</a></li>
+            @*<li id="" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="/astrolabe">星盘</a></li>*@
+            <li id="" class="menu-item menu-item-type-taxonomy menu-item-object-category "><a href="/StarTest"><i class="czs-buy-l"></i>星测</a></li>
+            <li id="" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="@Url.Action("Index", "StarSocial", new { CategoriesId = 0, pageIndex = 1 })"><i class="czs-forum"></i>星社</a></li>
+            <li id="" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children">
+                <a href=""><i class="czs-read-l"></i>占星学院</a>
+                <ul class="sub-menu child-menu ">
+                    <li id="" class="menu-item menu-item-type-custom menu-item-object-custom">
+                        <a onclick="layer.msg('敬请期待~', { icon: 2 });"><i class="czs-read-l"></i>占星课程</a>
+                    </li>
+                    <li id="" class="menu-item menu-item-type-post_type menu-item-object-post">
+                        <a onclick="layer.msg('敬请期待~', { icon: 2 });"><i class="czs-caomei"></i>占星师列表</a>
+                    </li>
+                </ul>
+            </li>
+            <li id="" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="/StarCartoon"><i class="czs-diamond-l"></i>星漫</a></li>
+        </ul>
+        <div class="admin-login hidden-sm">
+            @{var url = Request.Url;}
+            @if (HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                <a href="/user/home/@Model.Id" class="btn-line btn-line-white">
+                    个人中心
+                </a>
+                <a onclick="logout()" class="btn-line btn-line-white">
+                    退出
+                </a>
+            }
+            else
+            {
+                <a href="/user/login?url=@url" class="btn-line btn-line-white">
+                    登录
+                </a>
+                <a href="/user/register" class="btn-line btn-line-white">
+                    注册
+                </a>
+            }
+        </div>
+        <div class="search-button cursor-pointer">
+            <i class="czs-search-l"></i>
+            <span class="d-inline-block transition opacity-0"><i class="czs-close-l"></i></span>
+        </div>
+        <div class="menu-button">
+            <div class="nav-bar">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    <div class="menu-wrap show-xs">
+        <div class="mobile-menu">
+            <ul id="" class="mobile-menu-nav">
+                <li class="menu-item menu-item-type-taxonomy menu-item-object-category">
+                    <a href="/home"><i class="czs-home-l"></i>首页</a>
+                </li>
+                <li class="menu-item menu-item-type-taxonomy menu-item-object-category">
+                    <a href="/astro"><i class="czs-star-l"></i>星座</a>
+                </li>
+                @*<li class="menu-item menu-item-type-custom menu-item-object-custom">
+                        <a href="/astrolabe"><i class="czs-buy-l"></i>星盘</a>
+                    </li>*@
+                <li class="menu-item menu-item-type-custom menu-item-object-custom">
+                    <a href="/StarTest"><i class="czs-buy-l"></i>星测</a>
+                </li>
+                <li class="menu-item menu-item-type-custom menu-item-object-custom">
+                    <a href="/social/home/0/page_1"><i class="czs-forum"></i>星社</a>
+                </li>
+                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children">
+                    <a href="#"><i class="czs-read-l"></i>占星学院</a>
+                    <ul class="sub-menu child-menu">
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom">
+                            <a href="#" onclick="layer.msg('敬请期待~', { icon: 2 });"><i class="czs-read-l"></i>占星课程</a>
+                        </li>
+                        <li class="menu-item menu-item-type-post_type menu-item-object-post">
+                            <a href="#" onclick="layer.msg('敬请期待~', { icon: 2 });"><i class="czs-caomei"></i>占星师列表</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu-item menu-item-type-custom menu-item-object-custom">
+                    <a href="/StarCartoon"><i class="czs-diamond-l"></i>星漫</a>
+                </li>
+                @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    <li class="menu-item menu-item-type-custom menu-item-object-custom">
+                        <a href="/user/home/@Model.Id"><i class="czs-user-l"></i>个人主页</a>
+                    </li>
+                }
+                @if (!HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    <li class="menu-item menu-item-type-custom menu-item-object-custom">
+                        <a href="/user/login?url= @url">
+                            登录
+                        </a>
+                    </li>
+                    <li class="menu-item menu-item-type-custom menu-item-object-custom">
+                        <a href="/user/register">
+                            注册新账号
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="menu-item menu-item-type-custom menu-item-object-custom">
+                        <a onclick="logout()">
+                            退出登录
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,480 @@
+﻿
+@{
+    ViewBag.Title = "注册";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<!-- 引入封装了failback的接口--initGeetest -->
+<link rel="stylesheet" href="~/Content/static/css/slider.css">
+<style>
+    body {
+        padding: 0px;
+    }
+
+    .inp {
+        border: 1px solid gray;
+        padding: 0 10px;
+        width: 200px;
+        height: 30px;
+        font-size: 18px;
+    }
+
+    .btn {
+        border: 1px solid gray;
+        width: 100px;
+        height: 30px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    #embed-captcha {
+        width: 300px;
+        margin: 0 auto;
+    }
+
+    .show {
+        display: block;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    #notice {
+        color: red;
+    }
+
+    #submitBtn {
+        margin-top: 30px;
+    }
+
+    #sb {
+        position: absolute;
+        color: green;
+        top: 670px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    /* 以下遮罩层为demo.用户可自行设计实现 */
+    #mask {
+        display: none;
+        position: fixed;
+        text-align: center;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        overflow: auto;
+    }
+    /* 可自行设计实现captcha的位置大小 */
+    .popup-mobile {
+        position: relative;
+    }
+
+    #popup-captcha-mobile {
+        position: fixed;
+        display: none;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        z-index: 9999;
+    }
+    /************************/
+    .layui-form-checked span, .layui-form-checked:hover span {
+        background-color: #f84b9c;
+    }
+
+    .layui-form-checked, .layui-form-checked:hover {
+        border-color: #f84b9c
+    }
+
+        .layui-form-checked i, .layui-form-checked:hover i {
+            color: #f84b9c;
+        }
+
+    .lcols {
+        width: 100%
+    }
+
+    #body {
+        width: 100%;
+        background-image: url(/Content/img/mu.jpg);
+        background-position: 50%;
+        background-size: cover;
+        justify-content: center;
+        padding: 10% 0;
+    }
+    .page-title {
+        margin: 0;
+    }
+
+    .moudle-card {
+        background-color: rgba(255, 255, 255, 0.85);
+    }
+
+    .yzm_btn {
+        display: block;
+        background: #7f80b8;
+        width: 7rem;
+        color: #fff;
+        line-height: 38px;
+        text-align: center;
+        font-size: 0.38rem;
+        border-radius: 19px;
+        height: 38px;
+    }
+
+    .reg_txt {
+        height: 1.04rem;
+        line-height: 1.04rem;
+        background: #ecebfa;
+        border-radius: 0.52rem;
+        color: #4d4d4d;
+        padding-left: 0.47rem;
+        margin-top: 0.42rem;
+        position: relative;
+        width: 5rem;
+        float: left;
+    }
+
+        .reg_txt input {
+            margin-left: 0.3rem;
+            background: none;
+            color: #555;
+            font-size: 0.38rem;
+            width: 5rem;
+            height: 1.04rem;
+            line-height: 1.04rem;
+            float: left;
+        }
+</style>
+<div id="body" class="layui-container">
+    <div class="page-title" unselectable="on" onselectstart="return false;">
+        <div class="layui-container">
+            <div class="title">
+            </div>
+            <span class="title-eng">REGISTER</span>
+        </div>
+    </div>
+    <div class="page-news page-bbs">
+        <div class="layui-container">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md3">
+                </div>
+                <div class="layui-col-md6">
+                    <div class="moudle-card">
+                        <div class="page-form layui-text">
+                            <div class="layui-form bbs-user">
+                                <form id="form" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <span id="qqLoginBtn" style="display:none"></span>
+                                    <h4 id="QTip" style="display:none;text-align:center">首次使用第三方登录需要完善信息*</h4>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"><span style="color:#f84b9c">*</span>手机号</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" class="layui-input" placeholder="你的登录账号" name="PhoneNumber" lay-verify="phone" id="mobile" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <div class="stage" style="padding:0">
+                                                <div class="slider" id="slider">
+                                                    <div class="label">向右滑动验证</div>
+                                                    <div class="track" id="track">
+                                                        <div class="bg-green"></div>
+                                                    </div>
+                                                    <div class="button" id="btn">
+                                                        <div class="icon" id="icon"></div>
+                                                        <div class="spinner" id="spinner"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"><span style="color:#f84b9c">*</span>验证码</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" class="layui-input" placeholder="验证码" id="SmsCode" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <div class="yzm_btn" id="yzm_btn1" style="background: #eee;font-size:13px;">发送验证码</div>
+                                            <div class="yzm_btn" id="yzm_btn2" style="display: none;font-size:13px;">发送验证码</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"><span style="color:#f84b9c">*</span>昵称</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" class="layui-input" placeholder="请输入一个您喜欢的名字" name="nickname" id="L_nickname" lay-verify="username" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label for="L_pass" class="layui-form-label"><span style="color:#f84b9c">*</span>密码</label>
+                                        <div class="layui-input-block">
+                                            <input type="password" class="layui-input" placeholder="请输入6~16位数，且不能出现空格" name="pass" id="L_pass" lay-verify="pass" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label for="L_repass" class="layui-form-label"><span style="color:#f84b9c">*</span>确认</label>
+                                        <div class="layui-input-block">
+                                            <input type="password" class="layui-input" placeholder="再输入一次密码" name="repass" id="L_repass" lay-verify="repass" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item" style="margin-bottom:0px;text-align: center">
+                                        <button class="layui-btn zb-btn" lay-filter="reg" lay-submit>注册</button>
+                                        @*<a href="@Url.Action("Login", "Account")" class="layui-btn zb-btn">登录</a>*@
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md3">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Content/static/js/jquery.min.js"></script>
+<script>
+    var oBtn = document.getElementById('btn');
+    var oW, oLeft;
+    var oSlider = document.getElementById('slider');
+    var oTrack = document.getElementById('track');
+    var oIcon = document.getElementById('icon');
+    var oSpinner = document.getElementById('spinner');
+    var flag = 1;
+
+    oBtn.addEventListener('touchstart', function (e) {
+        if (flag == 1) {
+            console.log(e);
+            var touches = e.touches[0];
+            oW = touches.clientX - oBtn.offsetLeft;
+            oBtn.className = "button";
+            oTrack.className = "track";
+        }
+
+    }, false);
+
+    oBtn.addEventListener("touchmove", function (e) {
+        if (flag == 1) {
+            var touches = e.touches[0];
+            oLeft = touches.clientX - oW;
+            if (oLeft > $("#slider").width() - 50) {
+                oLeft = $("#slider").width() - 50;
+            }
+            if (oLeft < 0) {
+                oLeft = 0;
+            } else if (oLeft > document.documentElement.clientWidth - oBtn.offsetWidth - 30) {
+                oLeft = (document.documentElement.clientWidth - oBtn.offsetWidth - 30);
+            }
+            oBtn.style.left = oLeft + "px";
+            oTrack.style.width = oLeft + 'px';
+        }
+
+    }, false);
+
+    oBtn.addEventListener("touchend", function () {
+        if (oLeft >= $("#slider").width() - 50) {
+            oBtn.style.left = (document.documentElement.clientWidth - oBtn.offsetWidth - 30);
+            oTrack.style.width = (document.documentElement.clientWidth - oBtn.offsetWidth - 30);
+            oIcon.style.display = 'none';
+            oSpinner.style.display = 'block';
+            flag = 0;
+            $('#yzm_btn1').hide()
+            $('#yzm_btn2').show()
+        } else {
+            oBtn.style.left = 0;
+            oTrack.style.width = 0;
+        }
+        oBtn.className = "button-on";
+        oTrack.className = "track-on";
+    }, false);
+
+
+    oBtn.addEventListener('mousedown', function (e) {
+        if (flag == 1) {
+            console.log(e);
+            var touches = e;
+            oW = touches.clientX - oBtn.offsetLeft;
+            oBtn.className = "button";
+            oTrack.className = "track";
+        }
+
+    }, false);
+
+    oSlider.addEventListener('mousemove', function (e) {
+        if (flag == 1) {
+            var touches = e;
+            oLeft = touches.clientX - oW;
+            if (oLeft > $("#slider").width() - 50) {
+                oLeft = $("#slider").width() - 50;
+            }
+            oBtn.style.left = oLeft + "px";
+            oTrack.style.width = oLeft + 'px';
+        }
+    }, false);
+
+    document.addEventListener('mouseup', function (e) {
+        if (oLeft < 0) {
+            oLeft = 0;
+        }
+        if (oLeft >= (oSlider.clientWidth - oBtn.clientWidth)) {
+            oBtn.style.left = (document.documentElement.clientWidth - oBtn.offsetWidth - 30);
+            oTrack.style.width = (document.documentElement.clientWidth - oBtn.offsetWidth - 30);
+            oIcon.style.display = 'none';
+            oSpinner.style.display = 'block';
+            flag = 0;
+            $('#yzm_btn1').hide()
+            $('#yzm_btn2').show()
+        } else {
+            oBtn.style.left = 0;
+            oTrack.style.width = 0;
+        }
+        oBtn.className = "button-on";
+        oTrack.className = "track-on";
+    }, false);
+
+    //获取验证码
+    $('#yzm_btn2').bind('click', function () {
+        if ($(this).hasClass('disabled'))
+            return false;
+
+        var $btn = $(this);
+        var $input = $('input#mobile');
+        var mobile = $input.val();
+        if (!(/^1[34578]\d{9}$/.test(mobile))) {
+            $('p.msg').html('手机号码格式有误');
+            return
+        }
+        $('p.msg').html('正在发送...');
+        var s = 60;
+        var btn = $(this);
+        var content = {
+            mobile: mobile,
+            aid: '8a48b5514b6f8ca0014b710471db0012',
+            token: '200947ba793c4cf28545ce86d5bb4eb8',
+            appId: '8aaf07085f9eb021015fbd3d8ac709d8',
+            type: 0
+        }
+        $.post('/Account/GetSMSCode', content, function (res) {
+            if (res.success) {
+                $('p.msg').html('发送成功');
+                btn.addClass('disabled').html('(' + s + ')秒后发送');
+                var time = setInterval(function () {
+                    s--;
+                    btn.html('(' + s + ')秒后发送');
+                    if (s <= 0) {
+                        btn.removeClass('disabled').html('发送验证码');
+                        clearInterval(time);
+                    }
+                }, 1000);
+            } else {
+                $('p.msg').html(res.message);
+            }
+        })
+    });
+</script>
+@section scripts{
+    <!--QQ互联回调-->
+    <script type="text/javascript"
+            src="~/Content/static/js/qc_jssdk.js" charset="utf-8" data-callback="true" data-appid="101520596">
+    </script>
+    <script type="text/javascript">
+        var resdata;
+        var search = location.hash.substr(1);
+        QC.Login({
+            btnId: "qqLoginBtn",    //插入按钮的节点id
+            //showModal: true, //是否以Iframe窗口打开
+        });
+        QC.Login.getMe(function (openid, access_token) {
+            QC.api('get_user_info', {
+                oauth_consumer_key: "101520596", // appid
+                access_token: openid,
+                openid: access_token
+            }).success(function (res) {
+                console.log(res)
+                resdata = res;
+                document.getElementById("QTip").style.display = "inherit";
+            })
+        })
+        layui.use(['form', 'layer'], function () {
+            var form = layui.form, layer = layui.layer
+            $.ajax({
+                type: "POST",
+                url: "/Account/QQlogin",
+                dataType: "json",
+                data: {
+                    //NickName: res.data.nickname,
+                    //HeadPortraid: res.data.figureurl_qq_2,
+                    AccessToken: search.split("&")[0].split("=")[1],
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data.success) {
+                        layer.msg(data.message, { icon: 1, time: 1000 }, function (index) {
+                            layer.close(index);
+                            location.href = '/home';
+                        });
+                    } else {
+                        layer.msg(data.message, { icon: 0, time: 2000 }, function () {
+                            QC.Login.signOut();
+                        });
+                    }
+                }
+            })
+            
+            form.verify({
+                username: function (value, item) { //value：表单的值、item：表单的DOM对象
+                    if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                        return '用户名不能有特殊字符';
+                    }
+                    if (/(^\_)|(\__)|(\_+$)/.test(value)) {
+                        return '用户名首尾不能出现下划线\'_\'';
+                    }
+                    if (/^\d+\d+\d$/.test(value)) {
+                        debugger;
+                        return '用户名不能全为数字';
+                    }
+                }
+                , pass: [
+                    /^[\S]{6,16}$/
+                    , '密码必须6到16位，且不能出现空格'
+                ]
+                , repass: function (value) {
+                    var pass = $('form').find('input[name=pass]').val();
+                    if (pass !== value) {
+                        return '两次密码输入不一致';
+                    }
+                }
+            });
+            form.on('submit(reg)', function (data) { 
+                var content = {
+                    PhoneNumber: $("#mobile").val(),
+                    Pass: $("#L_pass").val(),
+                    NickName: $("#L_nickname").val(),
+                    SmsCode: $("#SmsCode").val(),
+                    AccessToken: search.split("&")[0].split("=")[1],
+                    HeadPortrait: resdata.data.figureurl_qq_2,
+                };
+                $.post('/Account/Register', content, function (res) {
+                      if (!res.success) {
+                        layer.msg(res.message, { icon: 2 });
+                    } else {
+                        layer.msg(res.message, { icon: 1, time: 1000  }, function (index) {
+                            layer.close(index);
+                            location.href = '@Url.Action("Login", "Account")';//跳转至登录页
+                        });
+                    }
+                });
+                return false;
+            });
+        });
+        $(function () {
+            document.getElementsByClassName("header")[0].style.display = "none";
+            document.getElementById("footer").style.display = "none";
+        });
+    </script>
+}

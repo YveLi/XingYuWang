@@ -1,0 +1,164 @@
+﻿@using AstWeb.Common.Models;
+@using AstWeb.Models;
+@using AstWeb.Common.Infrastructure;
+@{
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    var user = ViewBag.user as W_Users;
+    ViewBag.Title = "星座星语搜索引擎";
+    ViewBag.KeyWords = "热门,热门帖子,评论最多,阅读最多的帖子";
+    ViewBag.Description = "星座星语是包含海量资讯的占星服务平台，真实反映每时每刻的星座热点。您可以搜索星座新闻、星座话题、星座产品等，快速了解它们的最新进展。";
+}
+@model GetPagingResponse<Articles>
+<style>
+    #articlelist p {
+        position: relative;
+        padding: 0px 5px 0px 5px;
+        line-height: 23px;
+        max-height: 95px;
+        overflow: hidden;
+    }
+
+        #articlelist p::after {
+            content: "...";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding-left: 40px;
+        }
+</style>
+<div id="body" class="layui-container">
+    <div class="page-news page-bbs">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-lg1 layui-col-md1">
+            </div>
+            <div class="layui-col-lg8 layui-col-md8 bbs-forum">
+                <div class="news-list forum-title" style="margin-bottom:10px;">
+                    <div class="moudle-card">
+                        <div class="in-list">
+                            <div class="layui-inline" style="width:70%">
+                                <input type="text" class="layui-input" placeholder="关键词" id="keyword">
+                            </div>
+                            <button class="layui-btn zb-btn" onclick="seach()" style="float:right;">搜索</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="news-list">
+                    <div class="">
+                        <div id="articlelist">
+                            @{Html.RenderAction("LoadArticle", "Astro");}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-lg3 layui-col-md3">
+                <div class="news-side bbs-side">
+                    @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+                        <div class="moudle-card">
+                            <div class="in-menu">
+                                <!-- 登陆用户 -->
+                                <div class="in-menu in-menu-one">
+                                    <a href="@Url.Action("Add","Astro")" class="layui-btn zb-btn" style="width:100%">文章投稿</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    <div class="news-side bbs-side">
+                        <div class="moudle-card left-author">
+                            <div class="author-img">
+                                <a class="nav-link" href="@Url.Action("Index", "Account", new { userId = user.Id })" tabindex="-1">
+                                    <img class="avatar-xs layui-anim layui-anim-rotate layui-anim-loop" src="@user.HeadPortrait">
+                                </a>
+                            </div>
+                            <div class="author-name author-name-u">
+                                <a class="nav-link" href="@Url.Action("Index", "Account", new { userId = user.Id })">
+                                    @user.NickName
+                                    @if (user.Gender == Gender.Man)
+                                    {
+                                        <i class="iconfont icon-nan" style="color:#5FB878"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="iconfont icon-nv" style="color:#f84b9c"></i>
+                                    }
+                                </a>
+                                <p style="color:#FF5722;font-weight:900;margin-bottom:0px;">@user.Title</p>
+                            </div>
+                            <div class="author-name author-name-u">
+                                <a class="nav-link" href="">@user.Sign</a>
+                            </div>
+                            <div class="author-name author-name-u" style="text-align:center">
+                                <a class="layui-btn zb-btn" href="@Url.Action("Index", "Account", new { userId = user.Id })">个人中心</a>
+                                <a class="layui-btn zb-btn-black" href="@Url.Action("LogOut","Account")">退出</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                    <div class="news-side bbs-side">
+                        <div class="moudle-card">
+                            <!--广告位-->
+                            <div class="in-title">
+                                <h4>微信公众号</h4>
+                                <span class="line"></span>
+                            </div>
+                            <ul class="in-list">
+                                <li>
+                                    <a href="#" target="_blank"><img src="/Content/static/picture/wechat_official.jpg"></a>
+                                </li>
+                            </ul>
+                            <!--广告位-->
+                        </div>
+                        <div class="moudle-card">
+                            <!--广告位-->
+                            <div class="in-title">
+                                <h4>微信小游戏</h4>
+                                <span class="line"></span>
+                            </div>
+                            <ul class="in-list">
+                                <li>
+                                    <a href="#" target="_blank"><img src="/Content/static/picture/xingyu.jpg"></a>
+                                </li>
+                            </ul>
+                            <!--广告位-->
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(function() {
+            var title = Astro.GetQueryString("title");
+            if (title!= null) {
+                $("#keyword").val(title);
+                seach();
+            }
+        });
+        function page(index) {
+            $("#articlelist").empty();
+            var postdata = {
+                title: $("#keyword").val(),
+                CategoriesId:0,
+                pageIndex:index
+            };
+            $.post("@Url.Action("LoadArticle", "Astro")", postdata, function (res) {
+                $("#articlelist").html(res);
+            });
+        }
+
+        function seach() {
+            var postdata = {
+                title: $("#keyword").val(),
+                CategoriesId:0,
+                pageIndex:1
+            };
+            $.post("@Url.Action("LoadArticle", "Astro")", postdata, function (res) {
+                $("#articlelist").html(res);
+            });
+        }
+    </script>
+}

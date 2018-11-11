@@ -1,0 +1,46 @@
+﻿@model AstWeb.Common.Models.W_Users
+
+<ul class="layui-nav pc-nav">
+    <li class="layui-nav-item">
+        <a href="@Url.Action("Index", "Home")">首页</a>
+    </li>
+    <li class="layui-nav-item">
+        <a href="@Url.Action("Index", "Astro")">星座</a>
+    </li>
+    <li class="layui-nav-item">
+        <a href="@Url.Action("Index","Astrolabe")">星盘</a>
+    </li>
+    <li class="layui-nav-item">
+        <a href="@Url.Action("Index","Astrology")">占星学院</a>
+    </li>
+    <li class="layui-nav-item">
+        <a href="@Url.Action("Index","StarTest")">星测</a>
+    </li>
+    <li class="layui-nav-item">
+        <a href="@Url.Action("Index","StarCartoon")">星漫</a>
+    </li>
+    <li class="layui-nav-item">
+        <a href="@Url.Action("Index", "StarSocial", new { CategoriesId = 0, pageIndex = 1 })">星社</a>
+    </li>
+    @if (!HttpContext.Current.User.Identity.IsAuthenticated)
+    {
+        <li class="layui-nav-item">
+            <a href="@Url.Action("Login","Account")">登录</a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="@Url.Action("Register","Account")">注册</a>
+        </li>
+    }
+    else
+    {
+        <li class="layui-nav-item" lay-unselect="">
+            <a href="javascript:;"><img src="@Model.HeadPortrait" class="layui-nav-img">我</a>
+            <dl class="layui-nav-child">
+                <dd><a href="@Url.Action("Index", "Account", new { userId = Model.Id })">个人中心</a></dd>
+                <dd><a href="@Url.Action("LogOut", "Account")">退出</a></dd>
+            </dl>
+        </li>
+    }
+</ul>
+
+

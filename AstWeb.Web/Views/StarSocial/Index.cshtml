@@ -1,0 +1,401 @@
+﻿@using AstWeb.Common.Models;
+@using AstWeb.Models;
+@using AstWeb.Common.Infrastructure;
+@{
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    var categories = ViewBag.PostCategories as IList<PostCategory>;
+    var user = ViewBag.user as W_Users;
+    var posttype = ViewBag.posttype;
+    ViewBag.Title = posttype != null ? posttype.Title : "热门帖子";
+    ViewBag.KeyWords = "12,配对,十二,占星,星座,星语,社区,漫画,第十三星座,生肖,塔罗牌,段子,吃货,单身,游戏";
+    ViewBag.Description = "星座星语社区，是一个提供各个领域爱好者的交流社区，这里有塔罗牌解读、星座段子手、吃货天堂、单身汪聚集地、交流吐槽区、游戏爱好者";
+    var pm = ViewBag.Postmodel as SocialCount;
+}
+@model GetPagingResponse<Posts>
+<div id="body" class="layui-container" style="padding: 0 7.5px;">
+    <div class="page-news page-bbs" style="margin-top:10px;">
+        <div class="layui-row layui-col-space15">
+            <div class="news-side bbs-side" id="category-show" style="display:none;position:fixed;right:60px;width:170px;z-index:999;bottom:20px;" onclick="document.getElementById('category-show').style.display='none'">
+                <div class="moudle-card" style="box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);">
+                    <div class="in-title">
+                        <h4>社区版块</h4>
+                        <span class="line"></span>
+                    </div>
+                    <ul class="in-list">
+                        <li class="line">
+                            <a href="@Url.Action("Index", "StarSocial",new { CategoriesId = 0,pageIndex=1 })"><i class="layui-icon"></i>热门帖子</a>
+                        </li>
+                        @if (categories != null && categories.Count > 0)
+                        {
+                            foreach (var item in categories)
+                            {
+                                <li>
+                                    <a href="@Url.Action("Index", "StarSocial", new { CategoriesId = item.Id,pageIndex=1 })"><i class="layui-icon"></i>@item.CategoryName</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="layui-col-lg2 layui-col-md2 m-hide" style="padding-bottom:0px;">
+                <div class="news-side bbs-side">
+                    <div class="moudle-card">
+                        <div class="in-menu">
+                            @if (!HttpContext.Current.User.Identity.IsAuthenticated)
+                            {
+                                <!-- 游客 -->
+                                <div class="layui-btn-group">
+                                    <a href="@Url.Action("Login","Account")" class="layui-btn zb-btn">用户登录</a>
+                                    <a href="@Url.Action("Register","Account")" class="layui-btn zb-btn">新用户注册</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <!-- 登陆用户 -->
+                                <div class="in-menu in-menu-one">
+                                    <a href="@Url.Action("Add","StarSocial")" class="layui-btn zb-btn b-btn">发布帖子</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="news-side bbs-side m-hide">
+                    <div class="moudle-card">
+                        <div class="in-title">
+                            <h4>社区版块</h4>
+                            <span class="line"></span>
+                        </div>
+                        <ul class="in-list">
+                            <li class="line">
+                                <a href="@Url.Action("Index", "StarSocial",new { CategoriesId = 0,pageIndex=1 })"><i class="layui-icon"></i>热门帖子</a>
+                            </li>
+                            @if (categories != null && categories.Count > 0)
+                            {
+                                foreach (var item in categories)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index", "StarSocial", new { CategoriesId = item.Id,pageIndex=1 })"><i class="layui-icon"></i>@item.CategoryName</a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-lg7 layui-col-md7">
+                <div class="news-list">
+                    <div class="news-side bbs-side p-hide">
+                        <div class="moudle-card">
+                            <div class="in-list" style="margin:0">
+                                <div class="layui-input-inline" style="width:60%">
+                                    <input type="text" class="layui-input" placeholder="关键词" id="keyword">
+                                </div>
+                                <button class="layui-btn zb-btn" onclick="seach()" style="float:right;width:30%">搜索 </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="moudle-card">
+                        @if (Model.IsSuccess)
+                        {
+                            foreach (var item in Model.Pages.Items)
+                            {
+                                <div class="bbs-list layui-anim layui-anim-up" tid="@item.Id">
+                                    <div class="user-head">
+                                        <a href="@Url.Action("Index", "Account", new { userId = item.TUserId })" tabindex="-1">
+                                            <img src="@item.User.HeadPortrait" class="layui-anim layui-anim-scaleSpring">
+                                        </a>
+                                    </div>
+                                    <div class="b-title">
+                                        @if (item.IsTop == 1)
+                                        {
+                                            <div class="s-top" style="right:-10px;top:25px;">置顶</div>
+                                        }
+                                        @if (item.IsBoutique == 1)
+                                        {
+                                            <div class="s-two" style="right:48px;top:25px;">精品</div>
+                                        }
+                                        @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                                        {
+                                            if (user.IsAdmin == 1)
+                                            {
+                                                <div style="display:inline-block;background-color:#000;color:#fff;padding:5px;border-radius: 6px;cursor: pointer;" onclick="
+                                                     $.ajax({
+                                                            type: 'Post',
+                                                            url: '/StarSocial/Boutique',
+                                                            data: {id:@item.Id},
+                                                            dataType: 'json',
+                                                            success: function(data){
+                                                            window.location.reload();
+                                                        }
+                                                     });
+                                                ">加精/取消</div>
+                                                <div style="display:inline-block;background-color:#000;color:#fff;padding:5px;border-radius: 6px;cursor: pointer;" onclick="
+                                                    $.ajax({
+                                                            type: 'Post',
+                                                            url: '/StarSocial/Top',
+                                                            data: {id:@item.Id},
+                                                            dataType: 'json',
+                                                            success: function(data){
+                                                            window.location.reload();
+                                                        }
+                                                     });
+                                                ">置顶/取消</div>
+                                                <div style="display:inline-block;background-color:#000;color:#fff;padding:5px;border-radius: 6px;cursor: pointer;" onclick="
+                                                    $.ajax({
+                                                            type: 'Post',
+                                                            url: '/StarSocial/Show',
+                                                            data: {id:@item.Id},
+                                                            dataType: 'json',
+                                                            success: function(data){
+                                                            window.location.reload();
+                                                        }
+                                                     });
+                                                ">隐藏</div>
+                                            }
+                                        }
+                                        @*<div class="s-three">已结账</div>*@
+                                        <h4>
+                                            <a href="@Url.Action("Detail", "StarSocial", new { postid = @item.Id })">
+                                                @if (item.PostStatus == PostStatus.Close)
+                                                {
+                                                    <span style="color:#f84b9c">[已解决]</span>
+                                                }
+                                                else
+                                                {
+                                                    <span style="color:#FF5722">[待解决]</span>
+                                                }
+                                                @item.Title
+                                            </a>
+                                        </h4>
+                                        <div class="s-tips">
+                                            <span>
+                                                <a href="@Url.Action("Index", "Account", new { userId = item.TUserId })" style="color:#000000">
+                                                    @item.User.NickName
+                                                    @*@if (item.User.IsAster == 1)
+                                                    {
+                                                        <span class="layui-badge" style="color:#ffffff;background-color:#f84b9c">@item.User.AsterLevel 星占星师</span>
+                                                    }*@
+                                                </a>
+                                            </span>
+                                            <span>在</span>
+                                            <span>@item.TimeAgo</span>
+                                            <span>发表于</span>
+                                            <span class="s-right">
+                                                <a href="@Url.Action("Index", "StarSocial", new { CategoriesId = item.PostCategory.Id })">@item.PostCategory.CategoryName</a>
+                                            </span>
+                                            <span class="s-right" style="color:#f84b9c"><i class="layui-icon" style="color:#f84b9c">&#xe735;</i>&nbsp;@item.Reward </span>
+                                            <div class="s-times">
+                                                <i class="czs-eye-l" title="人气" style="font-size: 20px;position: relative;top: -3px;"></i>
+                                                <span> @item.Hits</span>
+                                                <i class="iconfont" title="回答"></i>
+                                                <span>@item.CommentCount</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <span>暂无帖子</span>
+                        }
+                    </div>
+                </div>
+                @if (Model.IsSuccess)
+                {
+                    if (Model.Pages.TotalItems > 10)
+                    {
+                        <div id="pageHandle" style="text-align: center"></div>
+                    }
+                }
+            </div>
+            <div class="layui-col-lg3 layui-col-md3">
+                <div class="news-side bbs-side m-hide">
+                    <div class="moudle-card">
+                        <div class="in-title">
+                            <h4>社区搜索</h4>
+                            <span class="line"></span>
+                        </div>
+                        <div class="in-list">
+                            <div class="layui-input-inline" style="width:60%">
+                                <input type="text" class="layui-input" placeholder="关键词" id="keyword">
+                            </div>
+                            <button class="layui-btn zb-btn" onclick="seach()" style="float:right;width:30%">搜索 </button>
+                        </div>
+                    </div>
+                </div>
+                @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    <div class="news-side bbs-side m-hide">
+                        <div class="moudle-card left-author">
+                            <div class="author-img">
+                                <a class="nav-link" href="@Url.Action("Index", "Account", new { userId = user.Id })" tabindex="-1">
+                                    <img class="avatar-xs layui-anim layui-anim-loop" src="@user.HeadPortrait">
+                                </a>
+                            </div>
+                            <div class="author-name author-name-u">
+                                <a class="nav-link" href="@Url.Action("Index", "Account", new { userId = user.Id })">
+                                    @user.NickName
+                                    @if (user.Gender == Gender.Man)
+                                    {
+                                        <i class="layui-icon" style="color:#5FB878">&#xe662;</i>
+                                    }
+                                    else
+                                    {
+                                        <i class="layui-icon" style="color:#f84b9c">&#xe661;</i>
+                                    }
+                                </a>
+                                <p style="color:#FF5722;font-weight:900;margin-bottom:0px;">@user.Title</p>
+                                @if (user.IsAster == 1)
+                                {
+                                    <span class="layui-badge" style="color:#ffffff;background-color:#f84b9c">@user.AsterLevel 星占星师</span>
+                                }
+                            </div>
+                            <div class="author-name author-name-u">
+                                <a class="nav-link" href="">@user.Sign</a>
+                            </div>
+                            <div class="author-name author-name-u" style="text-align:center">
+                                <a class="layui-btn zb-btn" href="@Url.Action("Index", "Account", new { userId = user.Id })">个人中心</a>
+                                <a class="layui-btn zb-btn-black" href="@Url.Action("LogOut","Account")">退出</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="news-side bbs-side">
+                    <div class="moudle-card">
+                        <!--广告位-->
+                        <div class="in-title">
+                            <h4>星座小游戏</h4>
+                            <span class="line"></span>
+                        </div>
+                        <ul class="in-list">
+                            <li>
+                                <a href="#" target="_blank"><img src="/Content/static/picture/xingyu.jpg"></a>
+                            </li>
+                        </ul>
+                        <!--广告位-->
+                    </div>
+                </div>
+                <div class="news-side bbs-side">
+                    <div class="moudle-card">
+                        <div class="in-title">
+                            <h4>社区统计</h4>
+                            <span class="line"></span>
+                        </div>
+                        <ul class="in-list">
+                            <li>
+                                <i class="layui-icon"></i>
+                                <span>总帖子数 : </span>
+                                <span>@pm.allpostcount</span>
+                            </li>
+                            <li>
+                                <i class="layui-icon"></i>
+                                <span>板块帖子数 : </span>
+                                <span>@pm.catepostcount</span>
+                            </li>
+                            <li>
+                                <i class="layui-icon"></i>
+                                <span>用户数 : </span>
+                                <span>@pm.usercount</span>
+                            </li>
+                            <li>
+                                <i class="layui-icon"></i>
+                                <span>已入驻占星师 : </span>
+                                <span>@pm.astercount</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--右下角导航按钮-->
+<div class="fixed-nav">
+    <ul>
+        @if (HttpContext.Current.User.Identity.IsAuthenticated)
+        {
+            <!--发帖子-->
+            <li><a href="@Url.Action("Add","StarSocial")"><i class="layui-icon">&#xe642;</i></a></li>
+        }
+        <!--社区板块-->
+        <li onclick="if (document.getElementById('category-show').style.display == 'none') { document.getElementById('category-show').style.display = 'initial' } else document.getElementById('category-show').style.display = 'none'"><i class="layui-icon">&#xe668;</i></li>
+    </ul>
+</div>
+<!--右下角按钮-->
+@*<div class="m-nav-bar" id="m-nav-bar" style="position:fixed;top:52px;left:0;width:100%;background-color: rgba(0,0,0,0.7);border-bottom-left-radius:7px;border-bottom-right-radius:7px;padding:10px;">
+    <ul class="container">
+        <li style="width:50%;float:left;height: 30px;">
+            <a style="color:#fff" href="@Url.Action("Index", "StarSocial",new { CategoriesId = 0,pageIndex=1 })">丨热门帖子</a>
+        </li>
+        @if (categories != null && categories.Count > 0)
+        {
+            foreach (var item in categories)
+            {
+                <li style="width:50%;float:left;height: 30px;">
+                    <a style="color:#fff" href="@Url.Action("Index", "StarSocial", new { CategoriesId = item.Id,pageIndex=1 })"><i class="layui-icon"></i>@item.CategoryName</a>
+                </li>
+            }
+        }
+    </ul>
+</div>*@
+@section scripts{
+    <script>
+        //论坛文章卡片适配
+        $(document).ready(function () {
+            document.getElementById("m-nav-bar").style.display = "none";
+            if ($(window).width() < 768) {
+                var obj = document.getElementsByClassName("s-times");
+                for (var n = 0; n < obj.length; n++) {
+                    obj[n].style.position = " inherit";
+                }
+                document.getElementsByClassName("bbs-side")[0].style.display = "none";
+
+                $(window).scroll(function () {
+                    var this_scrollTop = $(this).scrollTop();//动态获取窗口滚动距离
+                    //alert(this_scrollTop);
+                    if (this_scrollTop > 240) {
+                        $("#m-nav-bar").slideDown(500);
+                    } else {
+                        $("#m-nav-bar").slideUp(500);
+                    }
+                });
+            }
+
+        })
+
+        layui.use(["laypage"], function () {
+            var laypage = layui.laypage, layer = layui.layer;
+            laypage.render({
+                elem: 'pageHandle'
+                 ,count:'@(Model.IsSuccess?Model.Pages.TotalItems : 0)'
+                 ,curr: '@(Model.IsSuccess?Model.Pages.CurrentPage:1)'
+                , first: '首页'
+                , last: '尾页'
+                , theme: "#f84b9c"
+                , prev: '上一页'
+                , next: '下一页'
+                , jump: function (obj, first) {
+                    var curr = obj.curr;
+                    if (!first) {
+                        var pathname = location.pathname.substring(0, location.pathname.indexOf('_'));
+                        if (pathname!="") {
+                        if (location.pathname === '@Url.Action("Index", "StarSocial")') {
+                            location.href = pathname + "_" + curr;
+                            }
+                        } else {
+                            location.href ="@Url.Action("Index", "StarSocial", new { CategoriesId = 0, pageIndex = 1 })";
+                        }
+                    }
+                }
+            });
+        })
+
+        function seach() {
+            var postdata = $("#keyword").val();
+            location.href = "@Url.Action("Seach", "StarSocial",new {pageIndex=1})?title=" + postdata;
+        }
+    </script>
+}
+
+

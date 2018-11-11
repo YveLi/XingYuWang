@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "新闻投稿";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<style>
+    .layui-input-block{
+        margin:0
+    }
+</style>
+<div class="page-title" unselectable="on" onselectstart="return false;">
+    <div class="layui-container">
+        <div class="title">
+            <h2>
+                文章投稿
+                <span class="line"></span>
+            </h2>
+        </div>
+        <span class="title-eng">ADD ANCHOR</span>
+    </div>
+    <p style="color:#808080">原创文章需要经过一定时间的审核哦</p>
+</div>
+<div class="page-news" style="margin:0 0 25px 0">
+    <div class="layui-container">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md2">
+            </div>
+            <div class="layui-col-md8">
+                <div class="moudle-card">
+                    <div class="page-form layui-text">
+                        <div class="layui-form">
+                            <form method="post" id="form">
+                                @Html.AntiForgeryToken()
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="请输入投稿标题" id="ArticleTitle" name="title">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="如果是转载, 请输入来源..例如:百度百科|https://www.baidu.com" id="source" name="source">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <textarea class="layui-textarea" placeholder="请输入新闻内容" id="content" name="content"></textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <label> 验证问题：我们的网站名称是?(星座星语)</label>
+                                        <input type="text" class="layui-input" id="xingzuoxingyu">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn zb-btn" lay-filter="articleadd" lay-submit> 提交 </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md2">
+    </div>
+</div>
+@section scripts{
+    <script>
+        var editIndex;
+        $(function () {
+            layui.use(['form', 'layedit'], function () {
+                var layedit = layui.layedit, form = layui.form;
+                layedit.set({
+                    uploadImage: {
+                        url: '/FileUpload/FileRecive' //接口url
+                        , type: 'post' //默认post
+                    }
+                });
+                editIndex = layedit.build("content");
+                form.on('submit(articleadd)', function (data) {
+                    var title = $("#ArticleTitle").val();
+                    var contents = layedit.getContent(editIndex);
+                    var name = $("#xingzuoxingyu").val();
+                    var source = $("#source").val();
+                    if (title.length < 5) {
+                        layer.msg('标题不少于5个字符哦', { icon: 2 });
+                        return false;
+                    };
+                    //if (source.indexOf('|')<0) {
+                    //    layer.msg('来源地址格式不正确，例如：百度百科|https://www.baidu.com', { icon: 2 });
+                    //    return false;
+                    //}
+                    if (contents.length < 20) {
+                        layer.msg('内容不少于20个字符哦', { icon: 2 });
+                        return false;
+                    };
+                    if (name != "星座星语") {
+                        layer.msg('问题没有回答正确哦', { icon: 2 });
+                        return false;
+                    }
+                    data.field.content = contents ;
+                    $.post('@Url.Action("AddArticle", "Astro")', data.field, function (res) {
+                        $('.layui-btn').attr('disabled', 'disabled');
+                        if (res.status==1) {
+                            layer.msg(res.msg, { icon: 2 });
+                        } else {
+                            layer.msg(res.msg, { icon: 1, time: 1000 });
+                            location.href="@Url.Action("Index", "Astro")";
+                        }
+                    });
+                    return false;
+                });
+            });
+        });
+    </script>
+}

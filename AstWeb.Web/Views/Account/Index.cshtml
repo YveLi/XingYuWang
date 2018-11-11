@@ -1,0 +1,399 @@
+﻿@using AstWeb.Common.Models;
+@{
+    var myVisitors = ViewBag.MyVisitors as AstWeb.Common.Infrastructure.GetListsResponse<Visitor>;
+    var user = ViewBag.user as W_Users;
+    var articleCount = ViewBag.articleCount;
+    var postCount = ViewBag.postCount;
+    var fans = ViewBag.MyFans as AstWeb.Common.Infrastructure.GetListsResponse<AsterLikes>;
+    var message = ViewBag.Message;
+    ViewBag.Title = user.NickName + "的个人中心";
+    ViewBag.KeyWords = user.NickName + ',' + user.PhoneNumber + ',' + user.WeiBo + ',' + user.Birthday;
+    ViewBag.Description = user.Sign;
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<style>
+    .red-dot {
+        width: 18px;
+        height: 18px;
+        background-color: red;
+        border-radius: 50%;
+        z-index: 99;
+        position: absolute;
+        color: #fff;
+        right: 0;
+        top: 30px;
+        line-height: 18px;
+    }
+
+    .red-dot-container {
+        position: relative;
+    }
+
+    .col-xs-16, .col-xs-7 {
+        float: left;
+    }
+
+    .user-head {
+        float: left;
+        border-radius: 50%;
+        overflow: hidden;
+        width: 100px;
+    }
+
+    .info {
+        margin-top: 5px;
+        padding-left: 100px;
+        font-size: 14px;
+    }
+
+        .info ul li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+    .user-links li {
+        display: inline-block;
+        margin-right: 20px;
+    }
+
+    .layui-icon {
+        color: #f84b9c;
+    }
+
+    li .zb-btn {
+        background-color: #fff;
+    }
+
+    .row {
+        margin-bottom: 20px;
+    }
+
+    .page-bbs .bbs-user .user-links {
+        margin-top: 0px;
+    }
+
+    .page-anchor-contect .anchor-contect-con {
+        margin-left: 65px;
+    }
+</style>
+<div id="body" class="layui-container layui-anim layui-anim-up">
+    @*<div class="page-title" unselectable="on" onselectstart="return false;">
+            <div class="layui-container">
+                <div class="title">
+                    <h2>
+                        个人中心
+                        <span class="line"></span>
+                    </h2>
+                </div>
+                <span class="title-eng">MY SITE</span>
+            </div>
+        </div>*@
+    <div class="row">
+        <div class="page-news page-bbs col-xs-16">
+            <div class="layui-container">
+                <div class="layui-row layui-col-space15">
+                    @*<div class="layui-col-md2">
+                        </div>*@
+                    <div class="moudle-card bbs-user col-md-8">
+                        <div class="page-form">
+                            <div class="row">
+                                <div class="user-name" style="padding:0px 0 10px 115px;text-align:initial">
+                                    <span style="font-size:1.5rem;font-weight:bold">@user.NickName</span>
+                                    @if (user.Gender == Gender.Man)
+                                    {
+                                        <i class="layui-icon" style="color:#5FB878">&#xe662;</i>
+                                    }
+                                    else
+                                    {
+                                        <i class="layui-icon" style="color:#f84b9c">&#xe661;</i>
+                                    }
+                                    @*<span style="color:#FF5722;font-weight:900;">@user.Title</span>*@
+                                    @if (user.Id != ViewBag.CurrentUserId)
+                                    {
+                                        if (!ViewBag.IsGZ)
+                                        {
+                                            <span class="follow-btn" onclick="gz(1,@user.Id)">关注TA</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="follow-btn" onclick="gz(0,@user.Id)">取消关注</span>
+                                        }
+
+                                    }
+                                </div>
+                                <a href="/user/myavatar/@user.Id">
+                                    <div class="user-head" style="position: relative;top: -60px;"><img class="avatar-lg center-block  layui-anim layui-anim-loop" src="@user.HeadPortrait"></div>
+                                </a>
+
+                                <div class="info" style="padding:0 0 0 115px;">
+                                    <ul>
+                                        <li><div>关注 <a style="text-decoration:underline;color:#f84b9c" href="@Url.Action("MySign", "Account", new { userId = user.Id })">@ViewBag.LikeNum</a></div></li>
+                                        <li><div>粉丝 <a style="text-decoration:underline;color:#f84b9c" href="@Url.Action("MyFans", "Account", new { userId = user.Id })">@ViewBag.FansNum</a></div></li>
+                                        <li><div>文章</div></li>
+                                        <li><div>收藏</div></li>
+                                        <li><div>星币</div></li>
+                                    </ul>
+                                </div>
+                                <div class="page-form" style="padding-top: 0;padding-bottom: 0;">
+                                    <div class="bbs-user">
+                                        <div class="layui-form-item">
+                                            <p id="sign" style="font-size:20px;">@user.Sign</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="user-links p-ti">
+                                <li>
+                                    @if (user.Id == ViewBag.CurrentUserId)
+                                    {
+                                        <a href="@Url.Action("MyHome", "Account", new { userId = user.Id })" class="layui-btn zb-btn app"><i class="layui-icon"></i></a>
+                                        <p>修改资料</p>
+                                    }
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("MyPost", "Account", new { userId = user.Id, pageIndex = 1 })" class="layui-btn zb-btn app"><i class="layui-icon"></i></a>
+                                    @if (user.Id == ViewBag.CurrentUserId)
+                                    {
+                                        <p>我的帖子</p>
+                                    }
+                                    else
+                                    {
+                                        <p>他的帖子</p>
+                                    }
+                                </li>
+                                @if (user.Id == ViewBag.CurrentUserId)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("MyPass", "Account", new { userId = user.Id })" class="layui-btn zb-btn app"><i class="layui-icon"></i></a>
+                                        <p>更换密码</p>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("MyAvatar", "Account", new { userId = user.Id })" class="layui-btn zb-btn app"><i class="layui-icon"></i></a>
+                                        <p>修改头像</p>
+                                    </li>
+                                    @*<li>
+                                            <a href="@Url.Action("MySign", "Account", new { userId = user.Id })" class="layui-btn zb-btn app"><i class="layui-icon"></i></a>
+                                            <p>个性签名</p>
+                                        </li>*@
+                                    <li>
+                                        <a href="@Url.Action("MySign", "Account", new { userId = user.Id })" class="layui-btn zb-btn app"><i class="layui-icon">&#xe612;</i></a>
+                                        <p>我的关注</p>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("MyMsg", "Account", new { userId = user.Id })" class="layui-btn zb-btn app red-dot-container">
+                                            <i class="layui-icon">&#xe63a;</i>
+                                            @if (message > 0)
+                                            {
+                                                <div class="red-dot">@message</div>
+                                            }
+                                        </a>
+                                        <p>我的消息</p>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    @*<div class="layui-col-md2">
+                        </div>*@
+                    <div class="page-news page-bbs col-md-4 pad-m-0" style="margin-top:0;padding-top:0;">
+                        <div class="m-mt-10">
+                            <div class="moudle-card bbs-user">
+                                <div class="page-form">
+                                    <div class="page-anchor-contect" style="width:300px;">
+                                        <div class="anchor-contect-con">
+                                            <ul class="layui-timeline">
+                                                <li class="layui-timeline-item first"></li>
+                                                <li class="layui-timeline-item">
+                                                    <h4 class="left-tt">用户名</h4>
+                                                    <i class="layui-icon layui-timeline-axis"></i>
+                                                    <div class="layui-timeline-content right-con">@user.NickName</div>
+                                                </li>
+                                                <li class="layui-timeline-item">
+                                                    <h4 class="left-tt">生日</h4>
+                                                    <i class="layui-icon layui-timeline-axis"></i>
+                                                    <div class="layui-timeline-content right-con">@user.Birthday.ToString("yyyy / MM / dd")</div>
+                                                </li>
+                                                <li class="layui-timeline-item">
+                                                    <h4 class="left-tt">星座</h4>
+                                                    <i class="layui-icon layui-timeline-axis"></i>
+                                                    <div class="layui-timeline-content right-con">@user.Xingzuo</div>
+                                                </li>
+                                                @*<li class="layui-timeline-item">
+                                                        <h4 class="left-tt">Email</h4>
+                                                        <i class="layui-icon layui-timeline-axis"></i>
+                                                        <div class="layui-timeline-content right-con">@user.Email</div>
+                                                    </li>*@
+                                                <li class="layui-timeline-item">
+                                                    <h4 class="left-tt">称号</h4>
+                                                    <i class="layui-icon layui-timeline-axis"></i>
+                                                    <div class="layui-timeline-content right-con">@user.Title</div>
+                                                </li>
+                                                <li class="layui-timeline-item">
+                                                    <h4 class="left-tt">加入时间</h4>
+                                                    <i class="layui-icon layui-timeline-axis"></i>
+                                                    <div class="layui-timeline-content right-con">@user.CreateTime.ToString("yyyy / MM / dd")</div>
+                                                </li>
+                                                <li class="layui-timeline-item">
+                                                    <h4 class="left-tt">文章数</h4>
+                                                    <i class="layui-icon layui-timeline-axis"></i>
+                                                    <div class="layui-timeline-content right-con">@articleCount</div>
+                                                </li>
+                                                <li class="layui-timeline-item">
+                                                    <span class="last"></span>
+                                                    <h4 class="left-tt">帖子数</h4>
+                                                    <i class="layui-icon layui-timeline-axis"></i>
+                                                    <div class="layui-timeline-content right-con">@postCount</div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row">
+                            <div>
+                                <div class="moudle-card bbs-user news-side bbs-side">
+                                    <hr />
+                                    <div class="in-title" style="padding-left:20px">
+                                        @if (user.Id == ViewBag.CurrentUserId)
+                                        {
+                                            <h4>我的粉丝</h4>
+                                            <span class="line"></span>
+                                        }
+                                        else
+                                        {
+                                            <h4>TA的粉丝</h4>
+                                            <span class="line"></span>
+                                        }
+                                    </div>
+                                    <div class="page-form" style="padding:10px;">
+                                        <ul class="user-links" style="text-align:inherit">
+                                            @if (fans.IsSuccess)
+                                            {
+                                                foreach (var item in fans.Items)
+                                                {
+                                                    <li style="margin:5px;">
+                                                        <div class="user-head" style="border-radius:10px;width:60px;height:60px;">
+                                                            <a href="@Url.Action("Index", "Account", new { userId = item.LikeUser.Id})"><img class="avatar-lg center-block  layui-anim layui-anim-up" src="@item.LikeUser.HeadPortrait"></a>
+                                                        </div>
+                                                    </li>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <li>
+                                                    @fans.Message
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2">
+                            </div>
+                        </div>
+                        <div class="layui-row">
+                            <div>
+                                <div class="moudle-card bbs-user news-side bbs-side">
+                                    <hr />
+                                    <div class="in-title" style="padding-left:20px">
+                                        <h4>最近访客</h4>
+                                        <span class="line"></span>
+                                    </div>
+                                    <div class="page-form" style="padding:10px;">
+                                        <ul class="user-links" style="text-align:inherit">
+                                            @if (myVisitors.IsSuccess)
+                                            {
+                                                foreach (var item in myVisitors.Items)
+                                                {
+                                                    <li style="margin:5px;">
+                                                        <div class="user-head" style="border-radius:10px;width:60px;height:60px;">
+                                                            <a href="@Url.Action("Index", "Account", new { userId = item.VisitorUserId })"><img class="avatar-lg center-block  layui-anim layui-anim-up" src="@item.VisitorUser.HeadPortrait"></a>
+                                                        </div>
+                                                        @*<div class="user-name">
+                                                                <span style="display:inline-block">@item.VisitorUser.NickName</span>
+                                                                @if (item.VisitorUser.Gender == Gender.Man)
+                                                                {
+                                                                    <i class="iconfont icon-nan" style="color:#5FB878"></i>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <i class="iconfont icon-nv" style="color:#f84b9c"></i>
+                                                                }
+                                                                <p style="color:#FF5722;font-weight:900;margin-bottom:0px;">@item.VisitorUser.Title</p>
+                                                                <p>@item.TimeAgo</p>
+                                                            </div>*@
+                                                    </li>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <li>
+                                                    @myVisitors.Message
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        layui.use(['form', 'layer'], function () {
+            var form = layui.form, layer = layui.layer
+            form.on('submit(updatesign)', function () {
+                var signs = $("#sign").val();
+                if (signs.length > 120) {
+                    layer.msg("'签名须小于120个字符！", {icon:2});
+                    return false;
+                } else {
+                var postbase = {
+                    sign: signs
+                };
+                $.post('@Url.Action("UpdateSign", "Account")', postbase, function (res) {
+                    if (res.status==0) {
+                        layer.msg(res.msg, { icon: 2 });
+                    } else {
+                        layer.msg(res.msg, { icon: 1, time: 1000  }, function (index) {
+                            location.href = '@Url.Action("Index","Account",new { userId=user.Id})';
+                        });
+                    }
+                });
+                };
+                return false;
+            });
+        });
+
+        function gz(type, userid) {
+            var postdata = {
+                type: type,
+                userid: userid,
+            };
+            $.post("@Url.Action("AddOrDelLike", "Astrology")", postdata, function (t) {
+                location.reload();
+            });
+        }
+    </script>
+    <script>
+    $(function () {
+        function Follow(id) {
+            var postdata = {
+                id: id,
+            };
+            $.post("@Url.Action("LoadArticle", "Astro")", postdata, function (res) {
+                $("#articlelist").html(res);
+                location.hash = "#articlelist";
+            });
+        }
+    });
+    </script>
+}
+
